@@ -42,9 +42,9 @@ This "software rendering approach" may be slower than a hardware accelerated app
 #### Signal & Events
 
 LFGUI has a lightweight signal event system. It simply uses std::functions ordered in a map with a priority.
-A lfgui::signal is a class that is a data member of many classes (like widgets) that want to emit some kind of event. Functions or lambdas can be assigned to signals like this:
-  button_save->on_mouse_click([this]{save();});
-The signal class uses the operator() to append functions/lambdas.
-Optionally the priority can be set (otherwise the default of 0 is used):
-  button_save->on_paint(-1,[this](lfgui::image& img){img.draw_image(10,10,background_image);});
+A lfgui::signal is a class that is a data member of many classes (like widgets) that want to emit some kind of event. Functions or lambdas can be assigned to signals like this:  
+  button_save->on_mouse_click([this]{save();});  
+The signal class uses the operator() to append functions/lambdas.  
+Optionally the priority can be set (otherwise the default of 0 is used):  
+  button_save->on_paint(-1,[this](lfgui::image& img){img.draw_image(10,10,background_image);});  
 All connected functions/lambdas are called sorted by their priority in ascending order.

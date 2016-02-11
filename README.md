@@ -16,7 +16,7 @@ One of the main targets are highly customized GUIs. Qt doesn't really help with 
 LFGUI is still in a relatively early development stage. There's no keyboard support yet and there's no layout yet.
 
 LFGUI draws everything on one resulting image to be easily integratable.  
-It uses the cIMG library (http://cimg.eu/) which is just one header file and offersr various image editing functions like drawing text.
+It uses the cIMG library (http://cimg.eu/) which is just one header file and offers various image editing functions like drawing text.
 
 ### Shortcomings of Qt
 

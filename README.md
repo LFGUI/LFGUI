@@ -19,12 +19,29 @@ Qt takes a lot of control away and forces one to use its thread and event system
 Qt is HUGE and is hard to build.
 Qts layouts are not mighty enough.
 When doing custom widgets in Qt one often has to create some kind of own "primitive GUI system inside Qt" because Qt doesn't help at all with highly customized widgets.
+Qts signal and slot system requires a pre compiler, is complicated to use and has no priorities.
 
 One of the main targets are highly customized GUIs. Qt sucks at those.
-
-LFGUI has a lightweight signal event system. It simply uses std::functions ordered in a map with a priority. Qts signal and slot system requires a pre compiler, is complicated to use and has no priorities.
 
 LFGUI is still in a relatively early development stage. There's no keyboard support yet and there's no layout yet.
 
 LFGUI draws everything on one resulting image to be easily integratable.
 It uses the cIMG library (http://cimg.eu/) which is just one header file and offersr various image editing functions like drawing text.
+
+    Concepts & Features
+
+  Image Based Rendering
+  
+Every widget has an image which it is drawing into in its redraw() function. The redraw function draw the current widget and then every child of this widget. The uppermost widget is of the type lfgui::gui as it is also acting as the manager of this LFGUI instance (there can be multiple instances active).
+This "software rendering approach" may be slower as a hardware accelerated approach which some other GUI systems choose but it is also more flexible and portable. Performance seems good so far even when rendering the full GUI completely every frame when having a 3D scene in the background.
+
+  Signal & Events
+
+LFGUI has a lightweight signal event system. It simply uses std::functions ordered in a map with a priority.
+A lfgui::signal is a class that is a data member of many classes (like widgets) that want to emit some kind of event. Functions or Lambdas can be assigned to signals like this:
+  button_save->on_mouse_click([this]{save();});
+The signal class uses the operator() to append functions/lambdas.
+Optionally the priority can be set (otherwise the default of 0 is used):
+  button_save->on_paint(-1,[this](lfgui::image& img){img.draw_image(10,10,background_image);});
+Lower priority values are called earlier.
+

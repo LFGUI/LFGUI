@@ -18,7 +18,7 @@ LFGUI is still in a relatively early development stage. There's no keyboard supp
 LFGUI draws everything on one resulting image to be easily integratable.
 It uses the cIMG library (http://cimg.eu/) which is just one header file and offersr various image editing functions like drawing text.
 
-## Shortcomings of Qt
+### Shortcomings of Qt
 
 LFGUI is mainly based on a lot of experience with Qt and having to fight with its shortcomings:
 There a pre-compiler called MOC which is often criticized and has several bugs like sometimes not building correctly and one being forced to manually rebuild the whole project.
@@ -32,14 +32,14 @@ Qts signal and slot system requires a precompiler, is complicated to use and has
 
 Qt and other GUI systems are often way too complicated to use. LFGUI tries to use sane defaults to produce results without excessive amounts of code.
 
-## Concepts & Features
+### Concepts & Features
 
-### Image Based Rendering
+#### Image Based Rendering
   
 Every widget has an image which it is drawing into in its redraw() function. The redraw function draws the current widget and then every child of this widget. The uppermost widget is of the type lfgui::gui as it is also acting as the manager of this LFGUI instance (there can be multiple instances active).
 This "software rendering approach" may be slower than a hardware accelerated approach which some other GUI systems choose but it is also more flexible and portable. Performance seems good so far even when rendering the full GUI completely every frame while having a 3D scene in the background.
 
-### Signal & Events
+#### Signal & Events
 
 LFGUI has a lightweight signal event system. It simply uses std::functions ordered in a map with a priority.
 A lfgui::signal is a class that is a data member of many classes (like widgets) that want to emit some kind of event. Functions or lambdas can be assigned to signals like this:

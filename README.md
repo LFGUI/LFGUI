@@ -48,3 +48,9 @@ The signal class uses the operator() to append functions/lambdas.
 Optionally the priority can be set (otherwise the default of 0 is used):  
 `  button_save->on_paint(-1,[this](lfgui::image& img){img.draw_image(10,10,background_image);});`  
 All connected functions/lambdas are called sorted by their priority in ascending order.
+
+All widgets that draw something are doing so by using their on_paint signal. This allows to replace the drawing code on a per-instance basis easily. Some widgets like the slider use multiple layer, this allows to add custom drawing code inbetween those layers. Foe example to manipulate the already drawn pixels by multiplying them with a color or mixing with a gradient.
+
+#### Hierachical Widgets
+
+All widgets can have children. Childrens are positioned relative to their parent widget.

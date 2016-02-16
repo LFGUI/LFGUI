@@ -1,0 +1,9 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$classlfgui_1_1wrapper__urho3d_1_1gui.html" title="The LFGUI wrapper for Urho3D (http://urho3d.org/ or http://urho3d.github.io/). It will automatically ..." alt="" coords="276,19,445,45"/>
+<area shape="rect" id="node4" href="$classlfgui_1_1wrapper__qt_1_1gui.html" title="The LFGUI Qt Wrapper. It is also a QWidget and can therefore be simply used as a QWidget. " alt="" coords="290,95,431,121"/>
+<area shape="rect" id="node5" href="$classlfgui_1_1widget.html" title="Represents a widget. " alt="" coords="5,157,96,184"/>
+<area shape="rect" id="node6" href="$classlfgui_1_1gui.html" title="Used as a manager class and a LFGUI instance. " alt="" coords="151,56,221,83"/>
+<area shape="rect" id="node7" href="$classlfgui_1_1label.html" title="Simple text label. " alt="" coords="146,157,226,184"/>
+<area shape="rect" id="node9" href="$classlfgui_1_1slider.html" title="A horizontal slider. " alt="" coords="144,208,228,235"/>
+<area shape="rect" id="node8" href="$classlfgui_1_1button.html" title="Simple push button with a text. " alt="" coords="316,157,405,184"/>
+</map>

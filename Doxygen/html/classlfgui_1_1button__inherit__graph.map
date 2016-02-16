@@ -1,0 +1,4 @@
+<map id="lfgui::button" name="lfgui::button">
+<area shape="rect" id="node2" href="$classlfgui_1_1label.html" title="Simple text label. " alt="" coords="11,80,91,107"/>
+<area shape="rect" id="node3" href="$classlfgui_1_1widget.html" title="Represents a widget. " alt="" coords="5,5,96,32"/>
+</map>

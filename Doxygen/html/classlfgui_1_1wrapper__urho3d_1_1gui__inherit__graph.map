@@ -1,0 +1,4 @@
+<map id="lfgui::wrapper_urho3d::gui" name="lfgui::wrapper_urho3d::gui">
+<area shape="rect" id="node2" href="$classlfgui_1_1gui.html" title="Used as a manager class and a LFGUI instance. " alt="" coords="15,80,86,107"/>
+<area shape="rect" id="node3" href="$classlfgui_1_1widget.html" title="Represents a widget. " alt="" coords="5,5,96,32"/>
+</map>

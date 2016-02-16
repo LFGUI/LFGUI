@@ -1,0 +1,9 @@
+<map id="lfgui::wrapper_urho3d::gui" name="lfgui::wrapper_urho3d::gui">
+<area shape="rect" id="node2" href="$classlfgui_1_1gui.html" title="Used as a manager class and a LFGUI instance. " alt="" coords="257,68,327,95"/>
+<area shape="rect" id="node3" href="$classlfgui_1_1widget.html" title="Represents a widget. " alt="" coords="613,201,703,228"/>
+<area shape="rect" id="node4" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::image &amp; \&gt;" alt="" coords="231,119,353,161"/>
+<area shape="rect" id="node5" href="$structlfgui_1_1point.html" title="Represent a coordinate with its two x and y integers. Sometimes also a size. " alt="" coords="5,157,87,184"/>
+<area shape="rect" id="node6" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::event_mouse \&gt;" alt="" coords="231,335,353,377"/>
+<area shape="rect" id="node7" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::point \&gt;" alt="" coords="231,401,353,442"/>
+<area shape="rect" id="node8" href="$classlfgui_1_1image.html" title="Contains a cimg and offers various drawing and manipulation functions. The cIMG library trores its pi..." alt="" coords="248,467,336,493"/>
+</map>

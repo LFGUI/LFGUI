@@ -1,0 +1,5 @@
+<map id="lfgui::gui" name="lfgui::gui">
+<area shape="rect" id="node3" href="$classlfgui_1_1wrapper__qt_1_1gui.html" title="The LFGUI Qt Wrapper. It is also a QWidget and can therefore be simply used as a QWidget. " alt="" coords="5,155,147,181"/>
+<area shape="rect" id="node4" href="$classlfgui_1_1wrapper__urho3d_1_1gui.html" title="The LFGUI wrapper for Urho3D (http://urho3d.org/ or http://urho3d.github.io/). It will automatically ..." alt="" coords="171,155,341,181"/>
+<area shape="rect" id="node2" href="$classlfgui_1_1widget.html" title="Represents a widget. " alt="" coords="120,5,211,32"/>
+</map>

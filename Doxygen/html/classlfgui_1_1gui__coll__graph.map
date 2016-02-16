@@ -1,0 +1,8 @@
+<map id="lfgui::gui" name="lfgui::gui">
+<area shape="rect" id="node2" href="$classlfgui_1_1widget.html" title="Represents a widget. " alt="" coords="573,138,664,165"/>
+<area shape="rect" id="node3" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::image &amp; \&gt;" alt="" coords="231,5,353,47"/>
+<area shape="rect" id="node4" href="$structlfgui_1_1point.html" title="Represent a coordinate with its two x and y integers. Sometimes also a size. " alt="" coords="5,111,87,138"/>
+<area shape="rect" id="node5" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::event_mouse \&gt;" alt="" coords="231,272,353,313"/>
+<area shape="rect" id="node6" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::point \&gt;" alt="" coords="231,337,353,379"/>
+<area shape="rect" id="node7" href="$classlfgui_1_1image.html" title="Contains a cimg and offers various drawing and manipulation functions. The cIMG library trores its pi..." alt="" coords="248,403,336,430"/>
+</map>

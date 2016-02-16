@@ -99,11 +99,11 @@ public:
         uint8_t* data_source_end=this->img.data()+count;
         for(;data_source<data_source_end;)
         {
-            *data_target=*data_source;
+            *data_target=*(data_source+countx2);    // cIMG has the colors as BGRA and Urho3D as RGBA
             data_target++;
             *data_target=*(data_source+count);
             data_target++;
-            *data_target=*(data_source+countx2);
+            *data_target=*data_source;
             data_target++;
             *data_target=*(data_source+countx3);
             data_target++;

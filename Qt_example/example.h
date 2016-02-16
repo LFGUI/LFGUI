@@ -20,6 +20,7 @@ public:
         resize(800,600);
         setStyleSheet("background-color:#ccc;");
         setCentralWidget(gui);
+        setWindowTitle("LFGUI Qt example");
 
         setup_sample_gui(gui);
     }

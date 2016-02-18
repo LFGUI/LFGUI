@@ -7,7 +7,7 @@ This is a C++11 GUI toolkit designed to be:
 - lightweight: being easy to integrate and having no required dependencies that require complicate building 
 - flexible: easily customizable and designed so that every aspect can be customized easily
 - a toolkit: no framework that takes all control away
-- easily integratable: currently there's a Qt (a C++ GUI Framework) wrapper to use it inside a Qt application and a wrapper to use it inside the Urho3D game engine. The first wrapper is currently around 100 lines long and the second around 200. It can be easily integrated into anything that can display images.
+- easily integratable: currently there's a Qt (a C++ GUI Framework) wrapper to use it inside a Qt application and a wrapper to use it inside the Urho3D game engine ([http://urho3d.github.io/](http://urho3d.github.io/)). The first wrapper is currently around 100 lines long and the second around 200. It can be easily integrated into anything that can display images.
 - easy to use: some GUI systems are way more complicated to use than necessary
 - customizable: other GUI systems tend to be hard to customize. LFGUI tries to use sane defaults to produce results without excessive amounts of code.
 
@@ -20,7 +20,7 @@ One of the main targets are highly customized GUIs. Qt doesn't really help with 
 LFGUI is still in a relatively early development stage. There's no keyboard support and no layout system yet.
 
 LFGUI draws everything on one resulting image to be easily integratable.  
-It uses the cIMG library (http://cimg.eu/) which is just one header file and offers various image editing functions like drawing text.
+It uses the cIMG library ([http://cimg.eu/](http://cimg.eu/)) which is just one header file and offers various image editing functions like drawing text.
 
 LFGUI is mainly based on a lot of experience with Qt and having to fight with its shortcomings:
 

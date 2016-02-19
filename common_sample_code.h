@@ -1,5 +1,7 @@
 
 #include "lfgui/lfgui.h"
+#include "lfgui/label.h"
+#include "lfgui/button.h"
 
 #define PI		3.14159265358979323846
 
@@ -36,9 +38,9 @@ inline void setup_sample_gui(lfgui::widget* gui)
             img.draw_line(100,100,i,200,{128,128,255});
 
         // draw text centered at the bottom with different alignments
-        img.draw_text(img.width()/2,img.height()-60,"alignment left",{55,55,0},16,1,lfgui::alignment::left);
-        img.draw_text(img.width()/2,img.height()-40,"alignment centered",{55,55,0},16,1,lfgui::alignment::center);
-        img.draw_text(img.width()/2,img.height()-20,"alignment right",{55,55,0},16,1,lfgui::alignment::right);
+        img.draw_text(img.width()/2,img.height()-90,"alignment left",{55,55,0},16,1,lfgui::alignment::left);
+        img.draw_text(img.width()/2,img.height()-70,"alignment centered",{55,55,0},16,1,lfgui::alignment::center);
+        img.draw_text(img.width()/2,img.height()-50,"alignment right",{55,55,0},16,1,lfgui::alignment::right);
     });
 
     gui->on_resize([&](lfgui::point p)
@@ -47,7 +49,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
     });
 
     {
-        auto mover=gui->add_child<lfgui::widget>(20,250,200,70);
+        auto mover=gui->add_child<lfgui::widget>(20,210,200,70);
         mover->on_paint=[&](lfgui::image& img)
         {
             img.draw_rect(0,0,img.width(),img.height(),{192,192,255});
@@ -115,11 +117,11 @@ inline void setup_sample_gui(lfgui::widget* gui)
     {
         static lfgui::color color_background({75,50,25});
         auto movable=gui->add_child<lfgui::widget>(300,320,220,160);
-        movable->on_paint=[&](lfgui::image& img)
+        movable->on_paint([&](lfgui::image& img)
         {
             img.draw_rect(0,0,img.width(),img.height(),color_background);
             img.draw_text(10,3,"I can be dragged vertically",{255,255,255});
-        };
+        });
         movable->on_mouse_drag([movable](lfgui::event_mouse e){movable->translate(0,e.movement.y);});
 
         movable->add_child<lfgui::label>(10,30,200,20,"Change the color:",lfgui::color{255,222,192},20);
@@ -144,5 +146,19 @@ inline void setup_sample_gui(lfgui::widget* gui)
         slider_b->img_handle_hover.multiply({128,128,255});
         slider_b->img_handle_pressed.multiply({128,128,255});
         slider_b->img_background.multiply({128,128,255});
+    }
+
+    {
+        gui->add_child<lfgui::button>(50,500,150,30,"top left corner",lfgui::color({50,0,0}))->set_pos(0,0,0,0);
+        gui->add_child<lfgui::button>(50,500,150,30,"top right corner",lfgui::color({50,0,0}))->set_pos(0,0,1,0)->set_offset(-1,0);
+        gui->add_child<lfgui::button>(50,500,150,30,"bottom left corner",lfgui::color({50,0,0}))->set_pos(0,0,0,1)->set_offset(0,-1);
+        gui->add_child<lfgui::button>(50,500,150,30,"bottom right corner",lfgui::color({50,0,0}))->set_pos(0,0,1,1)->set_offset(-1,-1);
+
+        gui->add_child<lfgui::button>(50,500,150,30,"top center",lfgui::color({0,50,0}))->set_pos(0,0,0.5,0)->set_offset(-0.5,0);
+        gui->add_child<lfgui::button>(50,500,150,30,"right center",lfgui::color({0,50,0}))->set_pos(0,0,1,0.5)->set_offset(-1,-0.5);
+        gui->add_child<lfgui::button>(50,500,150,30,"bottom center",lfgui::color({0,50,0}))->set_pos(0,0,0.5,1)->set_offset(-0.5,-1);
+        gui->add_child<lfgui::button>(50,500,150,30,"left center",lfgui::color({0,50,0}))->set_pos(0,0,0,0.5)->set_offset(0,-0.5);
+
+        gui->add_child<lfgui::button>(50,500,150,30,"center",lfgui::color({0,0,50}))->set_pos(0,0,0.5,0.5)->set_offset(-0.5,-0.5);
     }
 }

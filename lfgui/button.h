@@ -31,7 +31,7 @@ public:
         set_text_color(text_color);
         set_text(text);
 
-        on_paint.functions.clear();
+        on_paint.functions.clear(); // remove the draw function from the label
         on_paint([this](lfgui::image& img)
         {
             img.draw_image(0,0,*img_ptr);
@@ -61,7 +61,9 @@ public:
         });
     }
 
-    button(int width=100,int height=20) : button(0,0,width,height){}
+    button(int width=100,int height=20,const std::string& text="",color text_color=color({0,0,0}),int border_width=10)
+        : button(0,0,width,height,text,text_color,border_width){}
+    button(const std::string& text="",color text_color=color({0,0,0}),int border_width=10) : button(0,0,100,100,text,text_color,border_width){}
 
 private:
     // called by the constructor to create the button images that are draw when drawing the widget
@@ -94,8 +96,6 @@ private:
             // draw center
             temp.draw_image(border_width,border_width,img_normal.cropped(w/2,h/2,0,0).scale(width()-border_width*2,height()-border_width*2));
 
-            //temp.draw_image(height/2+1,0,img_handle_normal.cropped(height/2,0,height/2,height).resize_linear(width-height-1,height+1));
-            //temp.draw_image(width-height/2,0,img_handle_normal.cropped(height/2,0,height,height));
             img_normal=temp;
         }
 

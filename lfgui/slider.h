@@ -60,8 +60,8 @@ public:
             img_handle=&img_handle_pressed;
             //handle->pos.x=from_global(pos.x);
             handle->translate(e.movement.x,0);
-            handle->pos.x=std::max(handle->pos.x,0);
-            handle->pos.x=std::min(handle->pos.x,this->width()-this->height());
+            handle->geometry.pos_absolute.x=std::max(handle->geometry.pos_absolute.x,0);
+            handle->geometry.pos_absolute.x=std::min(handle->geometry.pos_absolute.x,this->width()-this->height());
             on_value_change.call(this->value());
         });
 
@@ -94,7 +94,7 @@ public:
 
     float value() const
     {
-        return(handle->pos.x/float(width()-height()))*(value_max()-value_min())+value_min();
+        return(handle->geometry.pos_absolute.x/float(width()-height()))*(value_max()-value_min())+value_min();
     }
 
     /// \brief Sets the current value to v. If emit_event is set on_value_change will be emitted.
@@ -102,7 +102,7 @@ public:
     {
         v=std::max(value_min(),v);
         v=std::min(value_max(),v);
-        handle->pos.x=v/(value_max()-value_min())*(width()-height());
+        handle->geometry.pos_absolute.x=v/(value_max()-value_min())*(width()-height());
         if(emit_event)
             on_value_change.call(this->value());
     }

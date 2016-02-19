@@ -10,9 +10,28 @@
 #include <algorithm>
 
 #include "image.h"
+#include "key.h"
+#include "signal.h"
 
 namespace lfgui
 {
+
+union mouse_button
+{
+    uint32_t all;
+    struct
+    {
+        int left:1;
+        int right:1;
+        int middle:1;
+        // Qt defines up to 24 extra buttons in Qt::MouseButton
+        int extra_1:1;int extra_2:1;int extra_3:1;int extra_4:1;
+        int extra_5:1;int extra_6:1;int extra_7:1;int extra_8:1;int extra_9:1;
+        int extra_10:1;int extra_11:1;int extra_12:1;int extra_13:1;int extra_14:1;
+        int extra_15:1;int extra_16:1;int extra_17:1;int extra_18:1;int extra_19:1;
+        int extra_20:1;int extra_21:1;int extra_22:1;int extra_23:1;int extra_24:1;
+    };
+};
 
 /// \brief Represents a mouse event like a button press, mouse movement or mouse wheel move.
 class event_mouse
@@ -22,42 +41,8 @@ public:
     point old_pos;  ///< The position in the last event
     point movement; ///< The difference between the current position and the last position, pos-old_pos
     point wheel_movement;   ///< Mouse wheel movement. Qt also supports horizontal movement, may not be available in all wrapper.
-
-    /// Has the button set that triggered this event.
-    union
-    {
-        uint32_t all;
-        struct
-        {
-            int left:1;
-            int right:1;
-            int middle:1;
-            // Qt defines up to 24 extra buttons in Qt::MouseButton
-            int extra_1:1;int extra_2:1;int extra_3:1;int extra_4:1;
-            int extra_5:1;int extra_6:1;int extra_7:1;int extra_8:1;int extra_9:1;
-            int extra_10:1;int extra_11:1;int extra_12:1;int extra_13:1;int extra_14:1;
-            int extra_15:1;int extra_16:1;int extra_17:1;int extra_18:1;int extra_19:1;
-            int extra_20:1;int extra_21:1;int extra_22:1;int extra_23:1;int extra_24:1;
-        };
-    } button;
-
-    /// Contains the status of all buttons.
-    union
-    {
-        uint32_t all;
-        struct
-        {
-            int left:1;
-            int right:1;
-            int middle:1;
-            // Qt defines up to 24 extra buttons in Qt::MouseButton
-            int extra_1:1;int extra_2:1;int extra_3:1;int extra_4:1;
-            int extra_5:1;int extra_6:1;int extra_7:1;int extra_8:1;int extra_9:1;
-            int extra_10:1;int extra_11:1;int extra_12:1;int extra_13:1;int extra_14:1;
-            int extra_15:1;int extra_16:1;int extra_17:1;int extra_18:1;int extra_19:1;
-            int extra_20:1;int extra_21:1;int extra_22:1;int extra_23:1;int extra_24:1;
-        };
-    } button_state;
+    mouse_button button;        ///< Has the button set that triggered this event.
+    mouse_button button_state;  ///< Contains the status of all buttons.
 
     event_mouse(point old_pos=point(),point new_pos=point(),uint32_t event_button=0,
                 uint32_t buttons_status=0,int delta_wheel_x=0,int delta_wheel_y=0)
@@ -80,94 +65,13 @@ public:
     }
 };
 
-/// \brief Used by signal to store std::functions.
-template <typename T>
-struct event_function
-{
-    std::function<void()> void_void;
-    std::function<void(T)> void_em;
-    std::function<void(T,bool&)> bool_em;
-
-    event_function(){}
-    event_function(std::function<void()> f) : void_void(f) {}
-    event_function(std::function<void(T)> f) : void_em(f) {}
-    event_function(std::function<void(T,bool&)> f) : bool_em(f) {}
-    /// \brief Returns true if this even_function has a std::function set.
-    operator bool()const{return void_void||void_em||bool_em;}
-};
-
-/// \brief This class is the signal slot system of LFGUI. Functions can be set to be called by using the = or () operator.
-/// The functions are called by using the call() command. Functions can have an optional argument that is given by the
-/// T template parameter. Functions have a priority, lower priority numbers are called first. (default priority is 0)
-template <typename T>
-class signal
+class event_key
 {
 public:
-    std::multimap<int,event_function<T>> functions;
+    int key;    /// \brief Identical to Qt::Key.
+    std::string character_unicode;  /// \brief Contains the character entered in UTF-8.
 
-    signal(){}
-    signal(const event_function<T>& f)
-    {
-        functions.emplace(0,f);
-    }
-    signal(int priority,const event_function<T>& f)
-    {
-        functions.emplace(priority,f);
-    }
-    template<typename T2>
-    signal(const T2& f)
-    {
-        functions.emplace(0,event_function<T>(f));
-    }
-    template<typename T2>
-    signal(int priority,const T2& f)
-    {
-        functions.emplace(priority,event_function<T>(f));
-    }
-
-    /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(const event_function<T>& f){functions.emplace(0,f);}
-    /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(int priority,const event_function<T>& f){functions.emplace(priority,f);}
-    /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(std::function<void()> f){functions.emplace(0,event_function<T>(f));}
-    /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(std::function<void(T)> f){functions.emplace(0,event_function<T>(f));}
-    /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(std::function<void(T,bool&)> f){functions.emplace(0,event_function<T>(f));}
-    /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(int priority,std::function<void()> f){functions.emplace(priority,event_function<T>(f));}
-    /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(int priority,std::function<void(T)> f){functions.emplace(priority,event_function<T>(f));}
-    /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(int priority,std::function<void(T,bool&)> f){functions.emplace(priority,event_function<T>(f));}
-    template <typename T2>
-    void operator=(const T2& o){(*this)(o);}
-
-    /// \brief Returns true if the signal has any callbacks set.
-    operator bool() const
-    {
-        return !functions.empty();
-    }
-
-    /// \brief Calls each appended function/lambda.
-    bool call(const T& me)
-    {
-        for(auto& e:functions)
-        {
-            event_function<T>& s=e.second;
-            bool stop;
-            if(s.bool_em)
-                s.bool_em(me,stop);
-            else if(s.void_em)
-                s.void_em(me);
-            else if(s.void_void)
-                s.void_void();
-            if(stop)
-                return true;
-        }
-        return !functions.empty();
-    }
+    event_key(int key,const std::string& character_unicode) : key(key),character_unicode(character_unicode){}
 };
 
 class gui;
@@ -182,7 +86,7 @@ protected:
     gui* _gui=0;
     point size_old;
 public:
-    point pos;
+    widget_geometry geometry;
     image img;
 
     signal<event_mouse> on_mouse_press;             ///< called when a mouse button is pressed on this widget
@@ -220,13 +124,16 @@ public:
         return rect(0,0,width(),height()).contains(p);
     }
 
-    int x()const{return pos.x;}
-    int y()const{return pos.y;}
     int width()const{return img.width();}
     int height()const{return img.height();}
     point size()const{return point(width(),height());}
     /// \brief Resizes this widget to the given width and height. Calls on_resize();
     void resize(int width,int height);
+    /// \brief Resizes this widget to the given size. Calls on_resize();
+    void resize(point size){resize(size.x,size.y);}
+    widget* set_pos(int x,int y,float x_percent,float y_percent){geometry.set_pos(x,y,x_percent,y_percent);return this;}
+    widget* set_size(int x,int y,float x_percent,float y_percent){geometry.set_size(x,y,x_percent,y_percent);resize(geometry.calc_size(parent?parent->width():0,parent?parent->height():0));return this;}
+    widget* set_offset(float x_percent,float y_percent){geometry.set_offset(x_percent,y_percent);return this;}
 
     /// \brief Constructs and adds a child widget. Returns a pointer to the widget (uses a std::unique_ptr internally,
     /// no need for delete).
@@ -243,9 +150,9 @@ public:
     }
 
     /// \brief Moves this widget.
-    void translate(int x,int y){pos.x+=x;pos.y+=y;}
+    void translate(int x,int y){geometry.pos_absolute.x+=x;geometry.pos_absolute.y+=y;}
     /// \brief Moves this widget.
-    void translate(point p){pos+=p;}
+    void translate(point p){geometry.pos_absolute+=p;}
 
     /// \brief Transforms the given point with local coordinates of this widget into global coordinates (global as in
     /// relative to the gui class managing this widget).
@@ -254,7 +161,10 @@ public:
         const widget* w=this;
         while(w)
         {
-            p+=w->pos;
+            if(w->parent)
+                p+=w->geometry.calc_pos(w->parent->geometry.size_absolute.x,w->parent->geometry.size_absolute.y);
+            else
+                p+=w->geometry.calc_pos(0,0);
             w=w->parent;
         }
         return p;
@@ -267,7 +177,10 @@ public:
         const widget* w=this;
         while(w)
         {
-            p-=w->pos;
+            if(w->parent)
+                p-=w->geometry.calc_pos(w->parent->geometry.size_absolute.x,w->parent->geometry.size_absolute.y);
+            else
+                p-=w->geometry.calc_pos(0,0);
             w=w->parent;
         }
         return p;
@@ -309,7 +222,7 @@ protected:
 
     widget(int x,int y,int width,int height) : widget(width,height)
     {
-        pos=point(x,y);
+        geometry.pos_absolute=point(x,y);
     }
 };
 

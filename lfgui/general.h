@@ -41,14 +41,15 @@ struct color
 };
 
 /// \brief Represent a coordinate with its two x and y integers. Sometimes also a size.
-struct point
+template<typename T>
+struct point_general
 {
-    int x;
-    int y;
+    T x;
+    T y;
 
-    point(int x=0,int y=0) : x(x),y(y){}
+    point_general(T x=0,T y=0) : x(x),y(y){}
 
-    bool operator<(const point& o)const
+    bool operator<(const point_general<T>& o)const
     {
         if(y<o.y)
             return true;
@@ -56,7 +57,7 @@ struct point
             return true;
         return false;
     }
-    bool operator<=(const point& o)const
+    bool operator<=(const point_general<T>& o)const
     {
         if(y<=o.y)
             return true;
@@ -65,40 +66,43 @@ struct point
         return false;
     }
 
-    bool operator!=(const point& o)const
+    bool operator!=(const point_general<T>& o)const
     {
         if(y!=o.y||x!=o.x)
             return true;
         return false;
     }
 
-    void operator+=(const point& o)
+    void operator+=(const point_general<T>& o)
     {
         x+=o.x;
         y+=o.y;
     }
-    void operator-=(const point& o)
+    void operator-=(const point_general<T>& o)
     {
         x-=o.x;
         y-=o.y;
     }
-    void operator*=(const point& o)
+    void operator*=(const point_general<T>& o)
     {
         x*=o.x;
         y*=o.y;
     }
-    void operator/=(const point& o)
+    void operator/=(const point_general<T>& o)
     {
         x/=o.x;
         y/=o.y;
     }
 
-    point operator/(int div)const{return point(x/div,y/div);}
-    point operator*(int v)const{return point(x*v,y*v);}
-    point operator+(int v)const{return point(x+v,y+v);}
-    point operator-(int v)const{return point(x-v,y-v);}
-    point operator-()const{return point(-x,-y);}
+    point_general<T> operator/(int div)const{return point_general<T>(x/div,y/div);}
+    point_general<T> operator*(int v)const{return point_general<T>(x*v,y*v);}
+    point_general<T> operator+(int v)const{return point_general<T>(x+v,y+v);}
+    point_general<T> operator-(int v)const{return point_general<T>(x-v,y-v);}
+    point_general<T> operator-()const{return point_general<T>(-x,-y);}
 };
+
+using point=point_general<int>;
+using point_float=point_general<float>;
 
 struct rect
 {
@@ -123,7 +127,61 @@ struct rect
     int right()const{return x+width;}
 };
 
-}
+/// \brief
+struct widget_geometry
+{
+    point pos_absolute;
+    point_float pos_percent;
+    point size_absolute=point(100,100);
+    point_float size_percent;
+    point_float offset_percent;
+
+    rect calc_geometry(int parent_width,int parent_height) const
+    {
+        point p(pos_absolute.x+pos_percent.x*parent_width,
+                pos_absolute.y+pos_percent.y*parent_height);
+        point s=calc_size(parent_width,parent_height);
+        p+=point(offset_percent.x*s.x,
+                 offset_percent.y*s.y);
+        return rect(p.x,p.y,s.x,s.y);
+    }
+
+    point calc_pos(int parent_width,int parent_height) const
+    {
+        rect r=calc_geometry(parent_width,parent_height);
+        return point(r.x,r.y);
+    }
+
+    point calc_size(int parent_width,int parent_height) const
+    {
+        return point(size_absolute.x+size_percent.x*parent_width,
+                     size_absolute.y+size_percent.y*parent_height);
+    }
+
+    void set_pos(int x,int y,float x_percent,float y_percent)
+    {
+        pos_absolute.x=x;
+        pos_absolute.y=y;
+        pos_percent.x=x_percent;
+        pos_percent.y=y_percent;
+    }
+
+    void set_size(int x,int y,float x_percent,float y_percent)
+    {
+        size_absolute.x=x;
+        size_absolute.y=y;
+        size_percent.x=x_percent;
+        size_percent.y=y_percent;
+    }
+
+    void set_offset(float x_percent,float y_percent)
+    {
+        offset_percent.x=x_percent;
+        offset_percent.y=y_percent;
+    }
+};
+
+}   // namespace lfgui
 
 inline std::ostream& operator<<(std::ostream& os,const lfgui::point& p)
 {

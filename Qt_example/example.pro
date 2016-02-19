@@ -22,6 +22,8 @@ SOURCES += main.cpp\
         ../lfgui/image.cpp
 
 HEADERS  += \
+        ../lfgui/key.h \
+        ../lfgui/signal.h \
         ../lfgui/lfgui.h \
         ../lfgui/image.h \
         ../lfgui/slider.h \

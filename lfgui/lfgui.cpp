@@ -6,19 +6,20 @@ using namespace std;
 namespace lfgui
 {
 
-widget::widget(int width,int height) : uid(generate_uid()),size_old(width,height),pos(0,0),img(width,height)
+widget::widget(int width,int height) : uid(generate_uid()),size_old(width,height),img(width,height)
 {
+    geometry.size_absolute.x=width;
+    geometry.size_absolute.y=height;
     if(_gui==0)
         _gui=lfgui::gui::instance;
 }
 
 bool widget::_insert_event_mouse_press(const event_mouse& event)
 {
-//cout<<bounding_box()<<endl;
     // check if any children accepts this event
     for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start to start with the topmost drawn one.
     {
-        if((*it)->_insert_event_mouse_press(event.translated(-(*it)->pos)))  // FIX
+        if((*it)->_insert_event_mouse_press(event.translated(-(*it)->geometry.calc_pos(width(),height()))))
             return true;
     }
 
@@ -75,7 +76,7 @@ bool widget::_insert_event_mouse_move(const event_mouse& event)
     // Check if any children accepts this event.
     for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start to start with the topmost drawn one.
     {
-        if((*it)->_insert_event_mouse_move(event.translated(-(*it)->pos)))
+        if((*it)->_insert_event_mouse_move(event.translated(-(*it)->geometry.calc_pos(width(),height()))))
             return true;
     }
 
@@ -96,7 +97,7 @@ bool widget::_insert_event_mouse_wheel(const event_mouse& event)
     // check if any children accepts this event
     for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start to start with the topmost drawn one.
     {
-        if((*it)->_insert_event_mouse_wheel(event.translated(-(*it)->pos)))
+        if((*it)->_insert_event_mouse_wheel(event.translated(-(*it)->geometry.calc_pos(width(),height()))))
             return true;
     }
 
@@ -132,7 +133,7 @@ void widget::redraw()
     for(auto& e:children)
     {
         e->redraw();
-        img.draw_image(e->x(),e->y(),e->img);
+        img.draw_image(e->geometry.calc_pos(width(),height()),e->img);
     }
 }
 

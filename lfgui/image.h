@@ -154,6 +154,10 @@ public:
     void draw_image(int x,int y,const image& img);
     /// \brief Draws another image onto this one.
     void draw_image(int x,int y,const image& img,float opacity);
+    /// \brief Draws another image onto this one.
+    void draw_image(point p,const image& img){draw_image(p.x,p.y,img);}
+    /// \brief Draws another image onto this one.
+    void draw_image(point p,const image& img,float opacity){draw_image(p.x,p.y,img,opacity);}
 
     /// \brief Fills the image with transparent black.
     void clear();

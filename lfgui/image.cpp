@@ -41,6 +41,8 @@ void image::blend_pixel(int x,int y,color c)
 {
     //if(x<0||y<0||x>=width()||y>=height()) // useful for debugging
     //    throw std::logic_error("");
+    if(c.a==0)
+        return;
     int count=width()*height();
     int i=x+y*width();
     cimage->_data[i]=(cimage->_data[i]*(255-c.a)+c.b*c.a)/255;

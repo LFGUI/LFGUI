@@ -66,6 +66,7 @@ public:
         _texture->SetFilterMode(Urho3D::TextureFilterMode::FILTER_NEAREST);
         _texture->SetNumLevels(1);
         _sprite->SetTexture(_texture);
+        _sprite->SetBlendMode(Urho3D::BlendMode::BLEND_ALPHA);
 
         SubscribeToEvent(Urho3D::E_MOUSEBUTTONDOWN,URHO3D_HANDLER(gui,e_mouse_press));
         SubscribeToEvent(Urho3D::E_MOUSEBUTTONUP,URHO3D_HANDLER(gui,e_mouse_release));

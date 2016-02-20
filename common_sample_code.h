@@ -116,7 +116,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
 
     {
         static lfgui::color color_background({75,50,25});
-        auto movable=gui->add_child<lfgui::widget>(300,320,220,160);
+        auto movable=gui->add_child<lfgui::widget>(300,320,220,190);
         movable->on_paint([&](lfgui::image& img)
         {
             img.draw_rect(0,0,img.width(),img.height(),color_background);
@@ -146,6 +146,9 @@ inline void setup_sample_gui(lfgui::widget* gui)
         slider_b->img_handle_hover.multiply({128,128,255});
         slider_b->img_handle_pressed.multiply({128,128,255});
         slider_b->img_background.multiply({128,128,255});
+
+        lfgui::slider* slider_a=movable->add_child<lfgui::slider>(10,150,100,25,0,255,color_background.a);
+        slider_a->on_value_change([&](float v){color_background.a=v;});
     }
 
     {

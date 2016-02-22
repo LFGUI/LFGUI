@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QMessageBox>
+#include <QTimer>
 
 #include "lfgui.h"
 
@@ -53,6 +54,9 @@ public:
         lfgui::image::load=lfgui::wrapper_qt::load_image;
         setMouseTracking(true);
         setFocusPolicy(Qt::StrongFocus);
+        QTimer *timer=new QTimer(this);
+        connect(timer,&QTimer::timeout,[this]{redraw();});
+        timer->start(100);
     }
 
     int width()const{return lfgui::widget::width();}
@@ -77,6 +81,7 @@ public:
 
     void resizeEvent(QResizeEvent* e) override
     {
+        dirty=true;
         QWidget::resizeEvent(e);
         qimage=QImage(QWidget::width(),QWidget::height(),QImage::Format_ARGB32);
         lfgui::widget::resize(QWidget::width(),QWidget::height());

@@ -39,9 +39,9 @@ inline void setup_sample_gui(lfgui::widget* gui)
             img.draw_line(100,100,i,200,{128,128,255});
 
         // draw text centered at the bottom with different alignments
-        img.draw_text(img.width()/2,img.height()-90,"alignment left",{55,55,0},16,1,lfgui::alignment::left);
-        img.draw_text(img.width()/2,img.height()-70,"alignment centered",{55,55,0},16,1,lfgui::alignment::center);
-        img.draw_text(img.width()/2,img.height()-50,"alignment right",{55,55,0},16,1,lfgui::alignment::right);
+        img.draw_text(img.width()/2,img.height()-90,"alignment left",{55,55,0},16,lfgui::alignment::left);
+        img.draw_text(img.width()/2,img.height()-70,"alignment centered",{55,55,0},16,lfgui::alignment::center);
+        img.draw_text(img.width()/2,img.height()-50,"alignment right",{55,55,0},16,lfgui::alignment::right);
     });
 
     gui->on_resize([&](lfgui::point p)

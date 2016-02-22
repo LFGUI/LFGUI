@@ -12,6 +12,7 @@
 #include "image.h"
 #include "key.h"
 #include "signal.h"
+#include "../external/stk_timer.h"
 
 namespace lfgui
 {
@@ -86,8 +87,14 @@ protected:
     gui* _gui=0;
     point size_old;
 public:
-    widget_geometry geometry;
-    image img;
+    /// \brief Determines if this widget and all its children are fully redrawn the next time redraw() gets called.
+    bool dirty=true;
+    /// \brief Can be set to a time amount in seconds to (at least) redraw this widget and all its children every N seconds.
+    float redraw_every_n_seconds=0;
+    /// \brief Used to measure the time since the last redraw.
+    stk::timer redraw_timer=stk::timer("",false);
+    widget_geometry geometry;   ///< The geometry used to position and size this widget.
+    image img;  ///< The cIMG image that is used to display this widget.
 
     signal<event_mouse> on_mouse_press;             ///< called when a mouse button is pressed on this widget
     signal<event_mouse> on_mouse_release;           ///< called when a mouse button is release on this widget
@@ -98,10 +105,12 @@ public:
     signal<event_mouse> on_mouse_enter;             ///< called when the mouse cursor moves from outside this widget onto this widget
     signal<event_mouse> on_mouse_leave;             ///< called when the mouse was over this widget and just left this widget
     signal<event_mouse> on_mouse_wheel;             ///< called when the mouse wheel is used while the cursor is over this widget
-    signal<point> on_resize;                        ///< called when this widget changes its size
-    signal<image&> on_paint;                        ///< called when this widget is being painted
-    signal<event_key> on_key_press;
-    signal<event_key> on_key_release;
+    signal<point> on_resize;                        ///< called when this widget changes its size. The parameter is the new size.
+    signal<image&> on_paint;                        ///< called when this widget is being drawn.
+    signal<event_key> on_key_press;                 ///< called on keyboard key press.
+    signal<event_key> on_key_release;               ///< called on keyboard key press.
+    signal<void> on_focus_in;                       ///< called when this widgets gets keyboard focus.
+    signal<void> on_focus_out;                      ///< called when this widgets loses keyboard focus.
 
     /// \brief Inserts a mouse press event with local coordinates. Normally only called from the parent widget (or the
     ///  gui class if that is the parent). Calls on_mouse_press.
@@ -139,6 +148,17 @@ public:
     widget* set_pos(int x,int y,float x_percent,float y_percent){geometry.set_pos(x,y,x_percent,y_percent);return this;}
     widget* set_size(int x,int y,float x_percent,float y_percent){geometry.set_size(x,y,x_percent,y_percent);resize(geometry.calc_size(parent?parent->width():0,parent?parent->height():0));return this;}
     widget* set_offset(float x_percent,float y_percent){geometry.set_offset(x_percent,y_percent);return this;}
+    bool need_redraw()
+    {
+        if(redraw_every_n_seconds!=0&&redraw_every_n_seconds<redraw_timer.until_now())
+            dirty=true;
+        if(dirty)
+            return true;
+        for(auto& e:children)
+            if(e->need_redraw())
+                return true;
+        return false;
+    }
 
     /// \brief Constructs and adds a child widget. Returns a pointer to the widget (uses a std::unique_ptr internally,
     /// no need for delete).
@@ -286,9 +306,15 @@ public:
         if(_hovering_over_widget_old!=_hovering_over_widget)
         {
             if(_hovering_over_widget_old&&_hovering_over_widget_old->on_mouse_leave)
+            {
                 _hovering_over_widget_old->on_mouse_leave.call(em.translated(_hovering_over_widget_old->to_local(point(0,0))));
+                _hovering_over_widget_old->dirty=true;
+            }
             if(_hovering_over_widget&&_hovering_over_widget->on_mouse_enter)
+            {
                 _hovering_over_widget->on_mouse_enter.call(em.translated(_hovering_over_widget->to_local(point(0,0))));
+                _hovering_over_widget->dirty=true;
+            }
         }
         _hovering_over_widget_old=_hovering_over_widget;
     }
@@ -316,6 +342,25 @@ public:
     bool mouse_hovering_over(const widget* w)const{return w==_hovering_over_widget;}
     /// \brief Returns the widget that is currently being held (down) by the mouse or 0 if none is held.
     widget* held_widget()const{return _held_widget;}
+
+    /// \brief Gives the given widget keyboard focus and calls on_focus_out and on_focus_in. Does nothing if the given
+    /// widget has already focus.
+    void set_focus(widget* w)
+    {
+        if(_focus_widget==w)
+            return;
+        if(_focus_widget&&_focus_widget->on_focus_out)
+        {
+            _focus_widget->on_focus_out.call();
+            _focus_widget->dirty=true;
+        }
+        _focus_widget=w;
+        if(_focus_widget&&_focus_widget->on_focus_in)
+        {
+            _focus_widget->on_focus_in.call();
+            _focus_widget->dirty=true;
+        }
+    }
 };
 
 }   // namespace lfgui

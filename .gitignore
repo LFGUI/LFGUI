@@ -37,3 +37,4 @@ Makefile*
 *build*
 *Build*
 *.exe
+*.blend1

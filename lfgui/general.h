@@ -133,7 +133,9 @@ struct rect
     int right()const{return x+width;}
 };
 
-/// \brief
+/// \brief Used to position and size widgets.
+/// The position is: size_absolute+pos_percent*parent_size+offset_percent*widget_size.
+/// The size is: size_absolute+size_percent*parent_size.
 struct widget_geometry
 {
     point pos_absolute;

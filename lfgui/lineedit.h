@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "lfgui.h"
+#include "../external/stk_timer.h"
 
 namespace lfgui
 {
@@ -23,11 +24,13 @@ protected:
     int _text_size=16;
     image img_background;
     image img_background_focused;
+    stk::timer cursor_timer=stk::timer("",false);
 public:
     lineedit(int x,int y,int _width,int _height=20,const std::string& text="",color text_color={0,0,0},int text_size=14)
         : widget(x,y,_width,_height),_text(text),_text_color(text_color),_text_size(text_size)
     {
         cursor_position=_text.size();
+        redraw_every_n_seconds=0.5;
 
         int border_width=8;
 
@@ -96,12 +99,16 @@ public:
             }
             space_for_n_characters--;
 
+            if(cursor_timer.until_now()>1.0)
+                cursor_timer.reset();
+            bool draw_cursor=has_focus()&&cursor_timer.until_now()<0.5;
+
             if(space_for_n_characters>=_text.size()) // if enough space
             {
                 space_for_n_characters=_text.size();
                 img.draw_text(4,3,_text,_text_color,_text_size);
 
-                if(!has_focus())
+                if(!draw_cursor)
                     return;
 
                 int i=0;
@@ -120,7 +127,8 @@ public:
                 {
                     std::string displayed_text=_text.substr(0,space_for_n_characters);
                     img.draw_text(4,4,displayed_text,_text_color,_text_size);
-                    if(!has_focus())
+
+                    if(!draw_cursor)
                         return;
 
                     int i=0;
@@ -136,7 +144,8 @@ public:
                 {
                     std::string displayed_text=_text.substr(_text.size()-space_for_n_characters,space_for_n_characters);
                     img.draw_text(4,4,displayed_text,_text_color,_text_size);
-                    if(!has_focus())
+
+                    if(!draw_cursor)
                         return;
 
                     int i=0;
@@ -152,7 +161,8 @@ public:
                 {
                     std::string displayed_text=_text.substr(cursor_position-space_for_n_characters/2,space_for_n_characters);
                     img.draw_text(4,4,displayed_text,_text_color,_text_size);
-                    if(!has_focus())
+
+                    if(!draw_cursor)
                         return;
 
                     int i=0;
@@ -168,6 +178,7 @@ public:
         });
         on_key_press([this](lfgui::event_key ek)
         {
+            cursor_timer.reset();
             if(ek.key==key::Key_Enter||ek.key==lfgui::key::Key_Return)
                 return;
 
@@ -195,6 +206,8 @@ public:
 
             cursor_position=std::min(cursor_position,_text.size());
         });
+
+        on_focus_out([]{}); // widgets get redrawn when they have signals connected and that's all that should be done here (to remove the highlight effect and the cursor).
     }
 
     lineedit(int width=100,int height=20) : lineedit(0,0,width,height){}

@@ -28,9 +28,12 @@ bool widget::_insert_event_mouse_press(const event_mouse& event)
     // check this widget
     if(is_over(event.pos))
     {
-        _gui->_focus_widget=this;
+        _gui->set_focus(this);
         if(on_mouse_press)
+        {
             ret=on_mouse_press.call(event);
+            dirty=true;
+        }
         _gui->_held_widget=this;
     }
     else
@@ -51,15 +54,24 @@ bool widget::_insert_event_mouse_release(const event_mouse& event)
     else if(is_over(event.pos)) // check this widget
     {
         if(on_mouse_release)
+        {
             ret=on_mouse_release.call(event);
+            dirty=true;
+        }
         ret=true;
     }
 
     if(_gui->_held_widget&&_gui->_held_widget==_gui->_hovering_over_widget)
+    {
         _gui->_held_widget->on_mouse_click.call(event.translated(to_global(point(0,0))).translated(_gui->_held_widget->to_local(point(0,0))));
+        _gui->_held_widget->dirty=true;
+    }
 
     if(_gui->_held_widget)
+    {
         _gui->_held_widget->on_mouse_click_somewhere.call(event.translated(to_global(point(0,0))).translated(_gui->_held_widget->to_local(point(0,0))));
+        _gui->_held_widget->dirty=true;
+    }
 
     return ret;
 }
@@ -71,6 +83,7 @@ bool widget::_insert_event_mouse_move(const event_mouse& event)
         if(_gui->_held_widget->on_mouse_drag)
         {
             _gui->_held_widget->on_mouse_drag.call(event.translated(to_global(point(0,0))).translated(_gui->_held_widget->to_local(point(0,0))));
+            _gui->_held_widget->dirty=true;
             return true;
         }
 
@@ -86,7 +99,10 @@ bool widget::_insert_event_mouse_move(const event_mouse& event)
     {
         _gui->_hovering_over_widget=this;
         if(on_mouse_move)
+        {
             on_mouse_move.call(event);
+            dirty=true;
+        }
         return true;
     }
 
@@ -106,7 +122,10 @@ bool widget::_insert_event_mouse_wheel(const event_mouse& event)
     if(is_over(event.pos))
     {
         if(on_mouse_wheel)
+        {
             on_mouse_wheel.call(event);
+            dirty=true;
+        }
         return true;
     }
     return false;
@@ -115,22 +134,36 @@ bool widget::_insert_event_mouse_wheel(const event_mouse& event)
 void widget::_insert_event_key_press(const event_key& event)
 {
     if(_gui->_focus_widget)
+    {
         _gui->_focus_widget->on_key_press.call(event);
+        _gui->_focus_widget->dirty=true;
+    }
 }
 
 void widget::_insert_event_key_release(const event_key& event)
 {
     if(_gui->_focus_widget)
+    {
         _gui->_focus_widget->on_key_release.call(event);
+        _gui->_focus_widget->dirty=true;
+    }
 }
 
 void widget::resize(int width,int height)
 {
-    img=img.resize_nearest(width,height);   // is supposed to be redrawn anyway
+    img=img.resize_nearest(width,height);   // cheap and ugly image resize, is supposed to be redrawn anyway
+    dirty=true;
 }
 
 void widget::redraw()
 {
+    if(dirty)
+        goto redraw;
+    for(auto& e:children)
+        if(e->need_redraw())
+            goto redraw;
+    return;
+redraw:
     // clear image before drawing anything
     img.clear();
 
@@ -148,6 +181,10 @@ void widget::redraw()
         e->redraw();
         img.draw_image(e->geometry.calc_pos(width(),height()),e->img);
     }
+
+    dirty=false;
+    if(redraw_every_n_seconds)
+        redraw_timer.reset();
 }
 
 widget* widget::_add_child(std::unique_ptr<widget>&& w)
@@ -158,12 +195,13 @@ widget* widget::_add_child(std::unique_ptr<widget>&& w)
     auto& ret=children.back();
     ret->parent=this;
     ret->_gui=_gui;
+    dirty=true;
     return ret.get();
 }
 
 void widget::focus()
 {
-    _gui->_focus_widget=this;
+    _gui->set_focus(this);
 }
 
 bool widget::has_focus()const

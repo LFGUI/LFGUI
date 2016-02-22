@@ -22,6 +22,7 @@ SOURCES += main.cpp\
         ../lfgui/image.cpp
 
 HEADERS  += \
+        ../lfgui/font.h \
         ../lfgui/key.h \
         ../lfgui/signal.h \
         ../lfgui/lfgui.h \
@@ -31,6 +32,8 @@ HEADERS  += \
         ../lfgui/lfgui_wrapper_qt.h \
         ../lfgui/general.h \
         ../lfgui/label.h \
+        ../lfgui/lineedit.h \
         ../external/cimg/CImg.h \
+        ../external/stb_truetype.h \
         ../common_sample_code.h \
         example.h

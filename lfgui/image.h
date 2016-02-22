@@ -9,6 +9,8 @@
 #include <memory>
 
 #include "general.h"
+#include "../external/stb_truetype.h"
+#include "font.h"
 
 namespace cimg_library
 {
@@ -91,7 +93,34 @@ public:
     }
     /// \brief Returns an image with the color of every pixel multiplied with the given color. Can be used to get a
     /// colorized image. The alpha is not changed.
-    image multiplied(color c)const{image ret(*this);ret.multiplied(c);return ret;}
+    image multiplied(color c)const{image ret(*this);ret.multiply(c);return ret;}
+
+    /// \brief Multiplies the color of every pixel with the given color. Can be used to colorize the image. Alpha is
+    /// not affected.
+    image& add(color c)
+    {
+        int size=count();
+        auto d=data();
+        for(int i=0;i<size;i++)
+        {
+            *d=std::min(255,(*d)+c.b);
+            d++;
+        }
+        for(int i=0;i<size;i++)
+        {
+            *d=std::min(255,(*d)+c.g);
+            d++;
+        }
+        for(int i=0;i<size;i++)
+        {
+            *d=std::min(255,(*d)+c.r);
+            d++;
+        }
+        return *this;
+    }
+    /// \brief Returns an image with the color of every pixel multiplied with the given color. Can be used to get a
+    /// colorized image. The alpha is not changed.
+    image added(color c)const{image ret(*this);ret.add(c);return ret;}
 
     void set_pixel(int x,int y,color c)
     {
@@ -107,6 +136,12 @@ public:
     /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
     /// top using the colors alpha.
     void blend_pixel(int x,int y,color c);
+    void blend_pixel_safe(int x,int y,color c)
+    {
+        if(x<0||y<0||x>=width()||y>=height())
+            return;
+        blend_pixel(x,y,c);
+    }
 
     color get_pixel(int x,int y) const
     {
@@ -123,7 +158,46 @@ public:
     }
 
     /// \brief The alignment specifies if the given coordinate should be left, centered, or right of the text. Multiple lines of text are not aligned correctly.
-    void draw_text(int x,int y,const std::string& text,const color& color,int font_size=16,float opacity=1,alignment a=alignment::left);
+    void draw_text(int x,int y,const std::string& text,const color& color,int font_size=15,alignment a=alignment::left)
+    {
+        int x_orig=x;
+        int w=font::default_font().text_length(text,font_size);
+        if(a==alignment::center)
+            x-=w/2;
+        else if(a==alignment::right)
+            x-=w;
+        for(unsigned char c:text)
+        {
+            if(c=='\n')
+            {
+                x=x_orig;
+                y+=font_size;
+            }
+            else
+                draw_character(x,y,c,color,font_size);
+        }
+    }
+
+    void draw_character(int& x,int y,unsigned int character,const color& color,int font_size=15)
+    {
+        if(character==' ')
+        {
+            x+=font_size/3;
+            return;
+        }
+        if(character=='\t')
+        {
+            x+=font_size/3*4;
+            return;
+        }
+        if(character<0x20)
+            return;
+        const font::bitmap& b=font::default_font().get_glyph_cached(character,font_size);
+        for(int y2=0;y2<b.height();y2++)
+            for(int x2=0;x2<b.width();x2++) // just adding 13 seems weird. Maybe there has to be some other calculation.
+                blend_pixel_safe(x+x2+b.x0,y+y2+b.y0+13,color.alpha_multiplied(b.data[x2+y2*b.width()]));
+        x+=b.width()+1;
+    }
     void draw_line(int x1,int y1,int x2,int y2,color _color);
     /// \brief Draw a path along the given points. The last point is connected with the first if connect_last_point_with_first is set to true.
     void draw_path(const std::vector<point>& vec,color _color,bool connect_last_point_with_first=false)
@@ -149,6 +223,14 @@ public:
     /// \brief Draws a filled polygon.
     void draw_polygon(const std::vector<point>& vec,color color);
     //void draw_polygon(const std::initializer_list<point>& list,color color){draw_polygon(std::vector<point>(list),color);}
+
+    /// \brief Returns the pixel length of the given text from start_character to end_character.
+    int text_length(const std::string& str,int font_size,size_t start_character,size_t end_character)const
+    {
+        return font::default_font().text_length(str,font_size,start_character,end_character);
+    }
+    /// \brief Returns the pixel length of the given text to end_character.
+    int text_length(const std::string& str,int font_size,size_t end_character=0)const{if(end_character==0)end_character=str.size();return text_length(str,font_size,0,end_character);}
 
     /// \brief Draws another image onto this one.
     void draw_image(int x,int y,const image& img);

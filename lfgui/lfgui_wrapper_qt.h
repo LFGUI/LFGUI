@@ -52,6 +52,7 @@ public:
     {
         lfgui::image::load=lfgui::wrapper_qt::load_image;
         setMouseTracking(true);
+        setFocusPolicy(Qt::StrongFocus);
     }
 
     int width()const{return lfgui::widget::width();}
@@ -105,6 +106,32 @@ public:
     void mouseMoveEvent(QMouseEvent* e) override
     {
         insert_event_mouse_move(e->x(),e->y());
+        redraw();
+    }
+
+    void keyPressEvent(QKeyEvent* e) override
+    {
+        QByteArray arr=e->text().toUtf8();
+        std::string character(arr.data(),arr.size());
+
+        if(character.size()==1&&character[0]<=0x1F)
+        {
+            if(character=="\r")
+                character="\n";
+            else
+                character.clear();
+        }
+
+        insert_event_key_press(e->key(),character);
+        redraw();
+    }
+
+    void keyReleaseEvent(QKeyEvent* e) override
+    {
+        QByteArray arr=e->text().toUtf8();
+        std::string character(arr.data(),arr.size());
+
+        insert_event_key_release(e->key(),character);
         redraw();
     }
 

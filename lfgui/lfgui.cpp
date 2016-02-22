@@ -28,6 +28,7 @@ bool widget::_insert_event_mouse_press(const event_mouse& event)
     // check this widget
     if(is_over(event.pos))
     {
+        _gui->_focus_widget=this;
         if(on_mouse_press)
             ret=on_mouse_press.call(event);
         _gui->_held_widget=this;
@@ -111,6 +112,18 @@ bool widget::_insert_event_mouse_wheel(const event_mouse& event)
     return false;
 }
 
+void widget::_insert_event_key_press(const event_key& event)
+{
+    if(_gui->_focus_widget)
+        _gui->_focus_widget->on_key_press.call(event);
+}
+
+void widget::_insert_event_key_release(const event_key& event)
+{
+    if(_gui->_focus_widget)
+        _gui->_focus_widget->on_key_release.call(event);
+}
+
 void widget::resize(int width,int height)
 {
     img=img.resize_nearest(width,height);   // is supposed to be redrawn anyway
@@ -146,6 +159,16 @@ widget* widget::_add_child(std::unique_ptr<widget>&& w)
     ret->parent=this;
     ret->_gui=_gui;
     return ret.get();
+}
+
+void widget::focus()
+{
+    _gui->_focus_widget=this;
+}
+
+bool widget::has_focus()const
+{
+    return _gui->_focus_widget==this;
 }
 
 }

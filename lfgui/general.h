@@ -38,6 +38,12 @@ struct color
     {
         return color(r,g,b,a*f);
     }
+
+    /// \brief Returns a copy of this color with its alpha multiplied by f.
+    color alpha_multiplied(int f) const
+    {
+        return color(r,g,b,a*f/255);
+    }
 };
 
 /// \brief Represent a coordinate with its two x and y integers. Sometimes also a size.

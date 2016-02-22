@@ -100,6 +100,8 @@ public:
     signal<event_mouse> on_mouse_wheel;             ///< called when the mouse wheel is used while the cursor is over this widget
     signal<point> on_resize;                        ///< called when this widget changes its size
     signal<image&> on_paint;                        ///< called when this widget is being painted
+    signal<event_key> on_key_press;
+    signal<event_key> on_key_release;
 
     /// \brief Inserts a mouse press event with local coordinates. Normally only called from the parent widget (or the
     ///  gui class if that is the parent). Calls on_mouse_press.
@@ -113,6 +115,9 @@ public:
     /// \brief Inserts a mouse wheel event with local coordinates. Normally only called from the parent widget (or the
     /// gui class if that is the parent). Calls on_mouse_wheel.
     bool _insert_event_mouse_wheel(const event_mouse&);
+
+    void _insert_event_key_press(const event_key&);
+    void _insert_event_key_release(const event_key&);
 
     /// \brief Call on_paint().
     virtual void redraw();
@@ -204,6 +209,12 @@ public:
             it->swap(*next);
     }
 
+    /// \brief Gives this widget keyboard focus.
+    void focus();
+
+    /// \brief Returns true if this widget has keyboard focus.
+    bool has_focus()const;
+
 protected:
     widget* _add_child(std::unique_ptr<widget>&& w);
 
@@ -233,6 +244,7 @@ class gui : public widget
     widget* _held_widget=0;                 /// \brief The widget currently held by the mouse.
     widget* _hovering_over_widget=0;        /// \brief The widget currently under the mouse.
     widget* _hovering_over_widget_old=0;    /// \brief The widget currently under the mouse during the last check.
+    widget* _focus_widget=0;                /// \brief The widget that has keyboard focus.
     static gui* instance;                   /// \brief Used by the load functions.
 public:
     point mouse_old_pos=0;  // for mouse movement
@@ -286,6 +298,18 @@ public:
     {
         event_mouse em(mouse_old_pos,mouse_old_pos,event_button_last,button_state_last,delta_wheel_x,delta_wheel_y);
         _insert_event_mouse_wheel(em);
+    }
+
+    void insert_event_key_press(int key,std::string character_unicode)
+    {
+        event_key ek(key,character_unicode);
+        _insert_event_key_press(ek);
+    }
+
+    void insert_event_key_release(int key,std::string character_unicode)
+    {
+        event_key ek(key,character_unicode);
+        _insert_event_key_release(ek);
     }
 
     /// \brief Returns bool if the mouse is hovering over the given widget.

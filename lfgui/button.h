@@ -35,7 +35,7 @@ public:
         on_paint([this](lfgui::image& img)
         {
             img.draw_image(0,0,*img_ptr);
-            img.draw_text(this->width()/2,this->height()/2-_text_size/2,_text,_text_color,_text_size,1,alignment::center);
+            img.draw_text(this->width()/2,this->height()/2-_text_size/2,_text,_text_color,_text_size,alignment::center);
         });
 
         on_mouse_press([this]

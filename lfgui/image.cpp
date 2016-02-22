@@ -1,6 +1,9 @@
 #include "image.h"
 #include "../external/cimg/CImg.h"
 
+#define STB_TRUETYPE_IMPLEMENTATION
+#include "../external/stb_truetype.h"
+
 using namespace std;
 
 namespace lfgui
@@ -168,21 +171,6 @@ void image::draw_line(int x0,int y0,int x1,int y1,color c)
     }
 }
 
-void image::draw_text(int x,int y,const std::string& text,const color& color_foreground,int font_size,float opacity,alignment a)
-{
-    //cimage->draw_text(x,y,text.c_str(),color_foreground.array,0,opacity,font_size);
-    const cimg_library::CImgList<uint8_t>& font=cimg_library::CImgList<uint8_t>::font(font_size,true);
-    int w=0;
-    for(auto c:text)
-        w+=font[c]._width;
-
-    if(a==alignment::center)
-        x-=w/2;
-    else if(a==alignment::right)
-        x-=w;
-    cimage->draw_text(x,y,text.c_str(),color_foreground.array,0,opacity,font_size);
-}
-
 void image::draw_rect(int x,int y,int width,int height,color color_foreground)
 {
     cimage->draw_rectangle(x,y,x+width,y+height,color_foreground.array);
@@ -207,8 +195,8 @@ void image::draw_polygon(const std::vector<point>& vec,color c)
         j=vec_size-1;
         for(i=0;i<vec_size;i++)
         {
-            if(vec[i].y<(double)pixelY&&vec[j].y>=(double)pixelY
-             ||vec[j].y<(double)pixelY&&vec[i].y>=(double)pixelY)
+            if((vec[i].y<(double)pixelY&&vec[j].y>=(double)pixelY)
+             ||(vec[j].y<(double)pixelY&&vec[i].y>=(double)pixelY))
                 edges.push_back((vec[i].x+(pixelY-vec[i].y)/double(vec[j].y-vec[i].y)*(vec[j].x-vec[i].x)));
             j=i;
         }

@@ -2,6 +2,7 @@
 #include "lfgui/lfgui.h"
 #include "lfgui/label.h"
 #include "lfgui/button.h"
+#include "lfgui/lineedit.h"
 
 #define PI		3.14159265358979323846
 
@@ -52,7 +53,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
         auto mover=gui->add_child<lfgui::widget>(20,210,200,70);
         mover->on_paint=[&](lfgui::image& img)
         {
-            img.draw_rect(0,0,img.width(),img.height(),{192,192,255});
+            img.draw_rect(0,0,img.width(),img.height(),{192,192,255,128});
             img.draw_text(10,3,"I move on left and right\nmouse clicks and\nmouse wheel movement",{64,0,0});
         };
         mover->on_mouse_press([mover](lfgui::event_mouse e)
@@ -71,7 +72,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
         auto movable=gui->add_child<lfgui::widget>(300,50,250,200);
         movable->on_paint=[&](lfgui::image& img)
         {
-            img.draw_rect(0,0,img.width(),img.height(),{0,0,0});
+            img.draw_rect(0,0,img.width(),img.height(),{0,0,0,128});
             img.draw_text(10,3,"I can be dragged",{255,255,255});
         };
         movable->on_mouse_drag([movable](lfgui::event_mouse e){movable->translate(e.movement);});
@@ -152,16 +153,22 @@ inline void setup_sample_gui(lfgui::widget* gui)
     }
 
     {
+        gui->add_child<lfgui::lineedit>(550,120,200,20,"Edit this text!",lfgui::color{0,0,64})->focus();
+        gui->add_child<lfgui::lineedit>(550,150,240,20,"Edit this other text!",lfgui::color{64,0,0});
+    }
+
+    {
         gui->add_child<lfgui::button>(50,500,150,30,"top left corner",lfgui::color({50,0,0}))->set_pos(0,0,0,0);
         gui->add_child<lfgui::button>(50,500,150,30,"top right corner",lfgui::color({50,0,0}))->set_pos(0,0,1,0)->set_offset(-1,0);
         gui->add_child<lfgui::button>(50,500,150,30,"bottom left corner",lfgui::color({50,0,0}))->set_pos(0,0,0,1)->set_offset(0,-1);
         gui->add_child<lfgui::button>(50,500,150,30,"bottom right corner",lfgui::color({50,0,0}))->set_pos(0,0,1,1)->set_offset(-1,-1);
-
+/*
         gui->add_child<lfgui::button>(50,500,150,30,"top center",lfgui::color({0,50,0}))->set_pos(0,0,0.5,0)->set_offset(-0.5,0);
         gui->add_child<lfgui::button>(50,500,150,30,"right center",lfgui::color({0,50,0}))->set_pos(0,0,1,0.5)->set_offset(-1,-0.5);
         gui->add_child<lfgui::button>(50,500,150,30,"bottom center",lfgui::color({0,50,0}))->set_pos(0,0,0.5,1)->set_offset(-0.5,-1);
         gui->add_child<lfgui::button>(50,500,150,30,"left center",lfgui::color({0,50,0}))->set_pos(0,0,0,0.5)->set_offset(0,-0.5);
 
         gui->add_child<lfgui::button>(50,500,150,30,"center",lfgui::color({0,0,50}))->set_pos(0,0,0.5,0.5)->set_offset(-0.5,-0.5);
+        */
     }
 }

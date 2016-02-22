@@ -9,7 +9,6 @@
 #include <memory>
 
 #include "general.h"
-#include "../external/stb_truetype.h"
 #include "font.h"
 
 namespace cimg_library
@@ -158,10 +157,10 @@ public:
     }
 
     /// \brief The alignment specifies if the given coordinate should be left, centered, or right of the text. Multiple lines of text are not aligned correctly.
-    void draw_text(int x,int y,const std::string& text,const color& color,int font_size=15,alignment a=alignment::left)
+    void draw_text(int x,int y,const std::string& text,const color& color,int font_size=15,alignment a=alignment::left,font& f=font::default_font())
     {
         int x_orig=x;
-        int w=font::default_font().text_length(text,font_size);
+        int w=f.text_length(text,font_size);
         if(a==alignment::center)
             x-=w/2;
         else if(a==alignment::right)
@@ -178,7 +177,7 @@ public:
         }
     }
 
-    void draw_character(int& x,int y,unsigned int character,const color& color,int font_size=15)
+    void draw_character(int& x,int y,unsigned int character,const color& color,int font_size=15,font& f=font::default_font())
     {
         if(character==' ')
         {
@@ -192,7 +191,7 @@ public:
         }
         if(character<0x20)
             return;
-        const font::bitmap& b=font::default_font().get_glyph_cached(character,font_size);
+        const font::bitmap& b=f.get_glyph_cached(character,font_size);
         for(int y2=0;y2<b.height();y2++)
             for(int x2=0;x2<b.width();x2++) // just adding 13 seems weird. Maybe there has to be some other calculation.
                 blend_pixel_safe(x+x2+b.x0,y+y2+b.y0+13,color.alpha_multiplied(b.data[x2+y2*b.width()]));

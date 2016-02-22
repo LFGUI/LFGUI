@@ -1,3 +1,4 @@
 <map id="lfgui::event_mouse" name="lfgui::event_mouse">
-<area shape="rect" id="node2" href="$structlfgui_1_1point.html" title="Represent a coordinate with its two x and y integers. Sometimes also a size. " alt="" coords="29,5,111,32"/>
+<area shape="rect" id="node2" href="$unionlfgui_1_1mouse__button.html" title="lfgui::mouse_button" alt="" coords="5,13,140,39"/>
+<area shape="rect" id="node3" href="$structlfgui_1_1point__general.html" title="lfgui::point_general\l\&lt; int \&gt;" alt="" coords="165,5,295,47"/>
 </map>

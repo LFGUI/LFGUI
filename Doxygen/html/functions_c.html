@@ -94,8 +94,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_h.html#index_h"><span>h</span></a></li>
       <li><a href="functions_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_k.html#index_k"><span>k</span></a></li>
       <li><a href="functions_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_m.html#index_m"><span>m</span></a></li>
+      <li><a href="functions_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_o.html#index_o"><span>o</span></a></li>
       <li><a href="functions_p.html#index_p"><span>p</span></a></li>
       <li><a href="functions_q.html#index_q"><span>q</span></a></li>
@@ -130,7 +132,7 @@ $(document).ready(function(){initNavTree('functions_c.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -143,8 +145,21 @@ $(document).ready(function(){initNavTree('functions_c.html','');});
 <div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
+<li>calc_geometry()
+: <a class="el" href="structlfgui_1_1widget__geometry.html#a24a5c0cebbc0a3e703071072c2572da0">lfgui::widget_geometry</a>
+</li>
+<li>calc_pos()
+: <a class="el" href="structlfgui_1_1widget__geometry.html#a3a4a784289918e23813923cef2c75b76">lfgui::widget_geometry</a>
+</li>
+<li>calc_size()
+: <a class="el" href="structlfgui_1_1widget__geometry.html#a261c7111ccab7d8cfd70958f390f7200">lfgui::widget_geometry</a>
+</li>
 <li>call()
 : <a class="el" href="classlfgui_1_1signal.html#a8e07af62f77f234d9000a7df33bf0650">lfgui::signal&lt; T &gt;</a>
+, <a class="el" href="classlfgui_1_1signal_3_01void_01_4.html#a9455e22048fef907075aeb6c05ed5274">lfgui::signal&lt; void &gt;</a>
+</li>
+<li>character_unicode
+: <a class="el" href="classlfgui_1_1event__key.html#acc8b764937818923edffff7d9f9e1e2b">lfgui::event_key</a>
 </li>
 <li>children
 : <a class="el" href="classlfgui_1_1widget.html#a5eb910642e643e408c7bd89f7f952c53">lfgui::widget</a>
@@ -166,12 +181,19 @@ $(document).ready(function(){initNavTree('functions_c.html','');});
 </li>
 <li>count()
 : <a class="el" href="classlfgui_1_1image.html#a4dbbd36952b51e7a7b8b84ea7ddc54f8">lfgui::image</a>
+, <a class="el" href="classlfgui_1_1qt__layout.html#a660f6ebdc82483e9a4b2789d584f7832">lfgui::qt_layout</a>
 </li>
 <li>crop()
 : <a class="el" href="classlfgui_1_1image.html#a859ecbd9d8837bb569b99e363594c0f9">lfgui::image</a>
 </li>
 <li>cropped()
 : <a class="el" href="classlfgui_1_1image.html#a70688882bde17a62348618ddf40323cf">lfgui::image</a>
+</li>
+<li>cursor_position
+: <a class="el" href="classlfgui_1_1lineedit.html#a2ca27df4523cbd09c57ee20bb79bd2c6">lfgui::lineedit</a>
+</li>
+<li>cursor_timer
+: <a class="el" href="classlfgui_1_1lineedit.html#a5f44d93d65199dd296be9c76011de69e">lfgui::lineedit</a>
 </li>
 </ul>
 </div><!-- contents -->

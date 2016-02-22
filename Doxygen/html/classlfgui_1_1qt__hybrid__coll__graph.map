@@ -1,0 +1,7 @@
+<map id="lfgui::qt_hybrid" name="lfgui::qt_hybrid">
+<area shape="rect" id="node3" href="$structlfgui_1_1widget__geometry.html" title="Used to position and size widgets. The position is: size_absolute+pos_percent*parent_size+offset_perc..." alt="" coords="135,139,286,165"/>
+<area shape="rect" id="node4" href="$structlfgui_1_1point__general.html" title="lfgui::point_general\l\&lt; int \&gt;" alt="" coords="5,5,136,47"/>
+<area shape="rect" id="node5" href="$structlfgui_1_1point__general.html" title="lfgui::point_general\l\&lt; float \&gt;" alt="" coords="160,5,291,47"/>
+<area shape="rect" id="node6" href="$classlfgui_1_1qt__layout.html" title="lfgui::qt_layout" alt="" coords="311,139,417,165"/>
+<area shape="rect" id="node8" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; QPainter &amp; \&gt;" alt="" coords="442,139,617,165"/>
+</map>

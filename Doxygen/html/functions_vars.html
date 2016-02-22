@@ -88,11 +88,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_a"><span>a</span></a></li>
       <li><a href="#index_b"><span>b</span></a></li>
       <li><a href="#index_c"><span>c</span></a></li>
+      <li><a href="#index_d"><span>d</span></a></li>
       <li><a href="#index_e"><span>e</span></a></li>
       <li><a href="#index_f"><span>f</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
       <li><a href="#index_h"><span>h</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
+      <li><a href="#index_k"><span>k</span></a></li>
       <li><a href="#index_l"><span>l</span></a></li>
       <li><a href="#index_m"><span>m</span></a></li>
       <li><a href="#index_o"><span>o</span></a></li>
@@ -127,7 +129,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -148,12 +150,15 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>_text
 : <a class="el" href="classlfgui_1_1label.html#a24bdfefd5df8dde120b78eac1368b561">lfgui::label</a>
+, <a class="el" href="classlfgui_1_1lineedit.html#a6d307ce4706121bc2917cdf56b9cc259">lfgui::lineedit</a>
 </li>
 <li>_text_color
 : <a class="el" href="classlfgui_1_1label.html#aadfd23df851bafc578baa30066f7b8fc">lfgui::label</a>
+, <a class="el" href="classlfgui_1_1lineedit.html#a1a68d1364e8a3951d7fd4022f66f0fad">lfgui::lineedit</a>
 </li>
 <li>_text_size
 : <a class="el" href="classlfgui_1_1label.html#a5f5378a6723f99ae141846c455d350c9">lfgui::label</a>
+, <a class="el" href="classlfgui_1_1lineedit.html#a97522e34eee8dfabe597c58ffb15fa9d">lfgui::lineedit</a>
 </li>
 </ul>
 
@@ -163,7 +168,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="structlfgui_1_1color.html#a0ed8891c0c952b63c5ef8bc1437357b8">lfgui::color</a>
 </li>
 <li>all
-: <a class="el" href="classlfgui_1_1event__mouse.html#af4c875facb40d99d2779aa8f1272349e">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#aa8b15b1fb6c5b7ea4c1616deb148d804">lfgui::mouse_button</a>
 </li>
 <li>array
 : <a class="el" href="structlfgui_1_1color.html#ae4bc5d426b45288d12412d5388654309">lfgui::color</a>
@@ -177,12 +182,13 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>bool_em
 : <a class="el" href="structlfgui_1_1event__function.html#a2479302e103daff65a3c0b8ce34f604c">lfgui::event_function&lt; T &gt;</a>
+, <a class="el" href="structlfgui_1_1event__function_3_01void_01_4.html#a6e57c2f2cc1d5077637d7207c8f276d3">lfgui::event_function&lt; void &gt;</a>
 </li>
 <li>button
-: <a class="el" href="classlfgui_1_1event__mouse.html#a4d5f71741f708a9f3da2e4f70b39b229">lfgui::event_mouse</a>
+: <a class="el" href="classlfgui_1_1event__mouse.html#ab450079ce09c29ad91684a67c709e042">lfgui::event_mouse</a>
 </li>
 <li>button_state
-: <a class="el" href="classlfgui_1_1event__mouse.html#a4b8542a4ae9840c2ae971f8883685b4a">lfgui::event_mouse</a>
+: <a class="el" href="classlfgui_1_1event__mouse.html#ac4b15f9566f53c57a963b0693bf98437">lfgui::event_mouse</a>
 </li>
 <li>button_state_last
 : <a class="el" href="classlfgui_1_1gui.html#a37a61b3714c34fad77f6f8a871d3c85f">lfgui::gui</a>
@@ -191,11 +197,30 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
+<li>character_unicode
+: <a class="el" href="classlfgui_1_1event__key.html#acc8b764937818923edffff7d9f9e1e2b">lfgui::event_key</a>
+</li>
 <li>children
 : <a class="el" href="classlfgui_1_1widget.html#a5eb910642e643e408c7bd89f7f952c53">lfgui::widget</a>
 </li>
 <li>cimage
 : <a class="el" href="classlfgui_1_1image.html#af08ab297ffcec04a15808a04419b513c">lfgui::image</a>
+</li>
+<li>cursor_position
+: <a class="el" href="classlfgui_1_1lineedit.html#a2ca27df4523cbd09c57ee20bb79bd2c6">lfgui::lineedit</a>
+</li>
+<li>cursor_timer
+: <a class="el" href="classlfgui_1_1lineedit.html#a5f44d93d65199dd296be9c76011de69e">lfgui::lineedit</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
+<li>data
+: <a class="el" href="structlfgui_1_1font_1_1bitmap.html#ad6dd4e316f8634e75226aa61d6ef3a81">lfgui::font::bitmap</a>
+</li>
+<li>dirty
+: <a class="el" href="classlfgui_1_1widget.html#a64ef638135306f0b37c456c1d2ea520d">lfgui::widget</a>
 </li>
 </ul>
 
@@ -205,76 +230,76 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="classlfgui_1_1gui.html#af6ea70359568965f7ce7d915c1e8bafb">lfgui::gui</a>
 </li>
 <li>extra_1
-: <a class="el" href="classlfgui_1_1event__mouse.html#aebfac4720ff66d2e46da15a3e22fcb57">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a2191e4a5978ff56ed62b54ddc5c69416">lfgui::mouse_button</a>
 </li>
 <li>extra_10
-: <a class="el" href="classlfgui_1_1event__mouse.html#a2e470561caae3a90ea592970dfb2d059">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a0396682ee3f160dba7ccbc5275c7d53d">lfgui::mouse_button</a>
 </li>
 <li>extra_11
-: <a class="el" href="classlfgui_1_1event__mouse.html#a80a6210f9a977a0c9ca727a008aa9668">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#ad4180025a4985490bfb1bf87e7c5a5b4">lfgui::mouse_button</a>
 </li>
 <li>extra_12
-: <a class="el" href="classlfgui_1_1event__mouse.html#a85064f5b92bfa6d9c1b6f421e0d83d22">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#abeb7bcc2114726acc979f5fb6fee2d1d">lfgui::mouse_button</a>
 </li>
 <li>extra_13
-: <a class="el" href="classlfgui_1_1event__mouse.html#aea2f0a430ff3af97338d30a1e72cf37d">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a1c9377b28111af823f7b818563ec32aa">lfgui::mouse_button</a>
 </li>
 <li>extra_14
-: <a class="el" href="classlfgui_1_1event__mouse.html#ae37a579b82f0a34f9c241787bb55f96a">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a70cb3845b91451b689ff9f41ad33bbd5">lfgui::mouse_button</a>
 </li>
 <li>extra_15
-: <a class="el" href="classlfgui_1_1event__mouse.html#ab26da597586f448899061e99d66f3ec2">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a91bf6798d202d66c0dfe949783fe4b40">lfgui::mouse_button</a>
 </li>
 <li>extra_16
-: <a class="el" href="classlfgui_1_1event__mouse.html#a72da181887da57bf66a47a5774427e45">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a32ecb5d9ae85736870ea810da2b07c99">lfgui::mouse_button</a>
 </li>
 <li>extra_17
-: <a class="el" href="classlfgui_1_1event__mouse.html#a993aaba5de4a7da3e7f93fea0d2d1076">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a87254d11950becfbfc72863cdcc51a96">lfgui::mouse_button</a>
 </li>
 <li>extra_18
-: <a class="el" href="classlfgui_1_1event__mouse.html#a709bd69ca550b3caf080e8dfbd67ae60">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#aa3a4ff4751a00b382e9da749068cb797">lfgui::mouse_button</a>
 </li>
 <li>extra_19
-: <a class="el" href="classlfgui_1_1event__mouse.html#af149213df9a65bfd452313c1b0bda248">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#ac060de65b5370fb1a1d19dbfc32b1590">lfgui::mouse_button</a>
 </li>
 <li>extra_2
-: <a class="el" href="classlfgui_1_1event__mouse.html#a1f92a9b7216172da9aab9d550a848046">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a2820f23862a7399d827ab39581b10b83">lfgui::mouse_button</a>
 </li>
 <li>extra_20
-: <a class="el" href="classlfgui_1_1event__mouse.html#af281b8adf1b7336828f8270f3a5c3fe9">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#acbd76f66cc95cc6104495d55d3534281">lfgui::mouse_button</a>
 </li>
 <li>extra_21
-: <a class="el" href="classlfgui_1_1event__mouse.html#aad097654b74d86f6a444485fed108def">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a420f28187e882e30d7a5ad014ff32fde">lfgui::mouse_button</a>
 </li>
 <li>extra_22
-: <a class="el" href="classlfgui_1_1event__mouse.html#a5f96e16622cc64d44144758ff18a5643">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a8503322497ce8c1c8a594a354e525e27">lfgui::mouse_button</a>
 </li>
 <li>extra_23
-: <a class="el" href="classlfgui_1_1event__mouse.html#aec8af3b703719da430b9bdc22379ff43">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a6cd318aebcc0ad09c156efdd5131f985">lfgui::mouse_button</a>
 </li>
 <li>extra_24
-: <a class="el" href="classlfgui_1_1event__mouse.html#a964c3087dd87a2cb42ee15cb070cf452">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a74520ca02d6d952e6c526fbe198bc601">lfgui::mouse_button</a>
 </li>
 <li>extra_3
-: <a class="el" href="classlfgui_1_1event__mouse.html#a540846c4e10ad9ac67b75c2feb05cfe9">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#ae7f3a5b98f205fa3b69d19538a5b9885">lfgui::mouse_button</a>
 </li>
 <li>extra_4
-: <a class="el" href="classlfgui_1_1event__mouse.html#a1dd7034f4cc06c97cff8a611b349a59c">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a0fd10aa665d215db116ed8838aef435a">lfgui::mouse_button</a>
 </li>
 <li>extra_5
-: <a class="el" href="classlfgui_1_1event__mouse.html#ab28cbdbd30ccf66814a26ee0ae88d063">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#ae6c707644d1948bea5f8046d4adc1d79">lfgui::mouse_button</a>
 </li>
 <li>extra_6
-: <a class="el" href="classlfgui_1_1event__mouse.html#ada74ccc231f4ad3c457fe8cb72aea1a5">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a8ac6913a391a9daa950b2b6fd78faad2">lfgui::mouse_button</a>
 </li>
 <li>extra_7
-: <a class="el" href="classlfgui_1_1event__mouse.html#a5168faf53876fc108c951c253d1ca8f2">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a76d88b16a0b29f82208737c2d869c5c4">lfgui::mouse_button</a>
 </li>
 <li>extra_8
-: <a class="el" href="classlfgui_1_1event__mouse.html#a87e2065cdb8077d2b5ba124415b70421">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#adb792b8d3fde3e6e7bb7aa99e47d75be">lfgui::mouse_button</a>
 </li>
 <li>extra_9
-: <a class="el" href="classlfgui_1_1event__mouse.html#ac0a97890509bbd353f3a0a625c18bcf9">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#acf15870ca8efba92e42cdb11870c1a7d">lfgui::mouse_button</a>
 </li>
 </ul>
 
@@ -282,6 +307,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <h3><a class="anchor" id="index_f"></a>- f -</h3><ul>
 <li>functions
 : <a class="el" href="classlfgui_1_1signal.html#a4256f360aa363210db4db23321d71df4">lfgui::signal&lt; T &gt;</a>
+, <a class="el" href="classlfgui_1_1signal_3_01void_01_4.html#a29345b9be9928fd5e960b055055e2615">lfgui::signal&lt; void &gt;</a>
 </li>
 </ul>
 
@@ -289,6 +315,10 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <h3><a class="anchor" id="index_g"></a>- g -</h3><ul>
 <li>g
 : <a class="el" href="structlfgui_1_1color.html#a9b5598d0113af68d2b445aef0b66bf35">lfgui::color</a>
+</li>
+<li>geometry
+: <a class="el" href="classlfgui_1_1qt__hybrid.html#a502de10f5c48089215e2f3f7349bccc8">lfgui::qt_hybrid</a>
+, <a class="el" href="classlfgui_1_1widget.html#a69232bb6ab73c7282e2d393d31dfc912">lfgui::widget</a>
 </li>
 </ul>
 
@@ -308,7 +338,11 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="classlfgui_1_1widget.html#a3e2ebb8a5e6185f9d3722c2868206628">lfgui::widget</a>
 </li>
 <li>img_background
-: <a class="el" href="classlfgui_1_1slider.html#a7583755b832b60203f8a36adbe4b0508">lfgui::slider</a>
+: <a class="el" href="classlfgui_1_1lineedit.html#aa2f6162403f435f3b499412e75818fc4">lfgui::lineedit</a>
+, <a class="el" href="classlfgui_1_1slider.html#a7583755b832b60203f8a36adbe4b0508">lfgui::slider</a>
+</li>
+<li>img_background_focused
+: <a class="el" href="classlfgui_1_1lineedit.html#af1598102a003f312e6115c7382d2dc7a">lfgui::lineedit</a>
 </li>
 <li>img_handle
 : <a class="el" href="classlfgui_1_1slider.html#a23342caea2fd59fc224027e7369485f6">lfgui::slider</a>
@@ -343,9 +377,19 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </ul>
 
 
+<h3><a class="anchor" id="index_k"></a>- k -</h3><ul>
+<li>key
+: <a class="el" href="classlfgui_1_1event__key.html#af300fc1097224032560fd9434dc0f052">lfgui::event_key</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
+<li>layout
+: <a class="el" href="classlfgui_1_1qt__hybrid.html#a7f1d29e4ae1625bd49bcd788b01f2430">lfgui::qt_hybrid</a>
+</li>
 <li>left
-: <a class="el" href="classlfgui_1_1event__mouse.html#a64bef58f5bc1ea76b7ed43f8c661736a">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a88ba67bdb10b97be7af377d68f4fee28">lfgui::mouse_button</a>
 </li>
 <li>load
 : <a class="el" href="classlfgui_1_1image.html#a4421bd050aa791f8ceb985084063ced7">lfgui::image</a>
@@ -355,7 +399,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
 <li>middle
-: <a class="el" href="classlfgui_1_1event__mouse.html#a3c633f015a72d64af6fb44cdfa0395a1">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a070c15a8b29fd489923555c3627a97db">lfgui::mouse_button</a>
 </li>
 <li>mouse_old_pos
 : <a class="el" href="classlfgui_1_1gui.html#a204c1266b87a1aebb5fab20a758b8774">lfgui::gui</a>
@@ -367,8 +411,23 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a class="anchor" id="index_o"></a>- o -</h3><ul>
+<li>offset_percent
+: <a class="el" href="structlfgui_1_1widget__geometry.html#a521ad960a3b0b660df94f15b7b1a8210">lfgui::widget_geometry</a>
+</li>
 <li>old_pos
 : <a class="el" href="classlfgui_1_1event__mouse.html#a9899c2bc85bb131c4dbe01476c51ce6a">lfgui::event_mouse</a>
+</li>
+<li>on_focus_in
+: <a class="el" href="classlfgui_1_1widget.html#a4207c19bdd1cf5647f7e8461eb34d2b6">lfgui::widget</a>
+</li>
+<li>on_focus_out
+: <a class="el" href="classlfgui_1_1widget.html#aaa77972f96e1c73fd0594cec52f44e78">lfgui::widget</a>
+</li>
+<li>on_key_press
+: <a class="el" href="classlfgui_1_1widget.html#a2cd3c4009c497980a9fd112d953b5afe">lfgui::widget</a>
+</li>
+<li>on_key_release
+: <a class="el" href="classlfgui_1_1widget.html#a70b96e15580f8a22b5b08f401f20944f">lfgui::widget</a>
 </li>
 <li>on_mouse_click
 : <a class="el" href="classlfgui_1_1widget.html#a0316f64bd9ab1c4ca85cbaa2045df797">lfgui::widget</a>
@@ -398,7 +457,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="classlfgui_1_1widget.html#ac3d21b4fba12bed39b39791499cb544d">lfgui::widget</a>
 </li>
 <li>on_paint
-: <a class="el" href="classlfgui_1_1widget.html#ac43c9d05d4e2447de30203f097fefbae">lfgui::widget</a>
+: <a class="el" href="classlfgui_1_1qt__hybrid.html#a839eefaf0a6f4a38828b0fb9fe8f61e1">lfgui::qt_hybrid</a>
+, <a class="el" href="classlfgui_1_1widget.html#ac43c9d05d4e2447de30203f097fefbae">lfgui::widget</a>
 </li>
 <li>on_resize
 : <a class="el" href="classlfgui_1_1widget.html#a58f4c1dad9aab83eeddc4006b6fd3f3f">lfgui::widget</a>
@@ -415,7 +475,12 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>pos
 : <a class="el" href="classlfgui_1_1event__mouse.html#a978aef2d1dacb4da4128364063af8463">lfgui::event_mouse</a>
-, <a class="el" href="classlfgui_1_1widget.html#ad1a17df036621abf84db0f121848ac59">lfgui::widget</a>
+</li>
+<li>pos_absolute
+: <a class="el" href="structlfgui_1_1widget__geometry.html#af98b8c1dadb37fe98accb2addc9ac43c">lfgui::widget_geometry</a>
+</li>
+<li>pos_percent
+: <a class="el" href="structlfgui_1_1widget__geometry.html#a51ceefaa2b95e281891a9ea01062e2c5">lfgui::widget_geometry</a>
 </li>
 </ul>
 
@@ -431,15 +496,27 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>r
 : <a class="el" href="structlfgui_1_1color.html#a9bfae457df4879bf08603c7efe23222a">lfgui::color</a>
 </li>
+<li>redraw_every_n_seconds
+: <a class="el" href="classlfgui_1_1widget.html#a7d0c76b290e5e384a73864b007485e8e">lfgui::widget</a>
+</li>
+<li>redraw_timer
+: <a class="el" href="classlfgui_1_1widget.html#abb1e31621e80b251478f8672f9616fdd">lfgui::widget</a>
+</li>
 <li>right
-: <a class="el" href="classlfgui_1_1event__mouse.html#a3d2999299e91764ad2dc47af94d378d1">lfgui::event_mouse</a>
+: <a class="el" href="unionlfgui_1_1mouse__button.html#a2328f34ec413bf28f9d0d1b8b477aec9">lfgui::mouse_button</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>size_absolute
+: <a class="el" href="structlfgui_1_1widget__geometry.html#afcc7baf096511604844d6201e8e7747d">lfgui::widget_geometry</a>
+</li>
 <li>size_old
 : <a class="el" href="classlfgui_1_1widget.html#a822b9982129e5da1166edf63dcb6ded6">lfgui::widget</a>
+</li>
+<li>size_percent
+: <a class="el" href="structlfgui_1_1widget__geometry.html#a592084ceab4ed02e7d7af9c397db51b7">lfgui::widget_geometry</a>
 </li>
 </ul>
 
@@ -460,6 +537,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>void_void
 : <a class="el" href="structlfgui_1_1event__function.html#a8d3b9a9240569402767b96eac686c885">lfgui::event_function&lt; T &gt;</a>
+, <a class="el" href="structlfgui_1_1event__function_3_01void_01_4.html#a4db6227b71ac01c722218d9da496b27b">lfgui::event_function&lt; void &gt;</a>
 </li>
 </ul>
 
@@ -476,16 +554,28 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 <h3><a class="anchor" id="index_x"></a>- x -</h3><ul>
 <li>x
-: <a class="el" href="structlfgui_1_1point.html#ae1bf4fd6d6ecbbb19663abfb953e9ead">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#a92d30d4a5e09e31814f340f0f6b26628">lfgui::point_general&lt; T &gt;</a>
 , <a class="el" href="structlfgui_1_1rect.html#a4447723a45ea99cb34c95b74a1a7257a">lfgui::rect</a>
+</li>
+<li>x0
+: <a class="el" href="structlfgui_1_1font_1_1bitmap.html#ae52146e6b3156a0221c35fefcde56589">lfgui::font::bitmap</a>
+</li>
+<li>x1
+: <a class="el" href="structlfgui_1_1font_1_1bitmap.html#a941e0491cc026fc12b80a6379c13a1cd">lfgui::font::bitmap</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_y"></a>- y -</h3><ul>
 <li>y
-: <a class="el" href="structlfgui_1_1point.html#a8bf983544ca1731a471e11e908e1370e">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#a547861349cafcfce0f360d56333f5486">lfgui::point_general&lt; T &gt;</a>
 , <a class="el" href="structlfgui_1_1rect.html#ae3a7d4df2ddd553cafec20325903ad32">lfgui::rect</a>
+</li>
+<li>y0
+: <a class="el" href="structlfgui_1_1font_1_1bitmap.html#ad085bf5f8f0080263e0234a30cfb70d3">lfgui::font::bitmap</a>
+</li>
+<li>y1
+: <a class="el" href="structlfgui_1_1font_1_1bitmap.html#a8cba3ff95c49d7abb1d4d0d00306ff4a">lfgui::font::bitmap</a>
 </li>
 </ul>
 </div><!-- contents -->

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['size_5fold',['size_old',['../classlfgui_1_1widget.html#a822b9982129e5da1166edf63dcb6ded6',1,'lfgui::widget']]]
+  ['qimage',['qimage',['../classlfgui_1_1wrapper__qt_1_1gui.html#a0700038abbc01ce6f46ec2828864f2e1',1,'lfgui::wrapper_qt::gui']]]
 ];

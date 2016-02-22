@@ -1,8 +1,11 @@
 var general_8h =
 [
     [ "color", "structlfgui_1_1color.html", "structlfgui_1_1color" ],
-    [ "point", "structlfgui_1_1point.html", "structlfgui_1_1point" ],
+    [ "point_general", "structlfgui_1_1point__general.html", "structlfgui_1_1point__general" ],
     [ "rect", "structlfgui_1_1rect.html", "structlfgui_1_1rect" ],
+    [ "widget_geometry", "structlfgui_1_1widget__geometry.html", "structlfgui_1_1widget__geometry" ],
+    [ "point", "general_8h.html#af0992b5e1d058ae654fd49218cc39c04", null ],
+    [ "point_float", "general_8h.html#a5b0528d57671fee90cc6576e252446ca", null ],
     [ "alignment", "general_8h.html#ade20c527fc4eb3eaef9c2abc6b6dbcb5", [
       [ "left", "general_8h.html#ade20c527fc4eb3eaef9c2abc6b6dbcb5a811882fecd5c7618d7099ebbd39ea254", null ],
       [ "center", "general_8h.html#ade20c527fc4eb3eaef9c2abc6b6dbcb5aadb115059e28d960fa8badfac5516667", null ],

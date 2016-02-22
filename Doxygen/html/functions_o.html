@@ -94,8 +94,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_h.html#index_h"><span>h</span></a></li>
       <li><a href="functions_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_k.html#index_k"><span>k</span></a></li>
       <li><a href="functions_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_m.html#index_m"><span>m</span></a></li>
+      <li><a href="functions_n.html#index_n"><span>n</span></a></li>
       <li class="current"><a href="functions_o.html#index_o"><span>o</span></a></li>
       <li><a href="functions_p.html#index_p"><span>p</span></a></li>
       <li><a href="functions_q.html#index_q"><span>q</span></a></li>
@@ -130,7 +132,7 @@ $(document).ready(function(){initNavTree('functions_o.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -143,8 +145,23 @@ $(document).ready(function(){initNavTree('functions_o.html','');});
 <div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a class="anchor" id="index_o"></a>- o -</h3><ul>
+<li>offset_percent
+: <a class="el" href="structlfgui_1_1widget__geometry.html#a521ad960a3b0b660df94f15b7b1a8210">lfgui::widget_geometry</a>
+</li>
 <li>old_pos
 : <a class="el" href="classlfgui_1_1event__mouse.html#a9899c2bc85bb131c4dbe01476c51ce6a">lfgui::event_mouse</a>
+</li>
+<li>on_focus_in
+: <a class="el" href="classlfgui_1_1widget.html#a4207c19bdd1cf5647f7e8461eb34d2b6">lfgui::widget</a>
+</li>
+<li>on_focus_out
+: <a class="el" href="classlfgui_1_1widget.html#aaa77972f96e1c73fd0594cec52f44e78">lfgui::widget</a>
+</li>
+<li>on_key_press
+: <a class="el" href="classlfgui_1_1widget.html#a2cd3c4009c497980a9fd112d953b5afe">lfgui::widget</a>
+</li>
+<li>on_key_release
+: <a class="el" href="classlfgui_1_1widget.html#a70b96e15580f8a22b5b08f401f20944f">lfgui::widget</a>
 </li>
 <li>on_mouse_click
 : <a class="el" href="classlfgui_1_1widget.html#a0316f64bd9ab1c4ca85cbaa2045df797">lfgui::widget</a>
@@ -174,7 +191,8 @@ $(document).ready(function(){initNavTree('functions_o.html','');});
 : <a class="el" href="classlfgui_1_1widget.html#ac3d21b4fba12bed39b39791499cb544d">lfgui::widget</a>
 </li>
 <li>on_paint
-: <a class="el" href="classlfgui_1_1widget.html#ac43c9d05d4e2447de30203f097fefbae">lfgui::widget</a>
+: <a class="el" href="classlfgui_1_1qt__hybrid.html#a839eefaf0a6f4a38828b0fb9fe8f61e1">lfgui::qt_hybrid</a>
+, <a class="el" href="classlfgui_1_1widget.html#ac43c9d05d4e2447de30203f097fefbae">lfgui::widget</a>
 </li>
 <li>on_resize
 : <a class="el" href="classlfgui_1_1widget.html#a58f4c1dad9aab83eeddc4006b6fd3f3f">lfgui::widget</a>
@@ -184,47 +202,52 @@ $(document).ready(function(){initNavTree('functions_o.html','');});
 </li>
 <li>operator bool()
 : <a class="el" href="structlfgui_1_1event__function.html#aa4db19e4d7df8d1be422a0ed333ec06a">lfgui::event_function&lt; T &gt;</a>
+, <a class="el" href="structlfgui_1_1event__function_3_01void_01_4.html#a7d463ae821bc27c2f12019b56a727469">lfgui::event_function&lt; void &gt;</a>
 , <a class="el" href="classlfgui_1_1signal.html#a26d6d859257aa21aec27ad5e4d5f67fd">lfgui::signal&lt; T &gt;</a>
+, <a class="el" href="classlfgui_1_1signal_3_01void_01_4.html#aa8b4cd9040f52d35c4f41882647b012f">lfgui::signal&lt; void &gt;</a>
 </li>
 <li>operator!=()
-: <a class="el" href="structlfgui_1_1point.html#ada1c058715070413a73c83a76b95abb5">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#a046f61fdbe198d429a9fd76dfda6c125">lfgui::point_general&lt; T &gt;</a>
 </li>
 <li>operator()()
 : <a class="el" href="classlfgui_1_1signal.html#a771edeede830eac3064a20a9cebc1a2c">lfgui::signal&lt; T &gt;</a>
+, <a class="el" href="classlfgui_1_1signal_3_01void_01_4.html#ad6fc4803a0bac931b68d841820f42e42">lfgui::signal&lt; void &gt;</a>
 </li>
 <li>operator*()
-: <a class="el" href="structlfgui_1_1point.html#af7f168e4badb66784d56947d90277ba2">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#a8bfcfece2983a60e27886977304adfb2">lfgui::point_general&lt; T &gt;</a>
 </li>
 <li>operator*=()
-: <a class="el" href="structlfgui_1_1point.html#a6d256024decc2d370d3c156f4f7cf2f0">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#a0b2210a5a7c58d3579fe799b4d1df69f">lfgui::point_general&lt; T &gt;</a>
 </li>
 <li>operator+()
-: <a class="el" href="structlfgui_1_1point.html#a34e3914a49216117ca72a43da3c8726e">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#a8c0bcfae26b32975859807b05ff59e1a">lfgui::point_general&lt; T &gt;</a>
 </li>
 <li>operator+=()
-: <a class="el" href="structlfgui_1_1point.html#a0c486b92992f918951f95f0171802e79">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#a30fb89f6f29c926a2a6ff3f1a7e0debe">lfgui::point_general&lt; T &gt;</a>
 </li>
 <li>operator-()
-: <a class="el" href="structlfgui_1_1point.html#adb9f1a7e8bccf9952cfa8e93c2c2259d">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#ad7b15fd4c985ae4bd2407540d6a3ca90">lfgui::point_general&lt; T &gt;</a>
 </li>
 <li>operator-=()
-: <a class="el" href="structlfgui_1_1point.html#a5bafda007d90943aa84638930c9de98c">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#ad23a27fb4b473217e5aedaaf15a4777d">lfgui::point_general&lt; T &gt;</a>
 </li>
 <li>operator/()
-: <a class="el" href="structlfgui_1_1point.html#a9469fb75fd603d7e0ce2415bf553a713">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#afe6d0ff645ccef16e20761e8bc3d317d">lfgui::point_general&lt; T &gt;</a>
 </li>
 <li>operator/=()
-: <a class="el" href="structlfgui_1_1point.html#a7ebca2239727933fa0cf453d1fffa3a5">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#ace5ca5ff3f941d834db0033022d7c31b">lfgui::point_general&lt; T &gt;</a>
 </li>
 <li>operator&lt;()
-: <a class="el" href="structlfgui_1_1point.html#a48a52abe7c96f35b13b8f7194df4b98f">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#a6612167b1c7fd17a6f1deedf41d0a375">lfgui::point_general&lt; T &gt;</a>
 </li>
 <li>operator&lt;=()
-: <a class="el" href="structlfgui_1_1point.html#a59f3470460b77d7f890b81badd7d41a7">lfgui::point</a>
+: <a class="el" href="structlfgui_1_1point__general.html#a39526bd0780ddc9073ba3e4b42084e05">lfgui::point_general&lt; T &gt;</a>
 </li>
 <li>operator=()
-: <a class="el" href="classlfgui_1_1image.html#a7df4a5ec070128862d8ed0bfa77b444e">lfgui::image</a>
+: <a class="el" href="structlfgui_1_1font_1_1bitmap.html#a6579625f21b1b6d1f78066e56114c705">lfgui::font::bitmap</a>
+, <a class="el" href="classlfgui_1_1image.html#a7df4a5ec070128862d8ed0bfa77b444e">lfgui::image</a>
 , <a class="el" href="classlfgui_1_1signal.html#aefe020433dd08ca10094af72ea185cd3">lfgui::signal&lt; T &gt;</a>
+, <a class="el" href="classlfgui_1_1signal_3_01void_01_4.html#a7680db47c8ecffc42e7b09f1c4bc8df9">lfgui::signal&lt; void &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->

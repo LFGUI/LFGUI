@@ -1,0 +1,4 @@
+<map id="lfgui::widget_geometry" name="lfgui::widget_geometry">
+<area shape="rect" id="node2" href="$structlfgui_1_1point__general.html" title="lfgui::point_general\l\&lt; int \&gt;" alt="" coords="5,5,136,47"/>
+<area shape="rect" id="node3" href="$structlfgui_1_1point__general.html" title="lfgui::point_general\l\&lt; float \&gt;" alt="" coords="160,5,291,47"/>
+</map>

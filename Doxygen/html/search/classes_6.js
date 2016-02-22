@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['point',['point',['../structlfgui_1_1point.html',1,'lfgui']]]
+  ['label',['label',['../classlfgui_1_1label.html',1,'lfgui']]],
+  ['lineedit',['lineedit',['../classlfgui_1_1lineedit.html',1,'lfgui']]]
 ];

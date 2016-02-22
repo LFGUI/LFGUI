@@ -1,7 +1,8 @@
 <map id="lfgui::widget" name="lfgui::widget">
 <area shape="rect" id="node2" href="$classlfgui_1_1gui.html" title="Used as a manager class and a LFGUI instance. " alt="" coords="221,80,291,107"/>
 <area shape="rect" id="node5" href="$classlfgui_1_1label.html" title="Simple text label. " alt="" coords="343,80,423,107"/>
-<area shape="rect" id="node7" href="$classlfgui_1_1slider.html" title="A horizontal slider. " alt="" coords="447,80,531,107"/>
+<area shape="rect" id="node7" href="$classlfgui_1_1lineedit.html" title="lfgui::lineedit" alt="" coords="447,80,542,107"/>
+<area shape="rect" id="node8" href="$classlfgui_1_1slider.html" title="A horizontal slider. " alt="" coords="566,80,650,107"/>
 <area shape="rect" id="node3" href="$classlfgui_1_1wrapper__qt_1_1gui.html" title="The LFGUI Qt Wrapper. It is also a QWidget and can therefore be simply used as a QWidget. " alt="" coords="5,155,147,181"/>
 <area shape="rect" id="node4" href="$classlfgui_1_1wrapper__urho3d_1_1gui.html" title="The LFGUI wrapper for Urho3D (http://urho3d.org/ or http://urho3d.github.io/). It will automatically ..." alt="" coords="171,155,341,181"/>
 <area shape="rect" id="node6" href="$classlfgui_1_1button.html" title="Simple push button with a text. " alt="" coords="365,155,454,181"/>

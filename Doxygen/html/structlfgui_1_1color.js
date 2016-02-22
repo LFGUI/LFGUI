@@ -2,6 +2,7 @@ var structlfgui_1_1color =
 [
     [ "color", "structlfgui_1_1color.html#ab72d6b4384d7d9c78b00839bc32cc771", null ],
     [ "alpha_multiplied", "structlfgui_1_1color.html#affc608d3033e189373331e34da7595c6", null ],
+    [ "alpha_multiplied", "structlfgui_1_1color.html#a71be297642f2277fa71ce1e615db3f0e", null ],
     [ "a", "structlfgui_1_1color.html#a0ed8891c0c952b63c5ef8bc1437357b8", null ],
     [ "array", "structlfgui_1_1color.html#ae4bc5d426b45288d12412d5388654309", null ],
     [ "b", "structlfgui_1_1color.html#aeb0a907229a752e83162d675165d33de", null ],

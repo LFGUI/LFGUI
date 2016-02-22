@@ -1,4 +1,28 @@
 var searchData=
 [
-  ['functions',['functions',['../classlfgui_1_1signal.html#a4256f360aa363210db4db23321d71df4',1,'lfgui::signal']]]
+  ['event_5fbutton_5flast',['event_button_last',['../classlfgui_1_1gui.html#af6ea70359568965f7ce7d915c1e8bafb',1,'lfgui::gui']]],
+  ['extra_5f1',['extra_1',['../unionlfgui_1_1mouse__button.html#a2191e4a5978ff56ed62b54ddc5c69416',1,'lfgui::mouse_button']]],
+  ['extra_5f10',['extra_10',['../unionlfgui_1_1mouse__button.html#a0396682ee3f160dba7ccbc5275c7d53d',1,'lfgui::mouse_button']]],
+  ['extra_5f11',['extra_11',['../unionlfgui_1_1mouse__button.html#ad4180025a4985490bfb1bf87e7c5a5b4',1,'lfgui::mouse_button']]],
+  ['extra_5f12',['extra_12',['../unionlfgui_1_1mouse__button.html#abeb7bcc2114726acc979f5fb6fee2d1d',1,'lfgui::mouse_button']]],
+  ['extra_5f13',['extra_13',['../unionlfgui_1_1mouse__button.html#a1c9377b28111af823f7b818563ec32aa',1,'lfgui::mouse_button']]],
+  ['extra_5f14',['extra_14',['../unionlfgui_1_1mouse__button.html#a70cb3845b91451b689ff9f41ad33bbd5',1,'lfgui::mouse_button']]],
+  ['extra_5f15',['extra_15',['../unionlfgui_1_1mouse__button.html#a91bf6798d202d66c0dfe949783fe4b40',1,'lfgui::mouse_button']]],
+  ['extra_5f16',['extra_16',['../unionlfgui_1_1mouse__button.html#a32ecb5d9ae85736870ea810da2b07c99',1,'lfgui::mouse_button']]],
+  ['extra_5f17',['extra_17',['../unionlfgui_1_1mouse__button.html#a87254d11950becfbfc72863cdcc51a96',1,'lfgui::mouse_button']]],
+  ['extra_5f18',['extra_18',['../unionlfgui_1_1mouse__button.html#aa3a4ff4751a00b382e9da749068cb797',1,'lfgui::mouse_button']]],
+  ['extra_5f19',['extra_19',['../unionlfgui_1_1mouse__button.html#ac060de65b5370fb1a1d19dbfc32b1590',1,'lfgui::mouse_button']]],
+  ['extra_5f2',['extra_2',['../unionlfgui_1_1mouse__button.html#a2820f23862a7399d827ab39581b10b83',1,'lfgui::mouse_button']]],
+  ['extra_5f20',['extra_20',['../unionlfgui_1_1mouse__button.html#acbd76f66cc95cc6104495d55d3534281',1,'lfgui::mouse_button']]],
+  ['extra_5f21',['extra_21',['../unionlfgui_1_1mouse__button.html#a420f28187e882e30d7a5ad014ff32fde',1,'lfgui::mouse_button']]],
+  ['extra_5f22',['extra_22',['../unionlfgui_1_1mouse__button.html#a8503322497ce8c1c8a594a354e525e27',1,'lfgui::mouse_button']]],
+  ['extra_5f23',['extra_23',['../unionlfgui_1_1mouse__button.html#a6cd318aebcc0ad09c156efdd5131f985',1,'lfgui::mouse_button']]],
+  ['extra_5f24',['extra_24',['../unionlfgui_1_1mouse__button.html#a74520ca02d6d952e6c526fbe198bc601',1,'lfgui::mouse_button']]],
+  ['extra_5f3',['extra_3',['../unionlfgui_1_1mouse__button.html#ae7f3a5b98f205fa3b69d19538a5b9885',1,'lfgui::mouse_button']]],
+  ['extra_5f4',['extra_4',['../unionlfgui_1_1mouse__button.html#a0fd10aa665d215db116ed8838aef435a',1,'lfgui::mouse_button']]],
+  ['extra_5f5',['extra_5',['../unionlfgui_1_1mouse__button.html#ae6c707644d1948bea5f8046d4adc1d79',1,'lfgui::mouse_button']]],
+  ['extra_5f6',['extra_6',['../unionlfgui_1_1mouse__button.html#a8ac6913a391a9daa950b2b6fd78faad2',1,'lfgui::mouse_button']]],
+  ['extra_5f7',['extra_7',['../unionlfgui_1_1mouse__button.html#a76d88b16a0b29f82208737c2d869c5c4',1,'lfgui::mouse_button']]],
+  ['extra_5f8',['extra_8',['../unionlfgui_1_1mouse__button.html#adb792b8d3fde3e6e7bb7aa99e47d75be',1,'lfgui::mouse_button']]],
+  ['extra_5f9',['extra_9',['../unionlfgui_1_1mouse__button.html#acf15870ca8efba92e42cdb11870c1a7d',1,'lfgui::mouse_button']]]
 ];

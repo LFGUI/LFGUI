@@ -1,4 +1,9 @@
 var searchData=
 [
-  ['x',['x',['../structlfgui_1_1point.html#ae1bf4fd6d6ecbbb19663abfb953e9ead',1,'lfgui::point::x()'],['../structlfgui_1_1rect.html#a4447723a45ea99cb34c95b74a1a7257a',1,'lfgui::rect::x()'],['../classlfgui_1_1widget.html#ac1d4616ed6b81a41db40b0a447de0546',1,'lfgui::widget::x()']]]
+  ['valid',['valid',['../structlfgui_1_1font_1_1bitmap.html#aceae086e6167cead625c02b4d6702905',1,'lfgui::font::bitmap']]],
+  ['value',['value',['../structlfgui_1_1color.html#acbd864aeb99f7587fcd8b3b7a412a86c',1,'lfgui::color::value()'],['../classlfgui_1_1slider.html#a21462d03fa43fd9131cbccf3b787aa74',1,'lfgui::slider::value()']]],
+  ['value_5fmax',['value_max',['../classlfgui_1_1slider.html#a7c4dabe4228d9907d49a2630b0377d16',1,'lfgui::slider']]],
+  ['value_5fmin',['value_min',['../classlfgui_1_1slider.html#a9b65fbc8da17d867be5560458c271ef8',1,'lfgui::slider']]],
+  ['void_5fem',['void_em',['../structlfgui_1_1event__function.html#ad2ab08ac6cce84e39714f524a1686cde',1,'lfgui::event_function']]],
+  ['void_5fvoid',['void_void',['../structlfgui_1_1event__function.html#a8d3b9a9240569402767b96eac686c885',1,'lfgui::event_function::void_void()'],['../structlfgui_1_1event__function_3_01void_01_4.html#a4db6227b71ac01c722218d9da496b27b',1,'lfgui::event_function&lt; void &gt;::void_void()']]]
 ];

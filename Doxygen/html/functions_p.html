@@ -94,8 +94,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_h.html#index_h"><span>h</span></a></li>
       <li><a href="functions_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_k.html#index_k"><span>k</span></a></li>
       <li><a href="functions_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_m.html#index_m"><span>m</span></a></li>
+      <li><a href="functions_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_o.html#index_o"><span>o</span></a></li>
       <li class="current"><a href="functions_p.html#index_p"><span>p</span></a></li>
       <li><a href="functions_q.html#index_q"><span>q</span></a></li>
@@ -130,7 +132,7 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -144,17 +146,23 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
 
 <h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
 <li>paintEvent()
-: <a class="el" href="classlfgui_1_1wrapper__qt_1_1gui.html#a76e38b3a7cec02aacfe9a8abdf5f84d0">lfgui::wrapper_qt::gui</a>
+: <a class="el" href="classlfgui_1_1qt__hybrid.html#a81b95537c45ee06adfb4ba6f6baaf4a4">lfgui::qt_hybrid</a>
+, <a class="el" href="classlfgui_1_1wrapper__qt_1_1gui.html#a76e38b3a7cec02aacfe9a8abdf5f84d0">lfgui::wrapper_qt::gui</a>
 </li>
 <li>parent
 : <a class="el" href="classlfgui_1_1widget.html#a60ca3ed0c14dc434b1b9aa9866101cd1">lfgui::widget</a>
 </li>
-<li>point()
-: <a class="el" href="structlfgui_1_1point.html#a211cb9802de8e5aefa22ecaf0c8634ab">lfgui::point</a>
+<li>point_general()
+: <a class="el" href="structlfgui_1_1point__general.html#ace98352b1b7e4d59faccb343e7bbf6d2">lfgui::point_general&lt; T &gt;</a>
 </li>
 <li>pos
 : <a class="el" href="classlfgui_1_1event__mouse.html#a978aef2d1dacb4da4128364063af8463">lfgui::event_mouse</a>
-, <a class="el" href="classlfgui_1_1widget.html#ad1a17df036621abf84db0f121848ac59">lfgui::widget</a>
+</li>
+<li>pos_absolute
+: <a class="el" href="structlfgui_1_1widget__geometry.html#af98b8c1dadb37fe98accb2addc9ac43c">lfgui::widget_geometry</a>
+</li>
+<li>pos_percent
+: <a class="el" href="structlfgui_1_1widget__geometry.html#a51ceefaa2b95e281891a9ea01062e2c5">lfgui::widget_geometry</a>
 </li>
 </ul>
 </div><!-- contents -->

@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['parent',['parent',['../classlfgui_1_1widget.html#a60ca3ed0c14dc434b1b9aa9866101cd1',1,'lfgui::widget']]],
-  ['pos',['pos',['../classlfgui_1_1event__mouse.html#a978aef2d1dacb4da4128364063af8463',1,'lfgui::event_mouse::pos()'],['../classlfgui_1_1widget.html#ad1a17df036621abf84db0f121848ac59',1,'lfgui::widget::pos()']]]
+  ['middle',['middle',['../unionlfgui_1_1mouse__button.html#a070c15a8b29fd489923555c3627a97db',1,'lfgui::mouse_button']]],
+  ['mouse_5fold_5fpos',['mouse_old_pos',['../classlfgui_1_1gui.html#a204c1266b87a1aebb5fab20a758b8774',1,'lfgui::gui']]],
+  ['movement',['movement',['../classlfgui_1_1event__mouse.html#a1533deee82093ef466d29da6145e5b4c',1,'lfgui::event_mouse']]]
 ];

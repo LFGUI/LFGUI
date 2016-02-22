@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['label',['label',['../classlfgui_1_1label.html',1,'lfgui']]]
+  ['image',['image',['../classlfgui_1_1image.html',1,'lfgui']]]
 ];

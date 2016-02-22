@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['value',['value',['../classlfgui_1_1slider.html#a21462d03fa43fd9131cbccf3b787aa74',1,'lfgui::slider']]],
-  ['value_5fmax',['value_max',['../classlfgui_1_1slider.html#a7c4dabe4228d9907d49a2630b0377d16',1,'lfgui::slider']]],
-  ['value_5fmin',['value_min',['../classlfgui_1_1slider.html#a9b65fbc8da17d867be5560458c271ef8',1,'lfgui::slider']]]
+  ['qt_5fhybrid',['qt_hybrid',['../classlfgui_1_1qt__hybrid.html#abc846241b7d45b717efbfe0cc6c7c719',1,'lfgui::qt_hybrid']]],
+  ['qt_5flayout',['qt_layout',['../classlfgui_1_1qt__layout.html#a98cf1a0c08ac788a3c0ff1eb9afcd92a',1,'lfgui::qt_layout']]]
 ];

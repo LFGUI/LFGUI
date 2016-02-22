@@ -1,8 +1,12 @@
 <map id="lfgui::gui" name="lfgui::gui">
-<area shape="rect" id="node2" href="$classlfgui_1_1widget.html" title="Represents a widget. " alt="" coords="573,138,664,165"/>
-<area shape="rect" id="node3" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::image &amp; \&gt;" alt="" coords="231,5,353,47"/>
-<area shape="rect" id="node4" href="$structlfgui_1_1point.html" title="Represent a coordinate with its two x and y integers. Sometimes also a size. " alt="" coords="5,111,87,138"/>
-<area shape="rect" id="node5" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::event_mouse \&gt;" alt="" coords="231,272,353,313"/>
-<area shape="rect" id="node6" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::point \&gt;" alt="" coords="231,337,353,379"/>
-<area shape="rect" id="node7" href="$classlfgui_1_1image.html" title="Contains a cimg and offers various drawing and manipulation functions. The cIMG library trores its pi..." alt="" coords="248,403,336,430"/>
+<area shape="rect" id="node2" href="$classlfgui_1_1widget.html" title="Represents a widget. " alt="" coords="651,237,741,264"/>
+<area shape="rect" id="node3" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::point_general \&gt;" alt="" coords="294,13,417,54"/>
+<area shape="rect" id="node4" href="$classlfgui_1_1signal_3_01void_01_4.html" title="Template specialisation for a signal without a parameter. " alt="" coords="289,79,422,105"/>
+<area shape="rect" id="node5" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::image &amp; \&gt;" alt="" coords="294,130,417,171"/>
+<area shape="rect" id="node6" href="$structlfgui_1_1widget__geometry.html" title="Used to position and size widgets. The position is: size_absolute+pos_percent*parent_size+offset_perc..." alt="" coords="280,315,431,341"/>
+<area shape="rect" id="node7" href="$structlfgui_1_1point__general.html" title="lfgui::point_general\l\&lt; int \&gt;" alt="" coords="5,246,136,287"/>
+<area shape="rect" id="node8" href="$structlfgui_1_1point__general.html" title="lfgui::point_general\l\&lt; float \&gt;" alt="" coords="5,370,136,411"/>
+<area shape="rect" id="node9" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::event_key \&gt;" alt="" coords="294,366,417,407"/>
+<area shape="rect" id="node10" href="$classlfgui_1_1signal.html" title="lfgui::signal\&lt; lfgui\l::event_mouse \&gt;" alt="" coords="294,503,417,545"/>
+<area shape="rect" id="node11" href="$classlfgui_1_1image.html" title="Contains a cimg and offers various drawing and manipulation functions. The cIMG library trores its pi..." alt="" coords="311,569,399,596"/>
 </map>

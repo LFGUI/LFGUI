@@ -1,5 +1,8 @@
 <map id="lfgui/lfgui_wrapper_urho3d.h" name="lfgui/lfgui_wrapper_urho3d.h">
 <area shape="rect" id="node15" href="$lfgui_8h.html" title="lfgui.h" alt="" coords="2516,102,2572,129"/>
-<area shape="rect" id="node23" href="$image_8h.html" title="image.h" alt="" coords="2474,184,2542,211"/>
-<area shape="rect" id="node24" href="$general_8h.html" title="general.h" alt="" coords="2471,259,2545,285"/>
+<area shape="rect" id="node23" href="$image_8h.html" title="image.h" alt="" coords="2227,184,2295,211"/>
+<area shape="rect" id="node29" href="$key_8h.html" title="key.h" alt="" coords="2731,184,2786,211"/>
+<area shape="rect" id="node30" href="$signal_8h.html" title="signal.h" alt="" coords="2811,184,2877,211"/>
+<area shape="rect" id="node24" href="$general_8h.html" title="general.h" alt="" coords="2024,259,2099,285"/>
+<area shape="rect" id="node26" href="$font_8h.html" title="font.h" alt="" coords="1945,259,1999,285"/>
 </map>

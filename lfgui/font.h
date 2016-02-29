@@ -11,6 +11,48 @@
 namespace lfgui
 {
 
+// based on https://en.wikipedia.org/wiki/UTF-8
+inline uint32_t utf8_to_unicode(const char*& data,size_t len)
+{
+    if((data[0]&0x80)==0)     // looks like 0xxx xxxx -> no UTF-8
+        return data[0];
+    uint32_t code=0;
+    if((data[0]&0xE0)==0xC0)  // looks like 110x xxxx -> 2 byte UTF-8
+    {
+        if(len<2)
+            return 0;
+        code=data[0]&0x1F;
+        code=code<<6;
+        code+=data[1]&0x7F;
+        data+=1;
+    }
+    else if((data[0]&0xF0)==0xE0)  // looks like 1110 xxxx -> 3 byte UTF-8
+    {
+        if(len<3)
+            return 0;
+        code=data[0]&0x0F;
+        code=code<<6;
+        code+=data[1]&0x7F;
+        code=code<<6;
+        code+=data[2]&0x7F;
+        data+=2;
+    }
+    else if((data[0]&0xF8)==0xF0)  // looks like 1111 0xxx -> 4 byte UTF-8
+    {
+        if(len<4)
+            return 0;
+        code=data[0]&0x0F;
+        code=code<<6;
+        code+=data[1]&0x7F;
+        code=code<<6;
+        code+=data[2]&0x7F;
+        code=code<<6;
+        code+=data[3]&0x7F;
+        data+=3;
+    }
+    return code;
+}
+
 /// \brief Wrapper class for stb_truetype.h.
 class font
 {
@@ -175,12 +217,13 @@ create_glyph:
     int text_length(const std::string& text,int font_size)
     {
         int w=0;
-        for(unsigned char c:text)
+        const char* end=text.data()+text.size();
+        for(const char* data=text.data();data<end;data++)
         {
-            if(c==' ')
+            if(*data==' ')
                 w+=font_size/3;
             else
-                w+=get_glyph_cached(c,font_size).width()+1;
+                w+=get_glyph_cached(utf8_to_unicode(data,end-data),font_size).width()+1;
         }
         return w;
     }
@@ -189,12 +232,13 @@ create_glyph:
     int text_length(const std::string& text,int font_size,size_t start_character,size_t end_character)
     {
         int w=0;
-        for(size_t i=start_character;i<end_character;i++)
+        const char* end=text.data()+end_character;
+        for(const char* data=text.data()+start_character;data<end;data++)
         {
-            if(text[i]==' ')
+            if(*data==' ')
                 w+=font_size/3;
             else
-                w+=get_glyph_cached((unsigned char)text[i],font_size).width()+1;    // an additional pixel space between each character
+                w+=get_glyph_cached(utf8_to_unicode(data,end-data),font_size).width()+1;    // an additional pixel space between each character
         }
         return w;
     }

@@ -128,7 +128,7 @@ public:
                 character.clear();
         }
 
-        insert_event_key_press(e->key(),character);
+        insert_event_key_press((lfgui::key)e->key(),character);
         redraw();
     }
 
@@ -137,7 +137,7 @@ public:
         QByteArray arr=e->text().toUtf8();
         std::string character(arr.data(),arr.size());
 
-        insert_event_key_release(e->key(),character);
+        insert_event_key_release((lfgui::key)e->key(),character);
         redraw();
     }
 

@@ -165,15 +165,16 @@ public:
             x-=w/2;
         else if(a==alignment::right)
             x-=w;
-        for(unsigned char c:text)
+        const char* end=text.data()+text.size();
+        for(const char* data=text.data();data<end;data++)
         {
-            if(c=='\n')
+            if(*data=='\n')
             {
                 x=x_orig;
                 y+=font_size;
             }
             else
-                draw_character(x,y,c,color,font_size);
+                draw_character(x,y,lfgui::utf8_to_unicode(data,end-data),color,font_size);
         }
     }
 
@@ -221,7 +222,6 @@ public:
     void draw_rect(int x,int y,int width,int height,color color);
     /// \brief Draws a filled polygon.
     void draw_polygon(const std::vector<point>& vec,color color);
-    //void draw_polygon(const std::initializer_list<point>& list,color color){draw_polygon(std::vector<point>(list),color);}
 
     /// \brief Returns the pixel length of the given text from start_character to end_character.
     int text_length(const std::string& str,int font_size,size_t start_character,size_t end_character)const
@@ -229,7 +229,12 @@ public:
         return font::default_font().text_length(str,font_size,start_character,end_character);
     }
     /// \brief Returns the pixel length of the given text to end_character.
-    int text_length(const std::string& str,int font_size,size_t end_character=0)const{if(end_character==0)end_character=str.size();return text_length(str,font_size,0,end_character);}
+    int text_length(const std::string& str,int font_size,size_t end_character=UINT_MAX)const
+    {
+        if(end_character>str.size())
+            end_character=str.size();
+        return text_length(str,font_size,0,end_character);
+    }
 
     /// \brief Draws another image onto this one.
     void draw_image(int x,int y,const image& img);

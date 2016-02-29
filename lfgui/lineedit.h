@@ -177,6 +177,12 @@ public:
             {
                 if(!cursor_position)
                     return;
+
+                while((_text[cursor_position-1]&0xC0)==0x80)    // remove whole UTF-8 characters
+                {
+                    _text.erase(cursor_position-1,1);
+                    cursor_position--;
+                }
                 _text.erase(cursor_position-1,1);
                 cursor_position--;
             }
@@ -184,11 +190,18 @@ public:
                 _text.erase(cursor_position,1);
             else if(ek.key==key::Key_Left)
             {
+                while((_text[cursor_position-1]&0xC0)==0x80)    // wander whole UTF-8 characters
+                    if(cursor_position>0)
+                        cursor_position--;
                 if(cursor_position>0)
                     cursor_position--;
             }
             else if(ek.key==key::Key_Right)
+            {
+                while((_text[cursor_position+1]&0xC0)==0x80)    // wander whole UTF-8 characters
+                    cursor_position++;
                 cursor_position++;
+            }
             else
             {
                 _text.insert(cursor_position,ek.character_unicode);

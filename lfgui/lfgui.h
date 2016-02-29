@@ -326,13 +326,13 @@ public:
         _insert_event_mouse_wheel(em);
     }
 
-    void insert_event_key_press(int key,std::string character_unicode)
+    void insert_event_key_press(lfgui::key key,std::string character_unicode)
     {
         event_key ek(key,character_unicode);
         _insert_event_key_press(ek);
     }
 
-    void insert_event_key_release(int key,std::string character_unicode)
+    void insert_event_key_release(lfgui::key key,std::string character_unicode)
     {
         event_key ek(key,character_unicode);
         _insert_event_key_release(ek);

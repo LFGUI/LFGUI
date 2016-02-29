@@ -116,10 +116,7 @@ public:
                     i=img.text_length(_text,_text_size,cursor_position);
 
                 i+=3;
-                img.draw_line(i,3,i,_text_size+4,_text_color);
-                img.draw_line(i-2,3,i+2,3,_text_color);
-                img.draw_line(i-3,_text_size+4,i+2,_text_size+4,_text_color);
-                return;
+                img.draw_line(i,3,i,_text_size+3,_text_color);
             }
             else
             {
@@ -136,9 +133,7 @@ public:
                         i=img.text_length(displayed_text,_text_size,cursor_position);
 
                     i+=3;
-                    img.draw_line(i,3,i,_text_size+4,_text_color);
-                    img.draw_line(i-2,3,i+2,3,_text_color);
-                    img.draw_line(i-3,_text_size+4,i+2,_text_size+4,_text_color);
+                    img.draw_line(i,3,i,_text_size+3,_text_color);
                 }
                 else if(cursor_position>=_text.size()-space_for_n_characters/2)    // display last n characters
                 {
@@ -153,9 +148,7 @@ public:
                         i=img.text_length(displayed_text,_text_size,cursor_position-(_text.size()-space_for_n_characters));
 
                     i+=3;
-                    img.draw_line(i,3,i,_text_size+4,_text_color);
-                    img.draw_line(i-2,3,i+2,3,_text_color);
-                    img.draw_line(i-3,_text_size+4,i+2,_text_size+4,_text_color);
+                    img.draw_line(i,3,i,_text_size+3,_text_color);
                 }
                 else                                                            // center on the cursor
                 {
@@ -170,9 +163,7 @@ public:
                         i=img.text_length(displayed_text,_text_size,space_for_n_characters/2);
 
                     i+=3;
-                    img.draw_line(i,3,i,_text_size+4,_text_color);
-                    img.draw_line(i-2,3,i+2,3,_text_color);
-                    img.draw_line(i-3,_text_size+4,i+2,_text_size+4,_text_color);
+                    img.draw_line(i,3,i,_text_size+3,_text_color);
                 }
             }
         });

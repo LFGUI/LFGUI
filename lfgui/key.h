@@ -4,9 +4,10 @@
 namespace lfgui
 {
 
-/// \brief Identical to Qt::Key.
+/// \brief Identical to Qt::Key besides the added Key_None.
 enum key
 {
+    Key_None = 0,
     Key_Escape = 0x01000000,                // misc keys
     Key_Tab = 0x01000001,
     Key_Backtab = 0x01000002,

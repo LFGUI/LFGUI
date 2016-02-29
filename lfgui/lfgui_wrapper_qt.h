@@ -114,6 +114,7 @@ public:
         redraw();
     }
 
+    // Some input can't be handled with these functions and has to be handled differently: https://www.kdab.com/qt-input-method-depth/ http://doc.qt.io/qt-5/qinputmethod.html
     void keyPressEvent(QKeyEvent* e) override
     {
         QByteArray arr=e->text().toUtf8();

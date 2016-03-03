@@ -18,7 +18,7 @@ It is not:
 
 One of the main targets are highly customized GUIs. Qt doesn't really help with those.
 
-LFGUI is still in a relatively early development stage. There's no keyboard support and no layout system yet.
+LFGUI is still in a relatively early development stage. There's no layout system yet.
 
 LFGUI draws everything on one resulting image to be easily integratable.  
 It uses the cIMG library ([http://cimg.eu/](http://cimg.eu/)) which is just one header file and offers various image editing functions like drawing text.

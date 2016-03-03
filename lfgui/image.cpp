@@ -288,6 +288,27 @@ void image::draw_image(int start_x,int start_y,const image& img,float opacity)
     }
 }
 
+void image::draw_image_corners_stretched(int border_width,const image& img)
+{
+    int w=img.width();
+    int h=img.height();
+
+    // draw corners
+    draw_image(0,0,img.cropped(0,0,w/2,h/2).scale(border_width,border_width));                                               // top left
+    draw_image(width()-border_width,0,img.cropped(w/2,0,w/2,h/2).scale(border_width,border_width));                          // top right
+    draw_image(0,height()-border_width,img.cropped(0,h/2,w/2,h/2).scale(border_width,border_width));                         // bottom left
+    draw_image(width()-border_width,height()-border_width,img.cropped(w/2,h/2,w/2,h/2).scale(border_width,border_width));    // bottom right
+
+    // draw borders
+    draw_image(border_width,0,img.cropped(w/2,0,0,h/2).scale(width()-border_width*2,border_width));                          // top
+    draw_image(border_width,height()-border_width,img.cropped(w/2,h/2,0,h/2).scale(width()-border_width*2,border_width));    // bottom
+    draw_image(0,border_width,img.cropped(0,h/2,w/2,0).scale(border_width,height()-border_width*2));                         // left
+    draw_image(width()-border_width,border_width,img.cropped(w/2,h/2,w/2,0).scale(border_width,height()-border_width*2));    // right
+
+    // draw center
+    draw_image(border_width,border_width,img.cropped(w/2,h/2,0,0).scale(width()-border_width*2,height()-border_width*2));
+}
+
 void image::clear()
 {
     cimage->fill((uint8_t)0,(uint8_t)0);

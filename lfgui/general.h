@@ -166,7 +166,7 @@ struct widget_geometry
                      size_absolute.y+size_percent.y*parent_height);
     }
 
-    widget_geometry& set_pos(int x,int y,float x_percent,float y_percent)
+    widget_geometry& set_pos(int x,int y,float x_percent=0,float y_percent=0)
     {
         pos_absolute.x=x;
         pos_absolute.y=y;
@@ -175,7 +175,7 @@ struct widget_geometry
         return *this;
     }
 
-    widget_geometry& set_size(int x,int y,float x_percent,float y_percent)
+    widget_geometry& set_size(int x,int y,float x_percent=0,float y_percent=0)
     {
         size_absolute.x=x;
         size_absolute.y=y;
@@ -184,7 +184,7 @@ struct widget_geometry
         return *this;
     }
 
-    widget_geometry& set_offset(float x_percent,float y_percent)
+    widget_geometry& set_offset(float x_percent,float y_percent=0)
     {
         offset_percent.x=x_percent;
         offset_percent.y=y_percent;

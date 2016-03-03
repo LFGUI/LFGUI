@@ -78,72 +78,21 @@ private:
         // image for the button in normal state
         {
             temp.clear();
-            auto w=img_normal.width();
-            auto h=img_normal.height();
-
-            // draw corners
-            temp.draw_image(0,0,img_normal.cropped(0,0,w/2,h/2).scale(border_width,border_width));                                               // top left
-            temp.draw_image(width()-border_width,0,img_normal.cropped(w/2,0,w/2,h/2).scale(border_width,border_width));                          // top right
-            temp.draw_image(0,height()-border_width,img_normal.cropped(0,h/2,w/2,h/2).scale(border_width,border_width));                         // bottom left
-            temp.draw_image(width()-border_width,height()-border_width,img_normal.cropped(w/2,h/2,w/2,h/2).scale(border_width,border_width));    // bottom right
-
-            // draw borders
-            temp.draw_image(border_width,0,img_normal.cropped(w/2,0,0,h/2).scale(width()-border_width*2,border_width));                          // top
-            temp.draw_image(border_width,height()-border_width,img_normal.cropped(w/2,h/2,0,h/2).scale(width()-border_width*2,border_width));    // bottom
-            temp.draw_image(0,border_width,img_normal.cropped(0,h/2,w/2,0).scale(border_width,height()-border_width*2));                         // left
-            temp.draw_image(width()-border_width,border_width,img_normal.cropped(w/2,h/2,w/2,0).scale(border_width,height()-border_width*2));    // right
-
-            // draw center
-            temp.draw_image(border_width,border_width,img_normal.cropped(w/2,h/2,0,0).scale(width()-border_width*2,height()-border_width*2));
-
+            temp.draw_image_corners_stretched(border_width,img_normal);
             img_normal=temp;
         }
 
         // image for hovered button
         {
             temp.clear();
-            auto w=img_hover.width();
-            auto h=img_hover.height();
-
-            // draw corners
-            temp.draw_image(0,0,img_hover.cropped(0,0,w/2,h/2).scale(border_width,border_width));                                                // top left
-            temp.draw_image(width()-border_width,0,img_hover.cropped(w/2,0,w/2,h/2).scale(border_width,border_width));                           // top right
-            temp.draw_image(0,height()-border_width,img_hover.cropped(0,h/2,w/2,h/2).scale(border_width,border_width));                          // bottom left
-            temp.draw_image(width()-border_width,height()-border_width,img_hover.cropped(w/2,h/2,w/2,h/2).scale(border_width,border_width));     // bottom right
-
-            // draw borders
-            temp.draw_image(border_width,0,img_hover.cropped(w/2,0,0,h/2).scale(width()-border_width*2,border_width));                           // top
-            temp.draw_image(border_width,height()-border_width,img_hover.cropped(w/2,h/2,0,h/2).scale(width()-border_width*2,border_width));     // bottom
-            temp.draw_image(0,border_width,img_hover.cropped(0,h/2,w/2,0).scale(border_width,height()-border_width*2));                          // left
-            temp.draw_image(width()-border_width,border_width,img_hover.cropped(w/2,h/2,w/2,0).scale(border_width,height()-border_width*2));     // right
-
-            // draw center
-            temp.draw_image(border_width,border_width,img_hover.cropped(w/2,h/2,0,0).scale(width()-border_width*2,height()-border_width*2));
-
+            temp.draw_image_corners_stretched(border_width,img_hover);
             img_hover=temp;
         }
 
         // image for pressed button
         {
             temp.clear();
-            auto w=img_pressed.width();
-            auto h=img_pressed.height();
-
-            // draw corners
-            temp.draw_image(0,0,img_pressed.cropped(0,0,w/2,h/2).scale(border_width,border_width));                                              // top left
-            temp.draw_image(width()-border_width,0,img_pressed.cropped(w/2,0,w/2,h/2).scale(border_width,border_width));                         // top right
-            temp.draw_image(0,height()-border_width,img_pressed.cropped(0,h/2,w/2,h/2).scale(border_width,border_width));                        // bottom left
-            temp.draw_image(width()-border_width,height()-border_width,img_pressed.cropped(w/2,h/2,w/2,h/2).scale(border_width,border_width));   // bottom right
-
-            // draw borders
-            temp.draw_image(border_width,0,img_pressed.cropped(w/2,0,0,h/2).scale(width()-border_width*2,border_width));                         // top
-            temp.draw_image(border_width,height()-border_width,img_pressed.cropped(w/2,h/2,0,h/2).scale(width()-border_width*2,border_width));   // bottom
-            temp.draw_image(0,border_width,img_pressed.cropped(0,h/2,w/2,0).scale(border_width,height()-border_width*2));                        // left
-            temp.draw_image(width()-border_width,border_width,img_pressed.cropped(w/2,h/2,w/2,0).scale(border_width,height()-border_width*2));   // right
-
-            // draw center
-            temp.draw_image(border_width,border_width,img_pressed.cropped(w/2,h/2,0,0).scale(width()-border_width*2,height()-border_width*2));
-
+            temp.draw_image_corners_stretched(border_width,img_pressed);
             img_pressed=temp;
         }
     }

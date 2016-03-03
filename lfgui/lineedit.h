@@ -38,45 +38,13 @@ public:
             image img("gui_torus_filled.png");
             img_background=image(width(),height());
             img_background.clear();
-            auto w=img.width();
-            auto h=img.height();
-
-            // draw corners
-            img_background.draw_image(0,0,img.cropped(0,0,w/2,h/2).scale(border_width,border_width));                                               // top left
-            img_background.draw_image(width()-border_width,0,img.cropped(w/2,0,w/2,h/2).scale(border_width,border_width));                          // top right
-            img_background.draw_image(0,height()-border_width,img.cropped(0,h/2,w/2,h/2).scale(border_width,border_width));                         // bottom left
-            img_background.draw_image(width()-border_width,height()-border_width,img.cropped(w/2,h/2,w/2,h/2).scale(border_width,border_width));    // bottom right
-
-            // draw borders
-            img_background.draw_image(border_width,0,img.cropped(w/2,0,0,h/2).scale(width()-border_width*2,border_width));                          // top
-            img_background.draw_image(border_width,height()-border_width,img.cropped(w/2,h/2,0,h/2).scale(width()-border_width*2,border_width));    // bottom
-            img_background.draw_image(0,border_width,img.cropped(0,h/2,w/2,0).scale(border_width,height()-border_width*2));                         // left
-            img_background.draw_image(width()-border_width,border_width,img.cropped(w/2,h/2,w/2,0).scale(border_width,height()-border_width*2));    // right
-
-            // draw center
-            img_background.draw_image(border_width,border_width,img.cropped(w/2,h/2,0,0).scale(width()-border_width*2,height()-border_width*2));
+            img_background.draw_image_corners_stretched(border_width,img);
         }
         {
             image img("gui_torus_filled_highlighted.png");
             img_background_focused=image(width(),height());
             img_background_focused.clear();
-            auto w=img.width();
-            auto h=img.height();
-
-            // draw corners
-            img_background_focused.draw_image(0,0,img.cropped(0,0,w/2,h/2).scale(border_width,border_width));                                               // top left
-            img_background_focused.draw_image(width()-border_width,0,img.cropped(w/2,0,w/2,h/2).scale(border_width,border_width));                          // top right
-            img_background_focused.draw_image(0,height()-border_width,img.cropped(0,h/2,w/2,h/2).scale(border_width,border_width));                         // bottom left
-            img_background_focused.draw_image(width()-border_width,height()-border_width,img.cropped(w/2,h/2,w/2,h/2).scale(border_width,border_width));    // bottom right
-
-            // draw borders
-            img_background_focused.draw_image(border_width,0,img.cropped(w/2,0,0,h/2).scale(width()-border_width*2,border_width));                          // top
-            img_background_focused.draw_image(border_width,height()-border_width,img.cropped(w/2,h/2,0,h/2).scale(width()-border_width*2,border_width));    // bottom
-            img_background_focused.draw_image(0,border_width,img.cropped(0,h/2,w/2,0).scale(border_width,height()-border_width*2));                         // left
-            img_background_focused.draw_image(width()-border_width,border_width,img.cropped(w/2,h/2,w/2,0).scale(border_width,height()-border_width*2));    // right
-
-            // draw center
-            img_background_focused.draw_image(border_width,border_width,img.cropped(w/2,h/2,0,0).scale(width()-border_width*2,height()-border_width*2));
+            img_background_focused.draw_image_corners_stretched(border_width,img);
         }
 
         on_paint([this](lfgui::image& img)

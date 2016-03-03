@@ -245,6 +245,9 @@ public:
     /// \brief Draws another image onto this one.
     void draw_image(point p,const image& img,float opacity){draw_image(p.x,p.y,img,opacity);}
 
+    /// \brief Fills this image with the given image, it is stretched to act as a border with "stretched filling".
+    void draw_image_corners_stretched(int border_width,const image& img);
+
     /// \brief Fills the image with transparent black.
     void clear();
 

@@ -203,7 +203,7 @@ public:
     {
         Urho3D::String character=eventData[Urho3D::TextInput::P_TEXT].GetString();
         std::string str(character.CString(),character.Length());
-        insert_event_key_press(0,str);
+        insert_event_key_press(lfgui::key::Key_None,str);
     }
 
     void e_mouse_wheel(Urho3D::StringHash eventType,Urho3D::VariantMap& eventData)

@@ -3,6 +3,7 @@
 #include "lfgui/label.h"
 #include "lfgui/button.h"
 #include "lfgui/lineedit.h"
+#include "lfgui/window.h"
 
 #define PI		3.14159265358979323846
 
@@ -53,7 +54,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
         auto mover=gui->add_child<lfgui::widget>(20,210,200,70);
         mover->on_paint=[&](lfgui::image& img)
         {
-            img.draw_rect(0,0,img.width(),img.height(),{192,192,255,128});
+            img.draw_rect(0,0,img.width(),img.height(),{222,222,255,192});
             img.draw_text(10,3,"I move on left and right\nmouse clicks and\nmouse wheel movement",{64,0,0});
         };
         mover->on_mouse_press([mover](lfgui::event_mouse e)
@@ -69,33 +70,28 @@ inline void setup_sample_gui(lfgui::widget* gui)
         });
     }
     {
-        auto movable=gui->add_child<lfgui::widget>(300,50,250,200);
-        movable->on_paint=[&](lfgui::image& img)
-        {
-            img.draw_rect(0,0,img.width(),img.height(),{0,0,0,128});
-            img.draw_text(10,3,"I can be dragged",{255,255,255});
-        };
+        auto movable=gui->add_child<lfgui::window>(280,50,250,200,"example window");
         movable->on_mouse_drag([movable](lfgui::event_mouse e){movable->translate(e.movement);});
 
         {
-            auto movable2=movable->add_child<lfgui::widget>(50,20,180,20);
+            auto movable2=movable->add_child<lfgui::widget>(50,35,150,20);
             movable2->on_paint([&](lfgui::image& img)
             {
                 img.draw_rect(0,0,img.width(),img.height(),{64,64,64});
-                img.draw_text(10,3,"I can be dragged too",{255,0,255});
+                img.draw_text(10,3,"I can be dragged",{255,0,255});
             });
             movable2->on_mouse_drag([movable2](lfgui::event_mouse e){movable2->translate(e.movement);});
         }
-        movable->add_child<lfgui::label>(10,50,150,20,"great stuff here:",lfgui::color{255,222,192},20);
+        movable->add_child<lfgui::label>(10,60,150,20,"example slider",lfgui::color{128,22,92},20);
         {
-            auto slider=movable->add_child<lfgui::slider>(50,75,100,20);
+            auto slider=movable->add_child<lfgui::slider>(50,80,100,20);
             slider->on_value_change([](float v)
             {
                 std::cout<<"slider 1: "<<v<<std::endl;
             });
         }
         {
-            auto slider=movable->add_child<lfgui::slider>(50,95,180,50);
+            auto slider=movable->add_child<lfgui::slider>(50,105,180,50);
             slider->on_value_change([](float v)
             {
                 std::cout<<"slider 2: "<<v<<std::endl;
@@ -107,7 +103,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
             slider->on_value_change([]               {std::cout<<"### 3"<<std::endl;});         // this handler is not called. Also the parameter can be ommited.
         }
         {
-            auto button=movable->add_child<lfgui::button>(50,155,100,25,"CLICK ME",lfgui::color({30,30,30}));
+            auto button=movable->add_child<lfgui::button>(50,160,100,25,"CLICK ME",lfgui::color({30,30,30}));
             button->on_mouse_click([](lfgui::event_mouse e)
             {
                 std::cout<<"button pressed"<<e.pos<<std::endl;

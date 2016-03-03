@@ -33,6 +33,7 @@ HEADERS  += \
         ../lfgui/general.h \
         ../lfgui/label.h \
         ../lfgui/lineedit.h \
+        ../lfgui/window.h \
         ../external/stk_timer.h \
         ../external/cimg/CImg.h \
         ../external/stb_truetype.h \

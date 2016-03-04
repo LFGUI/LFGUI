@@ -29,12 +29,12 @@ bool widget::_insert_event_mouse_press(const event_mouse& event)
     if(is_over(event.pos))
     {
         _gui->set_focus(this);
+        _gui->_held_widget=this;
         if(on_mouse_press)
         {
-            ret=on_mouse_press.call(event);
             dirty=true;
+            ret=on_mouse_press.call(event);
         }
-        _gui->_held_widget=this;
     }
     else
         ret=false;
@@ -45,6 +45,7 @@ bool widget::_insert_event_mouse_press(const event_mouse& event)
 bool widget::_insert_event_mouse_release(const event_mouse& event)
 {
     bool ret=false;
+    auto _gui=this->_gui;
 
     if(_gui->_held_widget&&_gui->_held_widget!=this)
     {
@@ -55,22 +56,22 @@ bool widget::_insert_event_mouse_release(const event_mouse& event)
     {
         if(on_mouse_release)
         {
-            ret=on_mouse_release.call(event);
             dirty=true;
+            ret=on_mouse_release.call(event);
         }
         ret=true;
     }
 
     if(_gui->_held_widget&&_gui->_held_widget==_gui->_hovering_over_widget)
     {
-        _gui->_held_widget->on_mouse_click.call(event.translated(to_global(point(0,0))).translated(_gui->_held_widget->to_local(point(0,0))));
         _gui->_held_widget->dirty=true;
+        _gui->_held_widget->on_mouse_click.call(event.translated(to_global(point(0,0))).translated(_gui->_held_widget->to_local(point(0,0))));
     }
 
     if(_gui->_held_widget)
     {
-        _gui->_held_widget->on_mouse_click_somewhere.call(event.translated(to_global(point(0,0))).translated(_gui->_held_widget->to_local(point(0,0))));
         _gui->_held_widget->dirty=true;
+        _gui->_held_widget->on_mouse_click_somewhere.call(event.translated(to_global(point(0,0))).translated(_gui->_held_widget->to_local(point(0,0))));
     }
 
     return ret;
@@ -78,12 +79,11 @@ bool widget::_insert_event_mouse_release(const event_mouse& event)
 
 bool widget::_insert_event_mouse_move(const event_mouse& event)
 {
-
     if(_gui->_held_widget)
         if(_gui->_held_widget->on_mouse_drag)
         {
-            _gui->_held_widget->on_mouse_drag.call(event.translated(to_global(point(0,0))).translated(_gui->_held_widget->to_local(point(0,0))));
             _gui->_held_widget->dirty=true;
+            _gui->_held_widget->on_mouse_drag.call(event.translated(to_global(point(0,0))).translated(_gui->_held_widget->to_local(point(0,0))));
             return true;
         }
 
@@ -100,8 +100,8 @@ bool widget::_insert_event_mouse_move(const event_mouse& event)
         _gui->_hovering_over_widget=this;
         if(on_mouse_move)
         {
-            on_mouse_move.call(event);
             dirty=true;
+            on_mouse_move.call(event);
         }
         return true;
     }
@@ -123,8 +123,8 @@ bool widget::_insert_event_mouse_wheel(const event_mouse& event)
     {
         if(on_mouse_wheel)
         {
-            on_mouse_wheel.call(event);
             dirty=true;
+            on_mouse_wheel.call(event);
         }
         return true;
     }
@@ -135,8 +135,8 @@ void widget::_insert_event_key_press(const event_key& event)
 {
     if(_gui->_focus_widget)
     {
-        _gui->_focus_widget->on_key_press.call(event);
         _gui->_focus_widget->dirty=true;
+        _gui->_focus_widget->on_key_press.call(event);
     }
 }
 
@@ -144,8 +144,8 @@ void widget::_insert_event_key_release(const event_key& event)
 {
     if(_gui->_focus_widget)
     {
-        _gui->_focus_widget->on_key_release.call(event);
         _gui->_focus_widget->dirty=true;
+        _gui->_focus_widget->on_key_release.call(event);
     }
 }
 
@@ -207,6 +207,18 @@ void widget::focus()
 bool widget::has_focus()const
 {
     return _gui->_focus_widget==this;
+}
+
+widget::~widget()
+{
+    if(_gui->_held_widget==this)
+        _gui->_held_widget=0;
+    if(_gui->_focus_widget==this)
+        _gui->_focus_widget=0;
+    if(_gui->_hovering_over_widget==this)
+        _gui->_hovering_over_widget=0;
+    if(_gui->_hovering_over_widget_old==this)
+        _gui->_hovering_over_widget_old=0;
 }
 
 }

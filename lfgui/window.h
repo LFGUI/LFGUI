@@ -23,9 +23,10 @@ public:
     image img_normal;
     image img_highlighted;
     std::string title;
+    bool closable;
 
     window(int x,int y,int width,int height,const std::string& title="",bool closable=false)
-        : widget(x,y,width,height),title(title)
+        : widget(x,y,width,height),title(title),closable(closable)
     {
         prepare_images();
 
@@ -36,18 +37,39 @@ public:
             else
                 img.draw_image(0,0,img_normal);
 
-            img.draw_text(img.width()/2,7,this->title,_title_color,18,alignment::center);
+            if(this->closable)
+                img.draw_text(img.width()/2-15,7,this->title,_title_color,18,alignment::center);
+            else
+                img.draw_text(img.width()/2,7,this->title,_title_color,18,alignment::center);
         });
 
         on_focus_out([]{}); // widgets get redrawn when they have signals connected and that's all that should be done here (to remove the highlight effect
+
+        on_mouse_drag([this](lfgui::event_mouse e){translate(e.movement);});
+
+        if(closable)
+        {
+            auto button=add_child<lfgui::button>(width-30,4,24,24,"X",lfgui::color({0,0,0}),6);
+            button->img_normal.multiply({255,192,192});
+            button->img_hover.multiply({255,192,192});
+            button->img_pressed.multiply({255,192,192});
+            button->on_mouse_click([this](lfgui::event_mouse,bool& b){b=true;close();});    // close the window and abort event handling
+        }
     }
 
     window(int width=100,int height=20,const std::string& text="")
         : window(0,0,width,height,text){}
 
+    /// \brief Closes this window. Removes this window from the parent and destroys it.
+    void close()
+    {
+        if(!parent)
+            throw std::logic_error("LFGUI Error: close() called without having a parent.");
+        parent->remove_child(this);
+    }
+
 private:
     // called by the constructor to create the button images that are draw when drawing the widget
-    // A rendered image of a 3D ball is used to draw a rectangular button with three states, rounded corners and borders.
     void prepare_images()
     {
         {

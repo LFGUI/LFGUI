@@ -112,6 +112,8 @@ public:
     signal<void> on_focus_in;                       ///< called when this widgets gets keyboard focus.
     signal<void> on_focus_out;                      ///< called when this widgets loses keyboard focus.
 
+    virtual ~widget();
+
     /// \brief Inserts a mouse press event with local coordinates. Normally only called from the parent widget (or the
     ///  gui class if that is the parent). Calls on_mouse_press.
     bool _insert_event_mouse_press(const event_mouse&);
@@ -124,8 +126,11 @@ public:
     /// \brief Inserts a mouse wheel event with local coordinates. Normally only called from the parent widget (or the
     /// gui class if that is the parent). Calls on_mouse_wheel.
     bool _insert_event_mouse_wheel(const event_mouse&);
-
+    /// \brief Inserts a key press event. Normally only called from the parent widget (or the
+    /// gui class if that is the parent). Calls on_key_press.
     void _insert_event_key_press(const event_key&);
+    /// \brief Inserts a key release event. Normally only called from the parent widget (or the
+    /// gui class if that is the parent). Calls on_key_release.
     void _insert_event_key_release(const event_key&);
 
     /// \brief Call on_paint().
@@ -172,6 +177,18 @@ public:
     T* add_child(Args... args)
     {
         return (T*)_add_child(std::unique_ptr<widget>(new T(args...)));
+    }
+
+    /// \brief Removes the given child widget.
+    void remove_child(widget* w)
+    {
+        for(size_t i=0;i<children.size();i++)
+            if(children[i].get()==w)
+            {
+                children.erase(children.begin()+i);
+                return;
+            }
+        dirty=true;
     }
 
     /// \brief Moves this widget.
@@ -261,11 +278,11 @@ protected:
 class gui : public widget
 {
     friend class widget;
-    widget* _held_widget=0;                 /// \brief The widget currently held by the mouse.
-    widget* _hovering_over_widget=0;        /// \brief The widget currently under the mouse.
-    widget* _hovering_over_widget_old=0;    /// \brief The widget currently under the mouse during the last check.
-    widget* _focus_widget=0;                /// \brief The widget that has keyboard focus.
-    static gui* instance;                   /// \brief Used by the load functions.
+    widget* _held_widget=0;                 ///< \brief The widget currently held by the mouse.
+    widget* _hovering_over_widget=0;        ///< \brief The widget currently under the mouse.
+    widget* _hovering_over_widget_old=0;    ///< \brief The widget currently under the mouse during the last check.
+    widget* _focus_widget=0;                ///< \brief The widget that has keyboard focus.
+    static gui* instance;                   ///< \brief Used by the load functions.
 public:
     point mouse_old_pos=0;  // for mouse movement
     uint32_t button_state_last=0;

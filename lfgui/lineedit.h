@@ -59,7 +59,7 @@ public:
             int needed_space=0;
             while(needed_space<available_space)
             {
-                if(space_for_n_characters>_text.size())
+                if(space_for_n_characters>(int)_text.size())
                     break;
                 //needed_space=img.text_length(_text,_text_size,cursor_position-space_for_n_characters/2,space_for_n_characters);
                 needed_space=img.text_length(_text,_text_size,0,space_for_n_characters);
@@ -71,7 +71,7 @@ public:
                 cursor_timer.reset();
             bool draw_cursor=has_focus()&&cursor_timer.until_now()<0.5;
 
-            if(space_for_n_characters>=_text.size()) // if enough space
+            if(space_for_n_characters>=(int)_text.size()) // if enough space
             {
                 space_for_n_characters=_text.size();
                 img.draw_text(4,3,_text,_text_color,_text_size);
@@ -88,7 +88,7 @@ public:
             }
             else
             {
-                if(cursor_position<space_for_n_characters/2)    // display first n characters
+                if((int)cursor_position<space_for_n_characters/2)    // display first n characters
                 {
                     std::string displayed_text=_text.substr(0,space_for_n_characters);
                     img.draw_text(4,4,displayed_text,_text_color,_text_size);

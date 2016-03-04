@@ -71,7 +71,6 @@ inline void setup_sample_gui(lfgui::widget* gui)
     }
     {
         auto movable=gui->add_child<lfgui::window>(280,50,250,200,"example window");
-        movable->on_mouse_drag([movable](lfgui::event_mouse e){movable->translate(e.movement);});
 
         {
             auto movable2=movable->add_child<lfgui::widget>(50,35,150,20);
@@ -103,10 +102,12 @@ inline void setup_sample_gui(lfgui::widget* gui)
             slider->on_value_change([]               {std::cout<<"### 3"<<std::endl;});         // this handler is not called. Also the parameter can be ommited.
         }
         {
-            auto button=movable->add_child<lfgui::button>(50,160,100,25,"CLICK ME",lfgui::color({30,30,30}));
-            button->on_mouse_click([](lfgui::event_mouse e)
+            auto button=movable->add_child<lfgui::button>(50,160,100,25,"New window",lfgui::color({30,30,30}));
+            button->on_mouse_click([gui]
             {
-                std::cout<<"button pressed"<<e.pos<<std::endl;
+                static int count=1; // give the window unique titles (no technical reason, just to have different titles)
+                gui->add_child<lfgui::window>(rand()%(gui->width()-150),rand()%(gui->height()-100),150,100,"window #"+std::to_string(count),true);
+                count++;
             });
         }
     }

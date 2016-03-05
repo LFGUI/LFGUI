@@ -67,26 +67,39 @@ public:
 
         handle->on_mouse_press([this]
         {
+            _gui->set_cursor(mouse_cursor::hand_closed);
             img_handle=&img_handle_pressed;
         });
 
         handle->on_mouse_click_somewhere([this]
         {
             if(_gui->mouse_hovering_over(handle))
+            {
                 img_handle=&img_handle_hover;
+                _gui->set_cursor(mouse_cursor::hand_open);
+            }
             else
+            {
                 img_handle=&img_handle_normal;
+                _gui->set_cursor(mouse_cursor::arrow);
+            }
         });
 
         handle->on_mouse_enter([this]
         {
-            if(_gui->held_widget()!=this)       // don't change the displayed status if this widget is currently held down
+            if(_gui->held_widget()!=handle)       // don't change the displayed status if this widget is currently held down
+            {
                 img_handle=&img_handle_hover;
+                _gui->set_cursor(mouse_cursor::hand_open);
+            }
         });
         handle->on_mouse_leave([this]
         {
-            if(_gui->held_widget()!=this)       // don't change the displayed status if this widget is currently held down
+            if(_gui->held_widget()!=handle)       // don't change the displayed status if this widget is currently held down
+            {
                 img_handle=&img_handle_normal;
+                _gui->set_cursor(mouse_cursor::arrow);
+            }
         });
 
         set_value(value);

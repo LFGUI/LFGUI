@@ -75,6 +75,28 @@ public:
     event_key(int key,const std::string& character_unicode) : key(key),character_unicode(character_unicode){}
 };
 
+/// \brief Used by the set_mouse_cursor functions. Based on the Qt QCursor options but some have been left out to be more portable.
+enum class mouse_cursor
+{
+    arrow,  // default
+    cross,
+    beam,   // text cursor
+    wait,
+    busy,   // arrow with hour glass (or similar)
+    forbidden,  // stop sign
+    whats_this, // arrow with question mark
+    size_vertical,
+    size_horizontal,
+    size_topleft_bottomright,
+    size_topright_bottomleft,
+    size_all,
+    split_vertical,
+    split_horizontal,
+    hand_open,
+    hand_closed,
+    hand_pointing
+};
+
 class gui;
 
 /// \brief Represents a widget.
@@ -258,6 +280,8 @@ protected:
     {
         geometry.pos_absolute=point(x,y);
     }
+
+    bool _check_mouse_hover(point p) const;
 };
 
 /// \brief Used as a manager class and a LFGUI instance.
@@ -330,6 +354,9 @@ public:
     /// \brief Gives the given widget keyboard focus and calls on_focus_out and on_focus_in. Does nothing if the given
     /// widget has already focus.
     void set_focus(widget* w);
+
+    /// \brief Sets the current mouse cursor to the given cursor.
+    virtual void set_cursor(mouse_cursor){}
 };
 
 }   // namespace lfgui

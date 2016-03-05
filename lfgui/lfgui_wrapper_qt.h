@@ -146,6 +146,44 @@ public:
         insert_event_mouse_wheel(e->angleDelta().x()/12,e->angleDelta().y()/12);
         redraw();
     }
+
+    void set_cursor(mouse_cursor c) override
+    {
+        if(c==mouse_cursor::beam)
+            setCursor(Qt::IBeamCursor);
+        else if(c==mouse_cursor::cross)
+            setCursor(Qt::CrossCursor);
+        else if(c==mouse_cursor::hand_open)
+            setCursor(Qt::OpenHandCursor);
+        else if(c==mouse_cursor::hand_closed)
+            setCursor(Qt::ClosedHandCursor);
+        else if(c==mouse_cursor::hand_pointing)
+            setCursor(Qt::PointingHandCursor);
+        else if(c==mouse_cursor::wait)
+            setCursor(Qt::WaitCursor);
+        else if(c==mouse_cursor::busy)
+            setCursor(Qt::BusyCursor);
+        else if(c==mouse_cursor::forbidden)
+            setCursor(Qt::ForbiddenCursor);
+        else if(c==mouse_cursor::whats_this)
+            setCursor(Qt::WhatsThisCursor);
+        else if(c==mouse_cursor::split_horizontal)
+            setCursor(Qt::SplitHCursor);
+        else if(c==mouse_cursor::split_vertical)
+            setCursor(Qt::SplitVCursor);
+        else if(c==mouse_cursor::size_all)
+            setCursor(Qt::SizeAllCursor);
+        else if(c==mouse_cursor::size_horizontal)
+            setCursor(Qt::SizeHorCursor);
+        else if(c==mouse_cursor::size_vertical)
+            setCursor(Qt::SizeVerCursor);
+        else if(c==mouse_cursor::size_topleft_bottomright)
+            setCursor(Qt::SizeFDiagCursor);
+        else if(c==mouse_cursor::size_topright_bottomleft)
+            setCursor(Qt::SizeBDiagCursor);
+        else
+            setCursor(Qt::ArrowCursor);
+    }
 };
 
 }       // namespace wrapper_qt

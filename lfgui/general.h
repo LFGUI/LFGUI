@@ -99,6 +99,10 @@ struct point_general
         x/=o.x;
         y/=o.y;
     }
+    point_general<T> operator+(const point_general<T>& o)const{return point_general<T>(x+o.x,y+o.y);}
+    point_general<T> operator-(const point_general<T>& o)const{return point_general<T>(x-o.x,y-o.y);}
+    point_general<T> operator*(const point_general<T>& o)const{return point_general<T>(x*o.x,y*o.y);}
+    point_general<T> operator/(const point_general<T>& o)const{return point_general<T>(x/o.x,y/o.y);}
 
     point_general<T> operator/(int div)const{return point_general<T>(x/div,y/div);}
     point_general<T> operator*(int v)const{return point_general<T>(x*v,y*v);}

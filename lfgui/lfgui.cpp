@@ -17,7 +17,7 @@ widget::widget(int width,int height) : uid(generate_uid()),size_old(width,height
 bool widget::_insert_event_mouse_press(const event_mouse& event)
 {
     // check if any children accepts this event
-    for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start to start with the topmost drawn one.
+    for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start with the topmost drawn one.
     {
         if((*it)->_insert_event_mouse_press(event.translated(-(*it)->geometry.calc_pos(width(),height()))))
             return true;
@@ -87,8 +87,8 @@ bool widget::_insert_event_mouse_move(const event_mouse& event)
             return true;
         }
 
-    // Check if any children accepts this event.
-    for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start to start with the topmost drawn one.
+    // Check if any child accepts this event.
+    for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start with the topmost drawn one.
     {
         if((*it)->_insert_event_mouse_move(event.translated(-(*it)->geometry.calc_pos(width(),height()))))
             return true;
@@ -97,7 +97,6 @@ bool widget::_insert_event_mouse_move(const event_mouse& event)
     // check this
     if(is_over(event.pos))
     {
-        _gui->_hovering_over_widget=this;
         if(on_mouse_move)
         {
             dirty=true;
@@ -112,7 +111,7 @@ bool widget::_insert_event_mouse_move(const event_mouse& event)
 bool widget::_insert_event_mouse_wheel(const event_mouse& event)
 {
     // check if any children accepts this event
-    for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start to start with the topmost drawn one.
+    for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start with the topmost drawn one.
     {
         if((*it)->_insert_event_mouse_wheel(event.translated(-(*it)->geometry.calc_pos(width(),height()))))
             return true;
@@ -237,12 +236,24 @@ void widget::raise() const
         it->swap(*next);
 }
 
+bool widget::_check_mouse_hover(point p) const
+{
+    for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start with the topmost drawn one.
+        if((*it)->_check_mouse_hover(p-(*it)->geometry.calc_pos(width(),height())))
+            return true;
+    if(!is_over(p))
+        return false;
+    _gui->_hovering_over_widget=(widget*)this;
+    return true;
+}
+
 // //////////////////////////////////// gui
 
 void gui::insert_event_mouse_move(int mouse_x,int mouse_y)
 {
     event_mouse em(mouse_old_pos,point(mouse_x,mouse_y),event_button_last,button_state_last);
     _insert_event_mouse_move(em);
+    _check_mouse_hover(point(mouse_x,mouse_y));
     mouse_old_pos=point(mouse_x,mouse_y);
     if(_hovering_over_widget_old!=_hovering_over_widget)
     {

@@ -23,10 +23,14 @@ public:
     image img_normal;
     image img_highlighted;
     std::string title;
+private:
     bool closable;
+public:
+    widget* widget_content;
+    widget* widget_this;
 
     window(int x,int y,int width,int height,const std::string& title="",bool closable=false)
-        : widget(x,y,width,height),title(title),closable(closable)
+        : widget(x,y,width,height),title(title),closable(closable),widget_this(this)
     {
         prepare_images();
 
@@ -55,6 +59,8 @@ public:
             button->img_pressed.multiply({255,192,192});
             button->on_mouse_click([this](lfgui::event_mouse,bool& b){b=true;close();});    // close the window and abort event handling
         }
+
+        widget_content=add_child<widget>()->set_pos(6,30)->set_size(-13,-37,1,1);
     }
 
     window(int width=100,int height=20,const std::string& text="")
@@ -66,6 +72,14 @@ public:
         if(!parent)
             throw std::logic_error("LFGUI Error: close() called without having a parent.");
         parent->remove_child(this);
+    }
+
+    /// \brief Same as widget::add_child but adds directly to the widget_content which represents the
+    /// content area of this window.
+    template<typename T,typename... Args>
+    T* add_child_to_content_widget(Args... args)
+    {
+        return widget_content->add_child<T>(args...);
     }
 
 private:

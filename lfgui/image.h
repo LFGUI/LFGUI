@@ -220,6 +220,7 @@ public:
         }
     }
     void draw_rect(int x,int y,int width,int height,color color);
+    void draw_rect(rect rectangle,color color){draw_rect(rectangle.x,rectangle.y,rectangle.width,rectangle.height,color);}
     /// \brief Draws a filled polygon.
     void draw_polygon(const std::vector<point>& vec,color color);
 
@@ -250,6 +251,9 @@ public:
 
     /// \brief Fills the image with transparent black.
     void clear();
+
+    /// \brief Returns a rect with the size of this image.
+    lfgui::rect rect()const{return lfgui::rect(0,0,width(),height());}
 
     /// \brief Used to set a function used to load images. This function is set by the wrappers.
     static std::function<image(std::string)> load;

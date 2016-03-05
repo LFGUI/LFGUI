@@ -150,8 +150,8 @@ public:
     void resize(int width,int height);
     /// \brief Resizes this widget to the given size. Calls on_resize();
     void resize(point size){resize(size.x,size.y);}
-    widget* set_pos(int x,int y,float x_percent,float y_percent){geometry.set_pos(x,y,x_percent,y_percent);return this;}
-    widget* set_size(int x,int y,float x_percent,float y_percent){geometry.set_size(x,y,x_percent,y_percent);resize(geometry.calc_size(parent?parent->width():0,parent?parent->height():0));return this;}
+    widget* set_pos(int x,int y,float x_percent=0,float y_percent=0){geometry.set_pos(x,y,x_percent,y_percent);return this;}
+    widget* set_size(int x,int y,float x_percent=0,float y_percent=0){geometry.set_size(x,y,x_percent,y_percent);resize(geometry.calc_size(parent?parent->width():0,parent?parent->height():0));return this;}
     widget* set_offset(float x_percent,float y_percent){geometry.set_offset(x_percent,y_percent);return this;}
     bool need_redraw()
     {

@@ -3,10 +3,8 @@ var dir_2707c5d4256fdaad002960173e2985d2 =
     [ "button.h", "button_8h.html", [
       [ "button", "classlfgui_1_1button.html", "classlfgui_1_1button" ]
     ] ],
-    [ "font.h", "font_8h.html", [
-      [ "font", "classlfgui_1_1font.html", "classlfgui_1_1font" ],
-      [ "bitmap", "structlfgui_1_1font_1_1bitmap.html", "structlfgui_1_1font_1_1bitmap" ]
-    ] ],
+    [ "font.cpp", "font_8cpp.html", "font_8cpp" ],
+    [ "font.h", "font_8h.html", "font_8h" ],
     [ "general.h", "general_8h.html", "general_8h" ],
     [ "image.cpp", "image_8cpp.html", "image_8cpp" ],
     [ "image.h", "image_8h.html", [
@@ -18,20 +16,13 @@ var dir_2707c5d4256fdaad002960173e2985d2 =
       [ "label", "classlfgui_1_1label.html", "classlfgui_1_1label" ]
     ] ],
     [ "lfgui.cpp", "lfgui_8cpp.html", null ],
-    [ "lfgui.h", "lfgui_8h.html", [
-      [ "mouse_button", "unionlfgui_1_1mouse__button.html", "unionlfgui_1_1mouse__button" ],
-      [ "event_mouse", "classlfgui_1_1event__mouse.html", "classlfgui_1_1event__mouse" ],
-      [ "event_key", "classlfgui_1_1event__key.html", "classlfgui_1_1event__key" ],
-      [ "widget", "classlfgui_1_1widget.html", "classlfgui_1_1widget" ],
-      [ "gui", "classlfgui_1_1gui.html", "classlfgui_1_1gui" ]
-    ] ],
+    [ "lfgui.h", "lfgui_8h.html", "lfgui_8h" ],
     [ "lfgui_wrapper_qt.h", "lfgui__wrapper__qt_8h.html", "lfgui__wrapper__qt_8h" ],
     [ "lfgui_wrapper_urho3d.h", "lfgui__wrapper__urho3d_8h.html", "lfgui__wrapper__urho3d_8h" ],
     [ "lineedit.h", "lineedit_8h.html", [
       [ "lineedit", "classlfgui_1_1lineedit.html", "classlfgui_1_1lineedit" ]
     ] ],
     [ "qt_hybrid.h", "qt__hybrid_8h.html", [
-      [ "qt_layout", "classlfgui_1_1qt__layout.html", "classlfgui_1_1qt__layout" ],
       [ "qt_hybrid", "classlfgui_1_1qt__hybrid.html", "classlfgui_1_1qt__hybrid" ]
     ] ],
     [ "signal.h", "signal_8h.html", [
@@ -42,5 +33,8 @@ var dir_2707c5d4256fdaad002960173e2985d2 =
     ] ],
     [ "slider.h", "slider_8h.html", [
       [ "slider", "classlfgui_1_1slider.html", "classlfgui_1_1slider" ]
+    ] ],
+    [ "window.h", "window_8h.html", [
+      [ "window", "classlfgui_1_1window.html", "classlfgui_1_1window" ]
     ] ]
 ];

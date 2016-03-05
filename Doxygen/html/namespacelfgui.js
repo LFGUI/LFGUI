@@ -16,11 +16,11 @@ var namespacelfgui =
     [ "mouse_button", "unionlfgui_1_1mouse__button.html", "unionlfgui_1_1mouse__button" ],
     [ "point_general", "structlfgui_1_1point__general.html", "structlfgui_1_1point__general" ],
     [ "qt_hybrid", "classlfgui_1_1qt__hybrid.html", "classlfgui_1_1qt__hybrid" ],
-    [ "qt_layout", "classlfgui_1_1qt__layout.html", "classlfgui_1_1qt__layout" ],
     [ "rect", "structlfgui_1_1rect.html", "structlfgui_1_1rect" ],
     [ "signal", "classlfgui_1_1signal.html", "classlfgui_1_1signal" ],
     [ "signal< void >", "classlfgui_1_1signal_3_01void_01_4.html", "classlfgui_1_1signal_3_01void_01_4" ],
     [ "slider", "classlfgui_1_1slider.html", "classlfgui_1_1slider" ],
     [ "widget", "classlfgui_1_1widget.html", "classlfgui_1_1widget" ],
-    [ "widget_geometry", "structlfgui_1_1widget__geometry.html", "structlfgui_1_1widget__geometry" ]
+    [ "widget_geometry", "structlfgui_1_1widget__geometry.html", "structlfgui_1_1widget__geometry" ],
+    [ "window", "classlfgui_1_1window.html", "classlfgui_1_1window" ]
 ];

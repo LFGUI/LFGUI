@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['right',['right',['../namespacelfgui.html#ade20c527fc4eb3eaef9c2abc6b6dbcb5a7c4f29407893c334a6cb7a87bf045c0d',1,'lfgui']]]
+  ['forbidden',['forbidden',['../namespacelfgui.html#a765b713f4249e73e28aaa97f10bf6285a350f9d68221a0db19024ee40cfc3c7f8',1,'lfgui']]]
 ];

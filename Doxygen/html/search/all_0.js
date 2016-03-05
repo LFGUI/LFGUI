@@ -1,7 +1,9 @@
 var searchData=
 [
   ['_5fadd_5fchild',['_add_child',['../classlfgui_1_1widget.html#a82769484cddd47c774890fffa24ff908',1,'lfgui::widget']]],
+  ['_5fcheck_5fmouse_5fhover',['_check_mouse_hover',['../classlfgui_1_1widget.html#aabe226c011ee989d8742e78b42952444',1,'lfgui::widget']]],
   ['_5fcontext',['_context',['../classlfgui_1_1wrapper__urho3d_1_1gui.html#ac3a825cce8740da0f29f5f01f0319cab',1,'lfgui::wrapper_urho3d::gui']]],
+  ['_5ffocusable',['_focusable',['../classlfgui_1_1widget.html#a0f77057270261ade1ea14dbfb57fc772',1,'lfgui::widget']]],
   ['_5fgui',['_gui',['../classlfgui_1_1widget.html#a799946a4cc5034b78bb90d7c7abd0bf0',1,'lfgui::widget']]],
   ['_5finsert_5fevent_5fkey_5fpress',['_insert_event_key_press',['../classlfgui_1_1widget.html#a2e317c7d9e62d4c5f27973384e887df8',1,'lfgui::widget']]],
   ['_5finsert_5fevent_5fkey_5frelease',['_insert_event_key_release',['../classlfgui_1_1widget.html#a7a652ab0d8015c952e50a25d0e7d3c49',1,'lfgui::widget']]],

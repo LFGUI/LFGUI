@@ -1,8 +1,8 @@
 <map id="lfgui/lfgui_wrapper_qt.h" name="lfgui/lfgui_wrapper_qt.h">
-<area shape="rect" id="node8" href="$lfgui_8h.html" title="lfgui.h" alt="" coords="742,80,798,107"/>
-<area shape="rect" id="node16" href="$image_8h.html" title="image.h" alt="" coords="454,155,522,181"/>
-<area shape="rect" id="node22" href="$key_8h.html" title="key.h" alt="" coords="958,155,1012,181"/>
-<area shape="rect" id="node23" href="$signal_8h.html" title="signal.h" alt="" coords="1037,155,1104,181"/>
-<area shape="rect" id="node17" href="$general_8h.html" title="general.h" alt="" coords="250,229,325,256"/>
-<area shape="rect" id="node19" href="$font_8h.html" title="font.h" alt="" coords="171,229,226,256"/>
+<area shape="rect" id="node8" href="$lfgui_8h.html" title="lfgui.h" alt="" coords="639,80,695,107"/>
+<area shape="rect" id="node16" href="$image_8h.html" title="image.h" alt="" coords="539,155,607,181"/>
+<area shape="rect" id="node21" href="$key_8h.html" title="key.h" alt="" coords="898,155,953,181"/>
+<area shape="rect" id="node22" href="$signal_8h.html" title="signal.h" alt="" coords="977,155,1044,181"/>
+<area shape="rect" id="node17" href="$general_8h.html" title="general.h" alt="" coords="536,229,611,256"/>
+<area shape="rect" id="node18" href="$font_8h.html" title="font.h" alt="" coords="635,229,690,256"/>
 </map>

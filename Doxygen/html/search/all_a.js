@@ -294,6 +294,7 @@ var searchData=
   ['key_5fnews',['Key_News',['../namespacelfgui.html#ae46a30398c20da6fe9b88138df1fce57afb352a82b22397c84bf785e4ee989c6b',1,'lfgui']]],
   ['key_5fno',['Key_No',['../namespacelfgui.html#ae46a30398c20da6fe9b88138df1fce57a88877a2b997ddaa9fc2d21c0bcd44f36',1,'lfgui']]],
   ['key_5fnobreakspace',['Key_nobreakspace',['../namespacelfgui.html#ae46a30398c20da6fe9b88138df1fce57ac94154a5fcde3499100b732a961d990d',1,'lfgui']]],
+  ['key_5fnone',['Key_None',['../namespacelfgui.html#ae46a30398c20da6fe9b88138df1fce57aed8e582700b1c8b1dbc1f2265b9a20b6',1,'lfgui']]],
   ['key_5fnotsign',['Key_notsign',['../namespacelfgui.html#ae46a30398c20da6fe9b88138df1fce57a4d871884f7a1193a47db692a995e5758',1,'lfgui']]],
   ['key_5fntilde',['Key_Ntilde',['../namespacelfgui.html#ae46a30398c20da6fe9b88138df1fce57a38c219e7413ef9e8f1124357d3d53d7e',1,'lfgui']]],
   ['key_5fnumbersign',['Key_NumberSign',['../namespacelfgui.html#ae46a30398c20da6fe9b88138df1fce57a886c4fe3482cfd44afe14c5c04254fe9',1,'lfgui']]],

@@ -113,41 +113,51 @@ $(document).ready(function(){initNavTree('classlfgui_1_1font.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>Wrapper class for stb_truetype.h.  
+ <a href="classlfgui_1_1font.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="font_8h_source.html">font.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlfgui_1_1font_1_1bitmap.html">bitmap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A bitmap represents a single drawn character. It's a greyscale image.  <a href="structlfgui_1_1font_1_1bitmap.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:adb1ecfce4714414d72d18b15613c95f0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1font.html#adb1ecfce4714414d72d18b15613c95f0">font</a> (const std::string &amp;filename)</td></tr>
+<tr class="memdesc:adb1ecfce4714414d72d18b15613c95f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a TrueType font from a file.  <a href="#adb1ecfce4714414d72d18b15613c95f0">More...</a><br /></td></tr>
 <tr class="separator:adb1ecfce4714414d72d18b15613c95f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40cbe72e9e347418e5414c1bc9a6d337"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlfgui_1_1font_1_1bitmap.html">bitmap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1font.html#a40cbe72e9e347418e5414c1bc9a6d337">get_glyph</a> (unsigned int character, int font_size)</td></tr>
-<tr class="separator:a40cbe72e9e347418e5414c1bc9a6d337"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c6de3d2b0339bdcc50473eaffc09b76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlfgui_1_1font_1_1bitmap.html">bitmap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1font.html#a3c6de3d2b0339bdcc50473eaffc09b76">get_glyph_cached</a> (unsigned int character, size_t font_size)</td></tr>
-<tr class="separator:a3c6de3d2b0339bdcc50473eaffc09b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cbee1e6095ae0889a4faca80538ca74"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1font.html#a3cbee1e6095ae0889a4faca80538ca74">~font</a> ()</td></tr>
+<tr class="separator:a3cbee1e6095ae0889a4faca80538ca74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc38cd23ae40a903a06c5f58c1e55072"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlfgui_1_1font_1_1bitmap.html">bitmap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1font.html#adc38cd23ae40a903a06c5f58c1e55072">get_glyph</a> (unsigned int character, int font_size)</td></tr>
+<tr class="memdesc:adc38cd23ae40a903a06c5f58c1e55072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a single drawn character.  <a href="#adc38cd23ae40a903a06c5f58c1e55072">More...</a><br /></td></tr>
+<tr class="separator:adc38cd23ae40a903a06c5f58c1e55072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83e5ac4adabf67dc223f3854b2dbfa4a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlfgui_1_1font_1_1bitmap.html">bitmap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1font.html#a83e5ac4adabf67dc223f3854b2dbfa4a">get_glyph_cached</a> (unsigned int character, size_t font_size)</td></tr>
+<tr class="memdesc:a83e5ac4adabf67dc223f3854b2dbfa4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a single drawn character cached version. If the character has been drawn before the cached version is returned otherwise one is created and returned.  <a href="#a83e5ac4adabf67dc223f3854b2dbfa4a">More...</a><br /></td></tr>
+<tr class="separator:a83e5ac4adabf67dc223f3854b2dbfa4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a422e5805330bb45681c8013015f7c654"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1font.html#a422e5805330bb45681c8013015f7c654">text_length</a> (const std::string &amp;text, int font_size)</td></tr>
+<tr class="memdesc:a422e5805330bb45681c8013015f7c654"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the length of the given text in font size font_size in pixels.  <a href="#a422e5805330bb45681c8013015f7c654">More...</a><br /></td></tr>
 <tr class="separator:a422e5805330bb45681c8013015f7c654"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a143371f8516c559e9ac06b03cc80f021"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1font.html#a143371f8516c559e9ac06b03cc80f021">text_length</a> (const std::string &amp;text, int font_size, size_t start_character, size_t end_character)</td></tr>
+<tr class="memdesc:a143371f8516c559e9ac06b03cc80f021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the length of the given text starting at character start_character until end_character in font size font_size in pixels.  <a href="#a143371f8516c559e9ac06b03cc80f021">More...</a><br /></td></tr>
 <tr class="separator:a143371f8516c559e9ac06b03cc80f021"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a0d4a81f32f02fb4d06734f239998db33"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classlfgui_1_1font.html">font</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1font.html#a0d4a81f32f02fb4d06734f239998db33">default_font</a> ()</td></tr>
+<tr class="memdesc:a0d4a81f32f02fb4d06734f239998db33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default font "FreeSans.ttf". Can also be used to set a different default.  <a href="#a0d4a81f32f02fb4d06734f239998db33">More...</a><br /></td></tr>
 <tr class="separator:a0d4a81f32f02fb4d06734f239998db33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="font_8h_source.html#l00012">12</a> of file <a class="el" href="font_8h_source.html">font.h</a>.</p>
+<div class="textblock"><p>Wrapper class for stb_truetype.h. </p>
+
+<p>Definition at line <a class="el" href="font_8h_source.html#l00018">18</a> of file <a class="el" href="font_8h_source.html">font.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="adb1ecfce4714414d72d18b15613c95f0"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">lfgui::font::font </td>
@@ -157,14 +167,28 @@ Static Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="font_8h_source.html#l00119">119</a> of file <a class="el" href="font_8h_source.html">font.h</a>.</p>
+<p>Loads a TrueType font from a file. </p>
+
+<p>Definition at line <a class="el" href="font_8cpp_source.html#l00049">49</a> of file <a class="el" href="font_8cpp_source.html">font.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3cbee1e6095ae0889a4faca80538ca74"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lfgui::font::~font </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="font_8cpp_source.html#l00124">124</a> of file <a class="el" href="font_8cpp_source.html">font.cpp</a>.</p>
 
 </div>
 </div>
@@ -190,19 +214,18 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="font_8h_source.html#l00191">191</a> of file <a class="el" href="font_8h_source.html">font.h</a>.</p>
+<p>Returns the default font "FreeSans.ttf". Can also be used to set a different default. </p>
+
+<p>Definition at line <a class="el" href="font_8h_source.html#l00146">146</a> of file <a class="el" href="font_8h_source.html">font.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a40cbe72e9e347418e5414c1bc9a6d337"></a>
+<a class="anchor" id="adc38cd23ae40a903a06c5f58c1e55072"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structlfgui_1_1font_1_1bitmap.html">bitmap</a> lfgui::font::get_glyph </td>
+          <td class="memname"><a class="el" href="structlfgui_1_1font_1_1bitmap.html">font::bitmap</a> lfgui::font::get_glyph </td>
           <td>(</td>
           <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>character</em>, </td>
@@ -219,26 +242,20 @@ Static Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="font_8h_source.html#l00136">136</a> of file <a class="el" href="font_8h_source.html">font.h</a>.</p>
+<p>Returns a single drawn character. </p>
+
+<p>Definition at line <a class="el" href="font_8cpp_source.html#l00067">67</a> of file <a class="el" href="font_8cpp_source.html">font.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a3c6de3d2b0339bdcc50473eaffc09b76"></a>
+<a class="anchor" id="a83e5ac4adabf67dc223f3854b2dbfa4a"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structlfgui_1_1font_1_1bitmap.html">bitmap</a> lfgui::font::get_glyph_cached </td>
+          <td class="memname"><a class="el" href="structlfgui_1_1font_1_1bitmap.html">font::bitmap</a> &amp; lfgui::font::get_glyph_cached </td>
           <td>(</td>
           <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>character</em>, </td>
@@ -255,23 +272,17 @@ Static Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="font_8h_source.html#l00148">148</a> of file <a class="el" href="font_8h_source.html">font.h</a>.</p>
+<p>Returns a single drawn character cached version. If the character has been drawn before the cached version is returned otherwise one is created and returned. </p>
+
+<p>Definition at line <a class="el" href="font_8cpp_source.html#l00079">79</a> of file <a class="el" href="font_8cpp_source.html">font.cpp</a>.</p>
 
 </div>
 </div>
 <a class="anchor" id="a422e5805330bb45681c8013015f7c654"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int lfgui::font::text_length </td>
@@ -291,23 +302,17 @@ Static Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="font_8h_source.html#l00165">165</a> of file <a class="el" href="font_8h_source.html">font.h</a>.</p>
+<p>Returns the length of the given text in font size font_size in pixels. </p>
+
+<p>Definition at line <a class="el" href="font_8cpp_source.html#l00096">96</a> of file <a class="el" href="font_8cpp_source.html">font.cpp</a>.</p>
 
 </div>
 </div>
 <a class="anchor" id="a143371f8516c559e9ac06b03cc80f021"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int lfgui::font::text_length </td>
@@ -339,19 +344,17 @@ Static Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="font_8h_source.html#l00178">178</a> of file <a class="el" href="font_8h_source.html">font.h</a>.</p>
+<p>Returns the length of the given text starting at character start_character until end_character in font size font_size in pixels. </p>
+
+<p>Definition at line <a class="el" href="font_8cpp_source.html#l00110">110</a> of file <a class="el" href="font_8cpp_source.html">font.cpp</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>lfgui/<a class="el" href="font_8h_source.html">font.h</a></li>
+<li>lfgui/<a class="el" href="font_8cpp_source.html">font.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

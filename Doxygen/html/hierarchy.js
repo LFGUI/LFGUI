@@ -16,9 +16,6 @@ var hierarchy =
     [ "lfgui::point_general< T >", "structlfgui_1_1point__general.html", null ],
     [ "lfgui::point_general< float >", "structlfgui_1_1point__general.html", null ],
     [ "lfgui::point_general< int >", "structlfgui_1_1point__general.html", null ],
-    [ "QLayout", null, [
-      [ "lfgui::qt_layout", "classlfgui_1_1qt__layout.html", null ]
-    ] ],
     [ "QWidget", null, [
       [ "lfgui::qt_hybrid", "classlfgui_1_1qt__hybrid.html", null ],
       [ "lfgui::wrapper_qt::gui", "classlfgui_1_1wrapper__qt_1_1gui.html", null ]
@@ -41,7 +38,8 @@ var hierarchy =
         [ "lfgui::button", "classlfgui_1_1button.html", null ]
       ] ],
       [ "lfgui::lineedit", "classlfgui_1_1lineedit.html", null ],
-      [ "lfgui::slider", "classlfgui_1_1slider.html", null ]
+      [ "lfgui::slider", "classlfgui_1_1slider.html", null ],
+      [ "lfgui::window", "classlfgui_1_1window.html", null ]
     ] ],
     [ "lfgui::widget_geometry", "structlfgui_1_1widget__geometry.html", null ]
 ];

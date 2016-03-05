@@ -1,7 +1,7 @@
 <map id="lfgui/lfgui.h" name="lfgui/lfgui.h">
-<area shape="rect" id="node9" href="$image_8h.html" title="image.h" alt="" coords="454,80,522,107"/>
-<area shape="rect" id="node15" href="$key_8h.html" title="key.h" alt="" coords="958,80,1012,107"/>
-<area shape="rect" id="node16" href="$signal_8h.html" title="signal.h" alt="" coords="1037,80,1104,107"/>
-<area shape="rect" id="node10" href="$general_8h.html" title="general.h" alt="" coords="250,155,325,181"/>
-<area shape="rect" id="node12" href="$font_8h.html" title="font.h" alt="" coords="171,155,226,181"/>
+<area shape="rect" id="node9" href="$image_8h.html" title="image.h" alt="" coords="327,80,395,107"/>
+<area shape="rect" id="node14" href="$key_8h.html" title="key.h" alt="" coords="685,80,740,107"/>
+<area shape="rect" id="node15" href="$signal_8h.html" title="signal.h" alt="" coords="765,80,831,107"/>
+<area shape="rect" id="node10" href="$general_8h.html" title="general.h" alt="" coords="323,155,398,181"/>
+<area shape="rect" id="node11" href="$font_8h.html" title="font.h" alt="" coords="423,155,477,181"/>
 </map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['uid',['uid',['../classlfgui_1_1widget.html#a31bf2b5a956cbc61f8faf0c97b007c4f',1,'lfgui::widget']]]
+  ['title',['title',['../classlfgui_1_1window.html#a36c1b263d38f7f27f1263408ed7e4d2e',1,'lfgui::window']]]
 ];

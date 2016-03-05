@@ -3,7 +3,6 @@ var searchData=
   ['label',['label',['../classlfgui_1_1label.html',1,'lfgui']]],
   ['label',['label',['../classlfgui_1_1label.html#aa3c44bc11f8c0f767b92599d4c8e2efc',1,'lfgui::label::label(int x, int y, int width, int height=20, const std::string &amp;text=&quot;&quot;, color text_color={255, 255, 255}, int text_size=16)'],['../classlfgui_1_1label.html#a74e371824d20cb8ecfb19f4768b6761c',1,'lfgui::label::label(int width=100, int height=20)']]],
   ['label_2eh',['label.h',['../label_8h.html',1,'']]],
-  ['layout',['layout',['../classlfgui_1_1qt__hybrid.html#a7f1d29e4ae1625bd49bcd788b01f2430',1,'lfgui::qt_hybrid']]],
   ['left',['left',['../unionlfgui_1_1mouse__button.html#a88ba67bdb10b97be7af377d68f4fee28',1,'lfgui::mouse_button::left()'],['../structlfgui_1_1rect.html#ac3efe5442d5294fb46527c3bd9706789',1,'lfgui::rect::left()'],['../namespacelfgui.html#ade20c527fc4eb3eaef9c2abc6b6dbcb5a811882fecd5c7618d7099ebbd39ea254',1,'lfgui::left()']]],
   ['lfgui',['lfgui',['../namespacelfgui.html',1,'']]],
   ['lfgui_2ecpp',['lfgui.cpp',['../lfgui_8cpp.html',1,'']]],

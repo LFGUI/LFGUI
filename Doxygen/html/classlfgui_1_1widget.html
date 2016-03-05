@@ -125,7 +125,7 @@ Inheritance diagram for lfgui::widget:</div>
 <div class="dyncontent">
 <div class="center"><img src="classlfgui_1_1widget__inherit__graph.png" border="0" usemap="#lfgui_1_1widget_inherit__map" alt="Inheritance graph"/></div>
 <map name="lfgui_1_1widget_inherit__map" id="lfgui_1_1widget_inherit__map">
-<area shape="rect" id="node2" href="classlfgui_1_1gui.html" title="Used as a manager class and a LFGUI instance. " alt="" coords="221,80,291,107"/><area shape="rect" id="node5" href="classlfgui_1_1label.html" title="Simple text label. " alt="" coords="343,80,423,107"/><area shape="rect" id="node7" href="classlfgui_1_1lineedit.html" title="lfgui::lineedit" alt="" coords="447,80,542,107"/><area shape="rect" id="node8" href="classlfgui_1_1slider.html" title="A horizontal slider. " alt="" coords="566,80,650,107"/><area shape="rect" id="node3" href="classlfgui_1_1wrapper__qt_1_1gui.html" title="The LFGUI Qt Wrapper. It is also a QWidget and can therefore be simply used as a QWidget. " alt="" coords="5,155,147,181"/><area shape="rect" id="node4" href="classlfgui_1_1wrapper__urho3d_1_1gui.html" title="The LFGUI wrapper for Urho3D (http://urho3d.org/ or http://urho3d.github.io/). It will automatically ..." alt="" coords="171,155,341,181"/><area shape="rect" id="node6" href="classlfgui_1_1button.html" title="Simple push button with a text. " alt="" coords="365,155,454,181"/></map>
+<area shape="rect" id="node2" href="classlfgui_1_1gui.html" title="Used as a manager class and a LFGUI instance. " alt="" coords="221,80,291,107"/><area shape="rect" id="node5" href="classlfgui_1_1label.html" title="Simple text label. " alt="" coords="343,80,423,107"/><area shape="rect" id="node7" href="classlfgui_1_1lineedit.html" title="lfgui::lineedit" alt="" coords="447,80,542,107"/><area shape="rect" id="node8" href="classlfgui_1_1slider.html" title="A horizontal slider. " alt="" coords="566,80,650,107"/><area shape="rect" id="node9" href="classlfgui_1_1window.html" title="A window with a titlebar and a close button. " alt="" coords="674,80,769,107"/><area shape="rect" id="node3" href="classlfgui_1_1wrapper__qt_1_1gui.html" title="The LFGUI Qt Wrapper. It is also a QWidget and can therefore be simply used as a QWidget. " alt="" coords="5,155,147,181"/><area shape="rect" id="node4" href="classlfgui_1_1wrapper__urho3d_1_1gui.html" title="The LFGUI wrapper for Urho3D (http://urho3d.org/ or http://urho3d.github.io/). It will automatically ..." alt="" coords="171,155,341,181"/><area shape="rect" id="node6" href="classlfgui_1_1button.html" title="Simple push button with a text. " alt="" coords="365,155,454,181"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for lfgui::widget:</div>
@@ -137,6 +137,8 @@ Collaboration diagram for lfgui::widget:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:aec771aa63b9acad88f176e25d7b2c3f8"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#aec771aa63b9acad88f176e25d7b2c3f8">~widget</a> ()</td></tr>
+<tr class="separator:aec771aa63b9acad88f176e25d7b2c3f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8a32950c2dd658324fb4b0fcac69c19"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#ad8a32950c2dd658324fb4b0fcac69c19">_insert_event_mouse_press</a> (const <a class="el" href="classlfgui_1_1event__mouse.html">event_mouse</a> &amp;)</td></tr>
 <tr class="memdesc:ad8a32950c2dd658324fb4b0fcac69c19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts a mouse press event with local coordinates. Normally only called from the parent widget (or the gui class if that is the parent). Calls on_mouse_press.  <a href="#ad8a32950c2dd658324fb4b0fcac69c19">More...</a><br /></td></tr>
 <tr class="separator:ad8a32950c2dd658324fb4b0fcac69c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,8 +152,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a9b940e54eec2d80ba6e8be273d4e0b75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts a mouse wheel event with local coordinates. Normally only called from the parent widget (or the gui class if that is the parent). Calls on_mouse_wheel.  <a href="#a9b940e54eec2d80ba6e8be273d4e0b75">More...</a><br /></td></tr>
 <tr class="separator:a9b940e54eec2d80ba6e8be273d4e0b75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e317c7d9e62d4c5f27973384e887df8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a2e317c7d9e62d4c5f27973384e887df8">_insert_event_key_press</a> (const <a class="el" href="classlfgui_1_1event__key.html">event_key</a> &amp;)</td></tr>
+<tr class="memdesc:a2e317c7d9e62d4c5f27973384e887df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts a key press event. Normally only called from the parent widget (or the gui class if that is the parent). Calls on_key_press.  <a href="#a2e317c7d9e62d4c5f27973384e887df8">More...</a><br /></td></tr>
 <tr class="separator:a2e317c7d9e62d4c5f27973384e887df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a652ab0d8015c952e50a25d0e7d3c49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a7a652ab0d8015c952e50a25d0e7d3c49">_insert_event_key_release</a> (const <a class="el" href="classlfgui_1_1event__key.html">event_key</a> &amp;)</td></tr>
+<tr class="memdesc:a7a652ab0d8015c952e50a25d0e7d3c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts a key release event. Normally only called from the parent widget (or the gui class if that is the parent). Calls on_key_release.  <a href="#a7a652ab0d8015c952e50a25d0e7d3c49">More...</a><br /></td></tr>
 <tr class="separator:a7a652ab0d8015c952e50a25d0e7d3c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a175663ebbfafab802a74702e5751987d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a175663ebbfafab802a74702e5751987d">redraw</a> ()</td></tr>
 <tr class="memdesc:a175663ebbfafab802a74702e5751987d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call <a class="el" href="classlfgui_1_1widget.html#ac43c9d05d4e2447de30203f097fefbae" title="called when this widget is being drawn. ">on_paint()</a>.  <a href="#a175663ebbfafab802a74702e5751987d">More...</a><br /></td></tr>
@@ -171,10 +175,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a40a4c6aa82994c837cba388b339d7fd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a40a4c6aa82994c837cba388b339d7fd1">resize</a> (<a class="el" href="namespacelfgui.html#af0992b5e1d058ae654fd49218cc39c04">point</a> <a class="el" href="classlfgui_1_1widget.html#a241e031eddb18b1165f341f4381e44a5">size</a>)</td></tr>
 <tr class="memdesc:a40a4c6aa82994c837cba388b339d7fd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resizes this widget to the given size. Calls <a class="el" href="classlfgui_1_1widget.html#a58f4c1dad9aab83eeddc4006b6fd3f3f" title="called when this widget changes its size. The parameter is the new size. ">on_resize()</a>;.  <a href="#a40a4c6aa82994c837cba388b339d7fd1">More...</a><br /></td></tr>
 <tr class="separator:a40a4c6aa82994c837cba388b339d7fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61a9aa030efd943b849c75337b84cebb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlfgui_1_1widget.html">widget</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a61a9aa030efd943b849c75337b84cebb">set_pos</a> (int x, int y, float x_percent, float y_percent)</td></tr>
-<tr class="separator:a61a9aa030efd943b849c75337b84cebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a905fc3aa4fb220f8bd56b1ecd0ec4953"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlfgui_1_1widget.html">widget</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a905fc3aa4fb220f8bd56b1ecd0ec4953">set_size</a> (int x, int y, float x_percent, float y_percent)</td></tr>
-<tr class="separator:a905fc3aa4fb220f8bd56b1ecd0ec4953"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea45acb6ee4c394d6ea963ac91c6b31c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlfgui_1_1widget.html">widget</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#aea45acb6ee4c394d6ea963ac91c6b31c">set_pos</a> (int x, int y, float x_percent=0, float y_percent=0)</td></tr>
+<tr class="separator:aea45acb6ee4c394d6ea963ac91c6b31c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84a6f1f408db768fd1b7ac8c4ed7962a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlfgui_1_1widget.html">widget</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a84a6f1f408db768fd1b7ac8c4ed7962a">set_size</a> (int x, int y, float x_percent=0, float y_percent=0)</td></tr>
+<tr class="separator:a84a6f1f408db768fd1b7ac8c4ed7962a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6b7752e040c1a427de35e8e4648150e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlfgui_1_1widget.html">widget</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#af6b7752e040c1a427de35e8e4648150e">set_offset</a> (float x_percent, float y_percent)</td></tr>
 <tr class="separator:af6b7752e040c1a427de35e8e4648150e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18f48a9a400e3d86fb75a28b5df346dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a18f48a9a400e3d86fb75a28b5df346dd">need_redraw</a> ()</td></tr>
@@ -183,6 +187,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad70f804bffa3e58db3ff6b0902d19188"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#ad70f804bffa3e58db3ff6b0902d19188">add_child</a> (Args...args)</td></tr>
 <tr class="memdesc:ad70f804bffa3e58db3ff6b0902d19188"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs and adds a child widget. Returns a pointer to the widget (uses a std::unique_ptr internally, no need for delete).  <a href="#ad70f804bffa3e58db3ff6b0902d19188">More...</a><br /></td></tr>
 <tr class="separator:ad70f804bffa3e58db3ff6b0902d19188"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7d71aac5e016a40e501e41c10b228d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#aa7d71aac5e016a40e501e41c10b228d6">remove_child</a> (<a class="el" href="classlfgui_1_1widget.html">widget</a> *w)</td></tr>
+<tr class="memdesc:aa7d71aac5e016a40e501e41c10b228d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the given child widget.  <a href="#aa7d71aac5e016a40e501e41c10b228d6">More...</a><br /></td></tr>
+<tr class="separator:aa7d71aac5e016a40e501e41c10b228d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a204e8b7290baa467be3beccaa84b944d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a204e8b7290baa467be3beccaa84b944d">translate</a> (int x, int y)</td></tr>
 <tr class="memdesc:a204e8b7290baa467be3beccaa84b944d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves this widget.  <a href="#a204e8b7290baa467be3beccaa84b944d">More...</a><br /></td></tr>
 <tr class="separator:a204e8b7290baa467be3beccaa84b944d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -204,6 +211,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae53e658427d433fe1a575d6479fe1fde"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#ae53e658427d433fe1a575d6479fe1fde">has_focus</a> () const </td></tr>
 <tr class="memdesc:ae53e658427d433fe1a575d6479fe1fde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this widget has keyboard focus.  <a href="#ae53e658427d433fe1a575d6479fe1fde">More...</a><br /></td></tr>
 <tr class="separator:ae53e658427d433fe1a575d6479fe1fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a70e6e244859445451b4ec04d47d8b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a8a70e6e244859445451b4ec04d47d8b2">set_focusable</a> (bool <a class="el" href="classlfgui_1_1widget.html#a44a73fddb62f18e3247eeabdf512297d">focusable</a>)</td></tr>
+<tr class="memdesc:a8a70e6e244859445451b4ec04d47d8b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the focusable state of this widget. Non-focusable widgets are transparent for some events (like click and drag).  <a href="#a8a70e6e244859445451b4ec04d47d8b2">More...</a><br /></td></tr>
+<tr class="separator:a8a70e6e244859445451b4ec04d47d8b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44a73fddb62f18e3247eeabdf512297d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a44a73fddb62f18e3247eeabdf512297d">focusable</a> () const </td></tr>
+<tr class="memdesc:a44a73fddb62f18e3247eeabdf512297d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this widget can get keyboard and mouse focus (default true but some widgets like label disable the focusable flag). Non-focusable widgets are transparent for some events (like click and drag).  <a href="#a44a73fddb62f18e3247eeabdf512297d">More...</a><br /></td></tr>
+<tr class="separator:a44a73fddb62f18e3247eeabdf512297d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -276,6 +289,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a2799223b63eb3e8b94f8102066872d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab65c74d4c6e18c807ac31c0fc438555d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#ab65c74d4c6e18c807ac31c0fc438555d">widget</a> (int x, int y, int <a class="el" href="classlfgui_1_1widget.html#ab2288acce33fcae601ebfde1a25f150b">width</a>, int <a class="el" href="classlfgui_1_1widget.html#aec8665e938af35d5315e19e3d619546b">height</a>)</td></tr>
 <tr class="separator:ab65c74d4c6e18c807ac31c0fc438555d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabe226c011ee989d8742e78b42952444"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#aabe226c011ee989d8742e78b42952444">_check_mouse_hover</a> (<a class="el" href="namespacelfgui.html#af0992b5e1d058ae654fd49218cc39c04">point</a> p) const </td></tr>
+<tr class="separator:aabe226c011ee989d8742e78b42952444"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
@@ -295,6 +310,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a799946a4cc5034b78bb90d7c7abd0bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a822b9982129e5da1166edf63dcb6ded6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelfgui.html#af0992b5e1d058ae654fd49218cc39c04">point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a822b9982129e5da1166edf63dcb6ded6">size_old</a></td></tr>
 <tr class="separator:a822b9982129e5da1166edf63dcb6ded6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f77057270261ade1ea14dbfb57fc772"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlfgui_1_1widget.html#a0f77057270261ade1ea14dbfb57fc772">_focusable</a> =true</td></tr>
+<tr class="separator:a0f77057270261ade1ea14dbfb57fc772"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -304,8 +321,33 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a widget. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00081">81</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00103">103</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="aec771aa63b9acad88f176e25d7b2c3f8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">lfgui::widget::~widget </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00213">213</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a2799223b63eb3e8b94f8102066872d79"></a>
 <div class="memitem">
 <div class="memproto">
@@ -386,7 +428,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00254">254</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00287">287</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -413,7 +455,33 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00190">190</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00191">191</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aabe226c011ee989d8742e78b42952444"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lfgui::widget::_check_mouse_hover </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacelfgui.html#af0992b5e1d058ae654fd49218cc39c04">point</a>&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00241">241</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
 
 </div>
 </div>
@@ -431,7 +499,9 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00134">134</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+<p>Inserts a key press event. Normally only called from the parent widget (or the gui class if that is the parent). Calls on_key_press. </p>
+
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00135">135</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
 
 </div>
 </div>
@@ -449,7 +519,9 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00143">143</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+<p>Inserts a key release event. Normally only called from the parent widget (or the gui class if that is the parent). Calls on_key_release. </p>
+
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00144">144</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
 
 </div>
 </div>
@@ -469,7 +541,7 @@ Friends</h2></td></tr>
 
 <p>Inserts a mouse move event with local coordinates. Normally only called from the parent widget (or the gui class if that is the parent). Calls on_mouse_move and on_mouse_drag. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00079">79</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00082">82</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
 
 </div>
 </div>
@@ -509,7 +581,7 @@ Friends</h2></td></tr>
 
 <p>Inserts a mouse release event with local coordinates. Normally only called from the parent widget (or the gui class if that is the parent). Calls on_mouse_release and on_mouse_click. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00045">45</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00047">47</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
 
 </div>
 </div>
@@ -529,7 +601,7 @@ Friends</h2></td></tr>
 
 <p>Inserts a mouse wheel event with local coordinates. Normally only called from the parent widget (or the gui class if that is the parent). Calls on_mouse_wheel. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00112">112</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00113">113</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
 
 </div>
 </div>
@@ -561,7 +633,7 @@ template&lt;typename T , typename... Args&gt; </div>
 <p>Example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> button=<a class="code" href="classlfgui_1_1widget.html#a2799223b63eb3e8b94f8102066872d79">widget</a>-&gt;add_child&lt;<a class="code" href="classlfgui_1_1button.html">lfgui::button</a>&gt;(50,155,100,25);    <span class="comment">// add a button at 50,155 with the size 100,25</span></div>
 <div class="line"><span class="keyword">auto</span> slider=<a class="code" href="classlfgui_1_1widget.html#a2799223b63eb3e8b94f8102066872d79">widget</a>-&gt;add_child&lt;<a class="code" href="classlfgui_1_1slider.html">lfgui::slider</a>&gt;(50,95,180,50);     <span class="comment">// add a slider</span></div>
 </div><!-- fragment --> 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00172">172</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00200">200</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -580,7 +652,34 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Gives this widget keyboard focus. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00202">202</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00203">203</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a44a73fddb62f18e3247eeabdf512297d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lfgui::widget::focusable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if this widget can get keyboard and mouse focus (default true but some widgets like label disable the focusable flag). Non-focusable widgets are transparent for some events (like click and drag). </p>
+
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00269">269</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -605,7 +704,7 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00241">241</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00274">274</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -624,7 +723,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Returns true if this widget has keyboard focus. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00207">207</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00208">208</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
 
 </div>
 </div>
@@ -649,7 +748,7 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00142">142</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00170">170</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -677,7 +776,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Returns true if the given point is over this widget. For detecting if a mouse click hit. Uses a bounding box check per default. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00136">136</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00164">164</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -702,16 +801,13 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00151">151</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00179">179</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
 <a class="anchor" id="a33fe8be2ab91176586d65a5efe1b0bcc"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void lfgui::widget::raise </td>
@@ -720,16 +816,11 @@ template&lt;typename T , typename... Args&gt; </div>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Moves this widget to the end of the parents child list. This means that it is drawn as the last (on top) and receives events first. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00216">216</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00225">225</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
 
 </div>
 </div>
@@ -758,7 +849,35 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlfgui_1_1wrapper__urho3d_1_1gui.html#a60985756777b26a625fcc16a3c41bd0a">lfgui::wrapper_urho3d::gui</a>, and <a class="el" href="classlfgui_1_1wrapper__qt_1_1gui.html#a74c360d19e373377d648aae7715cea63">lfgui::wrapper_qt::gui</a>.</p>
 
-<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00158">158</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00159">159</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa7d71aac5e016a40e501e41c10b228d6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lfgui::widget::remove_child </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classlfgui_1_1widget.html">widget</a> *&#160;</td>
+          <td class="paramname"><em>w</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Removes the given child widget. </p>
+
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00206">206</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -788,7 +907,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Resizes this widget to the given width and height. Calls <a class="el" href="classlfgui_1_1widget.html#a58f4c1dad9aab83eeddc4006b6fd3f3f" title="called when this widget changes its size. The parameter is the new size. ">on_resize()</a>;. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00152">152</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8cpp_source.html#l00153">153</a> of file <a class="el" href="lfgui_8cpp_source.html">lfgui.cpp</a>.</p>
 
 </div>
 </div>
@@ -816,7 +935,35 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Resizes this widget to the given size. Calls <a class="el" href="classlfgui_1_1widget.html#a58f4c1dad9aab83eeddc4006b6fd3f3f" title="called when this widget changes its size. The parameter is the new size. ">on_resize()</a>;. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00147">147</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00175">175</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8a70e6e244859445451b4ec04d47d8b2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lfgui::widget::set_focusable </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>focusable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the focusable state of this widget. Non-focusable widgets are transparent for some events (like click and drag). </p>
+
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00266">266</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -852,11 +999,11 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00150">150</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00178">178</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a61a9aa030efd943b849c75337b84cebb"></a>
+<a class="anchor" id="aea45acb6ee4c394d6ea963ac91c6b31c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -879,13 +1026,13 @@ template&lt;typename T , typename... Args&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>x_percent</em>, </td>
+          <td class="paramname"><em>x_percent</em> = <code>0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>y_percent</em>&#160;</td>
+          <td class="paramname"><em>y_percent</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -900,11 +1047,11 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00148">148</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00176">176</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a905fc3aa4fb220f8bd56b1ecd0ec4953"></a>
+<a class="anchor" id="a84a6f1f408db768fd1b7ac8c4ed7962a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -927,13 +1074,13 @@ template&lt;typename T , typename... Args&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>x_percent</em>, </td>
+          <td class="paramname"><em>x_percent</em> = <code>0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>y_percent</em>&#160;</td>
+          <td class="paramname"><em>y_percent</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -948,7 +1095,7 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00149">149</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00177">177</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -973,7 +1120,7 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00143">143</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00171">171</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1001,7 +1148,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Transforms the given point with local coordinates of this widget into global coordinates (global as in relative to the gui class managing this widget). </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00184">184</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00224">224</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1029,7 +1176,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Transforms the given point with global coordinates into local coordinates of this widget (global as in relative to the gui class managing this widget). </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00200">200</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00240">240</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1067,7 +1214,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Moves this widget. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00178">178</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00218">218</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1095,7 +1242,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Moves this widget. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00180">180</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00220">220</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1120,7 +1267,7 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00141">141</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00169">169</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1143,11 +1290,33 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00250">250</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00283">283</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a0f77057270261ade1ea14dbfb57fc772"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lfgui::widget::_focusable =true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00111">111</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a799946a4cc5034b78bb90d7c7abd0bf0"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1166,7 +1335,7 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00087">87</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00109">109</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1188,7 +1357,7 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00085">85</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00107">107</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1204,7 +1373,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Determines if this widget and all its children are fully redrawn the next time <a class="el" href="classlfgui_1_1widget.html#a175663ebbfafab802a74702e5751987d" title="Call on_paint(). ">redraw()</a> gets called. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00091">91</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00114">114</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1220,7 +1389,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>The geometry used to position and size this widget. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00096">96</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00119">119</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1236,7 +1405,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>The cIMG image that is used to display this widget. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00097">97</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00120">120</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1252,7 +1421,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when this widgets gets keyboard focus. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00112">112</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00135">135</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1268,7 +1437,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when this widgets loses keyboard focus. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00113">113</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00136">136</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1284,7 +1453,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called on keyboard key press. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00110">110</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00133">133</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1300,7 +1469,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called on keyboard key press. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00111">111</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00134">134</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1316,7 +1485,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when a mouse button has been pressed on this widget and is now released on this widget </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00101">101</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00124">124</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1332,7 +1501,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when a mouse button had been pressed on this widget and is now released on this widget or somewhere else </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00102">102</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00125">125</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1348,7 +1517,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when the mouse cursor has been pressed on this widget and is held while moving over this widget </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00104">104</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00127">127</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1364,7 +1533,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when the mouse cursor moves from outside this widget onto this widget </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00105">105</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00128">128</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1380,7 +1549,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when the mouse was over this widget and just left this widget </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00106">106</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00129">129</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1396,7 +1565,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when the mouse cursor is moving over this widget </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00103">103</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00126">126</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1412,7 +1581,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when a mouse button is pressed on this widget </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00099">99</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00122">122</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1428,7 +1597,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when a mouse button is release on this widget </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00100">100</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00123">123</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1444,7 +1613,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when the mouse wheel is used while the cursor is over this widget </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00107">107</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00130">130</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1460,7 +1629,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when this widget is being drawn. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00109">109</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00132">132</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1476,7 +1645,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>called when this widget changes its size. The parameter is the new size. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00108">108</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00131">131</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1498,7 +1667,7 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00086">86</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00108">108</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1514,7 +1683,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Can be set to a time amount in seconds to (at least) redraw this widget and all its children every N seconds. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00093">93</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00116">116</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1530,7 +1699,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p>Used to measure the time since the last redraw. </p>
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00095">95</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00118">118</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1552,7 +1721,7 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00088">88</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00110">110</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>
@@ -1574,7 +1743,7 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00084">84</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
+<p>Definition at line <a class="el" href="lfgui_8h_source.html#l00106">106</a> of file <a class="el" href="lfgui_8h_source.html">lfgui.h</a>.</p>
 
 </div>
 </div>

@@ -1,13 +1,14 @@
 <map id="lfgui/general.h" name="lfgui/general.h">
-<area shape="rect" id="node2" href="$image_8h.html" title="lfgui/image.h" alt="" coords="413,80,507,107"/>
-<area shape="rect" id="node12" href="$qt__hybrid_8h.html" title="lfgui/qt_hybrid.h" alt="" coords="531,80,645,107"/>
-<area shape="rect" id="node3" href="$lfgui_8h.html" title="lfgui/lfgui.h" alt="" coords="359,155,441,181"/>
-<area shape="rect" id="node11" href="$image_8cpp.html" title="lfgui/image.cpp" alt="" coords="465,155,575,181"/>
-<area shape="rect" id="node4" href="$label_8h.html" title="lfgui/label.h" alt="" coords="10,237,97,263"/>
-<area shape="rect" id="node6" href="$lfgui_8cpp.html" title="lfgui/lfgui.cpp" alt="" coords="121,237,218,263"/>
-<area shape="rect" id="node7" href="$lfgui__wrapper__qt_8h.html" title="lfgui/lfgui_wrapper_qt.h" alt="" coords="242,237,395,263"/>
-<area shape="rect" id="node8" href="$lfgui__wrapper__urho3d_8h.html" title="lfgui/lfgui_wrapper\l_urho3d.h" alt="" coords="419,229,543,271"/>
-<area shape="rect" id="node9" href="$lineedit_8h.html" title="lfgui/lineedit.h" alt="" coords="568,237,669,263"/>
-<area shape="rect" id="node10" href="$slider_8h.html" title="lfgui/slider.h" alt="" coords="693,237,784,263"/>
+<area shape="rect" id="node2" href="$image_8h.html" title="lfgui/image.h" alt="" coords="455,80,550,107"/>
+<area shape="rect" id="node13" href="$qt__hybrid_8h.html" title="lfgui/qt_hybrid.h" alt="" coords="574,80,687,107"/>
+<area shape="rect" id="node3" href="$lfgui_8h.html" title="lfgui/lfgui.h" alt="" coords="401,155,484,181"/>
+<area shape="rect" id="node12" href="$image_8cpp.html" title="lfgui/image.cpp" alt="" coords="508,155,617,181"/>
+<area shape="rect" id="node4" href="$label_8h.html" title="lfgui/label.h" alt="" coords="53,237,139,263"/>
+<area shape="rect" id="node7" href="$lfgui_8cpp.html" title="lfgui/lfgui.cpp" alt="" coords="163,237,261,263"/>
+<area shape="rect" id="node8" href="$lfgui__wrapper__qt_8h.html" title="lfgui/lfgui_wrapper_qt.h" alt="" coords="285,237,438,263"/>
+<area shape="rect" id="node9" href="$lfgui__wrapper__urho3d_8h.html" title="lfgui/lfgui_wrapper\l_urho3d.h" alt="" coords="462,229,586,271"/>
+<area shape="rect" id="node10" href="$lineedit_8h.html" title="lfgui/lineedit.h" alt="" coords="611,237,712,263"/>
+<area shape="rect" id="node11" href="$slider_8h.html" title="lfgui/slider.h" alt="" coords="736,237,827,263"/>
 <area shape="rect" id="node5" href="$button_8h.html" title="lfgui/button.h" alt="" coords="5,319,101,345"/>
+<area shape="rect" id="node6" href="$window_8h.html" title="lfgui/window.h" alt="" coords="45,393,147,420"/>
 </map>

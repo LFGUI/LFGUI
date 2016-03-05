@@ -10,6 +10,7 @@ var classlfgui_1_1wrapper__qt_1_1gui =
     [ "paintEvent", "classlfgui_1_1wrapper__qt_1_1gui.html#a76e38b3a7cec02aacfe9a8abdf5f84d0", null ],
     [ "redraw", "classlfgui_1_1wrapper__qt_1_1gui.html#a74c360d19e373377d648aae7715cea63", null ],
     [ "resizeEvent", "classlfgui_1_1wrapper__qt_1_1gui.html#aa6dbe2b1581a38f6ae4d41f2c13651d3", null ],
+    [ "set_cursor", "classlfgui_1_1wrapper__qt_1_1gui.html#a33efd1119c4ec81105e17f1cb7d5f4d5", null ],
     [ "wheelEvent", "classlfgui_1_1wrapper__qt_1_1gui.html#a669060e51eb516c1d365ff96017f914a", null ],
     [ "width", "classlfgui_1_1wrapper__qt_1_1gui.html#a835c86bbd46322d49a759b98993796ff", null ],
     [ "qimage", "classlfgui_1_1wrapper__qt_1_1gui.html#a0700038abbc01ce6f46ec2828864f2e1", null ]

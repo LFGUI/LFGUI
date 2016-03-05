@@ -220,7 +220,7 @@ $(document).ready(function(){initNavTree('image_8cpp_source.html','');});
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                y=y0+(y1-y0)*<span class="keywordtype">float</span>(max_x-x0)/(x1-x0);</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                x=max_x;</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>(outcodeOut&amp;position::left)      <span class="comment">// point is to the left of clip rectangle</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">else</span><span class="comment">// if(outcodeOut&amp;position::left)      // point is to the left of clip rectangle</span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            {</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                y=y0+(y1-y0)*<span class="keywordtype">float</span>(0-x0)/(x1-x0);</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                x=0;</div>
@@ -395,21 +395,150 @@ $(document).ready(function(){initNavTree('image_8cpp_source.html','');});
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    }</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;}</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
-<div class="line"><a name="l00291"></a><span class="lineno"><a class="line" href="classlfgui_1_1image.html#acc875454ce90aa911a7d6b971cf980f4">  291</a></span>&#160;<span class="keywordtype">void</span> image::clear()</div>
+<div class="line"><a name="l00291"></a><span class="lineno"><a class="line" href="classlfgui_1_1image.html#ae07e05b36c1aeb4c689540a499c57881">  291</a></span>&#160;<span class="keywordtype">void</span> image::draw_image_corners_stretched(<span class="keywordtype">int</span> border_width,<span class="keyword">const</span> <a class="code" href="classlfgui_1_1image.html">image</a>&amp; img)</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;{</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    cimage-&gt;fill((uint8_t)0,(uint8_t)0);</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;}</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keywordtype">int</span> w=img.<a class="code" href="classlfgui_1_1image.html#a3a2b4c824076f4516abb30151e70e521">width</a>();</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="keywordtype">int</span> h=img.<a class="code" href="classlfgui_1_1image.html#a7f479e2615bbbdb79ac0e03c1769fc26">height</a>();</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
-<div class="line"><a name="l00296"></a><span class="lineno"><a class="line" href="classlfgui_1_1image.html#aeb45492c006af41da3a84d11879f9931">  296</a></span>&#160;image::~image(){}</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;}</div>
-<div class="ttc" id="classlfgui_1_1image_html_af08ab297ffcec04a15808a04419b513c"><div class="ttname"><a href="classlfgui_1_1image.html#af08ab297ffcec04a15808a04419b513c">lfgui::image::cimage</a></div><div class="ttdeci">std::unique_ptr&lt; cimg &gt; cimage</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00031">image.h:31</a></div></div>
-<div class="ttc" id="classlfgui_1_1image_html_ab204351caadde42569ff23bffa1d398c"><div class="ttname"><a href="classlfgui_1_1image.html#ab204351caadde42569ff23bffa1d398c">lfgui::image::get_pixel</a></div><div class="ttdeci">color get_pixel(int x, int y) const </div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00146">image.h:146</a></div></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="comment">// draw corners</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    draw_image(0,0,img.<a class="code" href="classlfgui_1_1image.html#a70688882bde17a62348618ddf40323cf">cropped</a>(0,0,w/2,h/2).<a class="code" href="classlfgui_1_1image.html#a52100905942e181485f9293f713f3be7">scale</a>(border_width,border_width));                                               <span class="comment">// top left</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    draw_image(width()-border_width,0,img.<a class="code" href="classlfgui_1_1image.html#a70688882bde17a62348618ddf40323cf">cropped</a>(w/2,0,w/2,h/2).<a class="code" href="classlfgui_1_1image.html#a52100905942e181485f9293f713f3be7">scale</a>(border_width,border_width));                          <span class="comment">// top right</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    draw_image(0,height()-border_width,img.<a class="code" href="classlfgui_1_1image.html#a70688882bde17a62348618ddf40323cf">cropped</a>(0,h/2,w/2,h/2).<a class="code" href="classlfgui_1_1image.html#a52100905942e181485f9293f713f3be7">scale</a>(border_width,border_width));                         <span class="comment">// bottom left</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    draw_image(width()-border_width,height()-border_width,img.<a class="code" href="classlfgui_1_1image.html#a70688882bde17a62348618ddf40323cf">cropped</a>(w/2,h/2,w/2,h/2).<a class="code" href="classlfgui_1_1image.html#a52100905942e181485f9293f713f3be7">scale</a>(border_width,border_width));    <span class="comment">// bottom right</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="comment">// draw borders</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    draw_image(border_width,0,img.<a class="code" href="classlfgui_1_1image.html#a70688882bde17a62348618ddf40323cf">cropped</a>(w/2,0,0,h/2).<a class="code" href="classlfgui_1_1image.html#a52100905942e181485f9293f713f3be7">scale</a>(width()-border_width*2,border_width));                          <span class="comment">// top</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    draw_image(border_width,height()-border_width,img.<a class="code" href="classlfgui_1_1image.html#a70688882bde17a62348618ddf40323cf">cropped</a>(w/2,h/2,0,h/2).<a class="code" href="classlfgui_1_1image.html#a52100905942e181485f9293f713f3be7">scale</a>(width()-border_width*2,border_width));    <span class="comment">// bottom</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    draw_image(0,border_width,img.<a class="code" href="classlfgui_1_1image.html#a70688882bde17a62348618ddf40323cf">cropped</a>(0,h/2,w/2,0).<a class="code" href="classlfgui_1_1image.html#a52100905942e181485f9293f713f3be7">scale</a>(border_width,height()-border_width*2));                         <span class="comment">// left</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    draw_image(width()-border_width,border_width,img.<a class="code" href="classlfgui_1_1image.html#a70688882bde17a62348618ddf40323cf">cropped</a>(w/2,h/2,w/2,0).<a class="code" href="classlfgui_1_1image.html#a52100905942e181485f9293f713f3be7">scale</a>(border_width,height()-border_width*2));    <span class="comment">// right</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="comment">// draw center</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    draw_image(border_width,border_width,img.<a class="code" href="classlfgui_1_1image.html#a70688882bde17a62348618ddf40323cf">cropped</a>(w/2,h/2,0,0).<a class="code" href="classlfgui_1_1image.html#a52100905942e181485f9293f713f3be7">scale</a>(width()-border_width*2,height()-border_width*2));</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;}</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
+<div class="line"><a name="l00312"></a><span class="lineno"><a class="line" href="classlfgui_1_1image.html#acc875454ce90aa911a7d6b971cf980f4">  312</a></span>&#160;<span class="keywordtype">void</span> image::clear()</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;{</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    cimage-&gt;fill((uint8_t)0,(uint8_t)0);</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;}</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
+<div class="line"><a name="l00317"></a><span class="lineno"><a class="line" href="classlfgui_1_1image.html#aeb45492c006af41da3a84d11879f9931">  317</a></span>&#160;image::~image(){}</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
+<div class="line"><a name="l00319"></a><span class="lineno"><a class="line" href="classlfgui_1_1image.html#ab26d34020a35622d30eaa60b098958bc">  319</a></span>&#160;<a class="code" href="classlfgui_1_1image.html">image</a>&amp; image::multiply(<a class="code" href="structlfgui_1_1color.html">color</a> c)</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;{</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <span class="keywordtype">int</span> size=count();</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keyword">auto</span> d=data();</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0;i&lt;size;i++)</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    {</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        *d=(*d)*c.<a class="code" href="structlfgui_1_1color.html#aeb0a907229a752e83162d675165d33de">b</a>/255;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        d++;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    }</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0;i&lt;size;i++)</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    {</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        *d=(*d)*c.<a class="code" href="structlfgui_1_1color.html#a9b5598d0113af68d2b445aef0b66bf35">g</a>/255;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        d++;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    }</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0;i&lt;size;i++)</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    {</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        *d=(*d)*c.<a class="code" href="structlfgui_1_1color.html#a9bfae457df4879bf08603c7efe23222a">r</a>/255;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        d++;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    }</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;}</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
+<div class="line"><a name="l00341"></a><span class="lineno"><a class="line" href="classlfgui_1_1image.html#a062ac3e070c65d7696b96b20bf3aeb3d">  341</a></span>&#160;<a class="code" href="classlfgui_1_1image.html">image</a>&amp; image::add(<a class="code" href="structlfgui_1_1color.html">color</a> c)</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;{</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    <span class="keywordtype">int</span> size=count();</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <span class="keyword">auto</span> d=data();</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0;i&lt;size;i++)</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    {</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        *d=std::min(255,(*d)+c.<a class="code" href="structlfgui_1_1color.html#aeb0a907229a752e83162d675165d33de">b</a>);</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        d++;</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    }</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0;i&lt;size;i++)</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    {</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        *d=std::min(255,(*d)+c.<a class="code" href="structlfgui_1_1color.html#a9b5598d0113af68d2b445aef0b66bf35">g</a>);</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        d++;</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    }</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0;i&lt;size;i++)</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    {</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        *d=std::min(255,(*d)+c.<a class="code" href="structlfgui_1_1color.html#a9bfae457df4879bf08603c7efe23222a">r</a>);</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        d++;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    }</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;}</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;</div>
+<div class="line"><a name="l00363"></a><span class="lineno"><a class="line" href="classlfgui_1_1image.html#a5a5ccbda3278cc0776f5c32732b3d978">  363</a></span>&#160;<span class="keywordtype">void</span> image::draw_text(<span class="keywordtype">int</span> x,<span class="keywordtype">int</span> y,<span class="keyword">const</span> std::string&amp; text,<span class="keyword">const</span> <a class="code" href="structlfgui_1_1color.html">color</a>&amp; <a class="code" href="structlfgui_1_1color.html">color</a>,<span class="keywordtype">int</span> font_size,<a class="code" href="namespacelfgui.html#ade20c527fc4eb3eaef9c2abc6b6dbcb5">alignment</a> a,<a class="code" href="classlfgui_1_1font.html">font</a>&amp; f)</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;{</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <span class="keywordtype">int</span> x_orig=x;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <span class="keywordtype">int</span> w=f.<a class="code" href="classlfgui_1_1font.html#a422e5805330bb45681c8013015f7c654">text_length</a>(text,font_size);</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="keywordflow">if</span>(a==alignment::center)</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        x-=w/2;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(a==alignment::right)</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        x-=w;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* end=text.data()+text.size();</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keywordtype">char</span>* data=text.data();data&lt;end;data++)</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    {</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        <span class="keywordflow">if</span>(*data==<span class="charliteral">&#39;\n&#39;</span>)</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        {</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;            x=x_orig;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;            y+=font_size;</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        }</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            draw_character(x,y,<a class="code" href="namespacelfgui.html#ac369bc64c2c3508b7b17a9c2a90c7195">lfgui::utf8_to_unicode</a>(data,end-data),color,font_size);</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    }</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;}</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;</div>
+<div class="line"><a name="l00384"></a><span class="lineno"><a class="line" href="classlfgui_1_1image.html#a497044b8eb4ca82342795ae62f008db8">  384</a></span>&#160;<span class="keywordtype">void</span> image::draw_character(<span class="keywordtype">int</span>&amp; x,<span class="keywordtype">int</span> y,<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> character,<span class="keyword">const</span> <a class="code" href="structlfgui_1_1color.html">color</a>&amp; <a class="code" href="structlfgui_1_1color.html">color</a>,<span class="keywordtype">int</span> font_size,<a class="code" href="classlfgui_1_1font.html">font</a>&amp; f)</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;{</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    <span class="keywordflow">if</span>(character==<span class="charliteral">&#39; &#39;</span>)</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    {</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        x+=font_size/3;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    }</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    <span class="keywordflow">if</span>(character==<span class="charliteral">&#39;\t&#39;</span>)</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    {</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        x+=font_size/3*4;</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    }</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <span class="keywordflow">if</span>(character&lt;0x20)</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="keyword">const</span> <a class="code" href="structlfgui_1_1font_1_1bitmap.html">font::bitmap</a>&amp; b=f.<a class="code" href="classlfgui_1_1font.html#a83e5ac4adabf67dc223f3854b2dbfa4a">get_glyph_cached</a>(character,font_size);</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> y2=0;y2&lt;b.<a class="code" href="structlfgui_1_1font_1_1bitmap.html#a76eb19e04f6570411e5573f3d153065f">height</a>();y2++)</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x2=0;x2&lt;b.<a class="code" href="structlfgui_1_1font_1_1bitmap.html#afa2606aa585dd58ba8e44a99933cff48">width</a>();x2++) <span class="comment">// just adding 13 seems weird. Maybe there has to be some other calculation.</span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;            blend_pixel_safe(x+x2+b.<a class="code" href="structlfgui_1_1font_1_1bitmap.html#ae52146e6b3156a0221c35fefcde56589">x0</a>,y+y2+b.<a class="code" href="structlfgui_1_1font_1_1bitmap.html#ad085bf5f8f0080263e0234a30cfb70d3">y0</a>+13,color.<a class="code" href="structlfgui_1_1color.html#affc608d3033e189373331e34da7595c6">alpha_multiplied</a>(b.<a class="code" href="structlfgui_1_1font_1_1bitmap.html#ad6dd4e316f8634e75226aa61d6ef3a81">data</a>[x2+y2*b.<a class="code" href="structlfgui_1_1font_1_1bitmap.html#afa2606aa585dd58ba8e44a99933cff48">width</a>()]));</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    x+=b.<a class="code" href="structlfgui_1_1font_1_1bitmap.html#afa2606aa585dd58ba8e44a99933cff48">width</a>()+1;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;}</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;</div>
+<div class="line"><a name="l00405"></a><span class="lineno"><a class="line" href="classlfgui_1_1image.html#a3328263ad8922a83a37759237a2731ee">  405</a></span>&#160;<span class="keywordtype">void</span> image::draw_path(<span class="keyword">const</span> std::vector&lt;point&gt;&amp; vec,<a class="code" href="structlfgui_1_1color.html">color</a> _color,<span class="keywordtype">bool</span> connect_last_point_with_first)</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;{</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <span class="keywordflow">if</span>(vec.size()&lt;2)</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <span class="keyword">auto</span> first_point=vec.begin();</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <span class="keyword">auto</span> second_point=first_point;</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    second_point++;</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    <span class="keywordflow">while</span>(second_point!=vec.end())</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    {</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        draw_line(first_point-&gt;x,first_point-&gt;y,second_point-&gt;x,second_point-&gt;y,_color);</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        first_point=second_point;</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        second_point++;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    }</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    <span class="keywordflow">if</span>(connect_last_point_with_first)</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    {</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        second_point=vec.begin();</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        draw_line(first_point-&gt;x,first_point-&gt;y,second_point-&gt;x,second_point-&gt;y,_color);</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    }</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;}</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;}</div>
+<div class="ttc" id="classlfgui_1_1image_html_af08ab297ffcec04a15808a04419b513c"><div class="ttname"><a href="classlfgui_1_1image.html#af08ab297ffcec04a15808a04419b513c">lfgui::image::cimage</a></div><div class="ttdeci">std::unique_ptr&lt; cimg &gt; cimage</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00030">image.h:30</a></div></div>
+<div class="ttc" id="classlfgui_1_1image_html_ab204351caadde42569ff23bffa1d398c"><div class="ttname"><a href="classlfgui_1_1image.html#ab204351caadde42569ff23bffa1d398c">lfgui::image::get_pixel</a></div><div class="ttdeci">color get_pixel(int x, int y) const </div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00105">image.h:105</a></div></div>
 <div class="ttc" id="namespacelfgui_html_ade20c527fc4eb3eaef9c2abc6b6dbcb5a7c4f29407893c334a6cb7a87bf045c0d"><div class="ttname"><a href="namespacelfgui.html#ade20c527fc4eb3eaef9c2abc6b6dbcb5a7c4f29407893c334a6cb7a87bf045c0d">lfgui::alignment::right</a></div></div>
+<div class="ttc" id="classlfgui_1_1image_html_a52100905942e181485f9293f713f3be7"><div class="ttname"><a href="classlfgui_1_1image.html#a52100905942e181485f9293f713f3be7">lfgui::image::scale</a></div><div class="ttdeci">image &amp; scale(int w, int h)</div><div class="ttdoc">Scales this image. Same as resize_linear(). </div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00054">image.h:54</a></div></div>
 <div class="ttc" id="classlfgui_1_1image_html_a7f479e2615bbbdb79ac0e03c1769fc26"><div class="ttname"><a href="classlfgui_1_1image.html#a7f479e2615bbbdb79ac0e03c1769fc26">lfgui::image::height</a></div><div class="ttdeci">int height() const </div><div class="ttdef"><b>Definition:</b> <a href="image_8cpp_source.html#l00035">image.cpp:35</a></div></div>
+<div class="ttc" id="structlfgui_1_1font_1_1bitmap_html"><div class="ttname"><a href="structlfgui_1_1font_1_1bitmap.html">lfgui::font::bitmap</a></div><div class="ttdoc">A bitmap represents a single drawn character. It&#39;s a greyscale image. </div><div class="ttdef"><b>Definition:</b> <a href="font_8h_source.html#l00022">font.h:22</a></div></div>
 <div class="ttc" id="structlfgui_1_1color_html_ae4bc5d426b45288d12412d5388654309"><div class="ttname"><a href="structlfgui_1_1color.html#ae4bc5d426b45288d12412d5388654309">lfgui::color::array</a></div><div class="ttdeci">uint8_t array[4]</div><div class="ttdef"><b>Definition:</b> <a href="general_8h_source.html#l00019">general.h:19</a></div></div>
 <div class="ttc" id="structlfgui_1_1color_html_affc608d3033e189373331e34da7595c6"><div class="ttname"><a href="structlfgui_1_1color.html#affc608d3033e189373331e34da7595c6">lfgui::color::alpha_multiplied</a></div><div class="ttdeci">color alpha_multiplied(float f) const </div><div class="ttdoc">Constructs a color from an array. Order is RGBA. </div><div class="ttdef"><b>Definition:</b> <a href="general_8h_source.html#l00037">general.h:37</a></div></div>
-<div class="ttc" id="classlfgui_1_1image_html"><div class="ttname"><a href="classlfgui_1_1image.html">lfgui::image</a></div><div class="ttdoc">Contains a cimg and offers various drawing and manipulation functions. The cIMG library trores its pi...</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00027">image.h:27</a></div></div>
+<div class="ttc" id="classlfgui_1_1image_html"><div class="ttname"><a href="classlfgui_1_1image.html">lfgui::image</a></div><div class="ttdoc">Contains a cimg and offers various drawing and manipulation functions. The cIMG library trores its pi...</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00026">image.h:26</a></div></div>
 <div class="ttc" id="structlfgui_1_1color_html_a9b5598d0113af68d2b445aef0b66bf35"><div class="ttname"><a href="structlfgui_1_1color.html#a9b5598d0113af68d2b445aef0b66bf35">lfgui::color::g</a></div><div class="ttdeci">uint8_t g</div><div class="ttdef"><b>Definition:</b> <a href="general_8h_source.html#l00024">general.h:24</a></div></div>
 <div class="ttc" id="classlfgui_1_1image_html_a859ecbd9d8837bb569b99e363594c0f9"><div class="ttname"><a href="classlfgui_1_1image.html#a859ecbd9d8837bb569b99e363594c0f9">lfgui::image::crop</a></div><div class="ttdeci">image &amp; crop(int x, int y, int w, int h)</div><div class="ttdoc">Crops the image to the given size. </div><div class="ttdef"><b>Definition:</b> <a href="image_8cpp_source.html#l00041">image.cpp:41</a></div></div>
 <div class="ttc" id="classlfgui_1_1image_html_a3a2b4c824076f4516abb30151e70e521"><div class="ttname"><a href="classlfgui_1_1image.html#a3a2b4c824076f4516abb30151e70e521">lfgui::image::width</a></div><div class="ttdeci">int width() const </div><div class="ttdef"><b>Definition:</b> <a href="image_8cpp_source.html#l00034">image.cpp:34</a></div></div>
@@ -418,8 +547,19 @@ $(document).ready(function(){initNavTree('image_8cpp_source.html','');});
 <div class="ttc" id="structlfgui_1_1color_html"><div class="ttname"><a href="structlfgui_1_1color.html">lfgui::color</a></div><div class="ttdef"><b>Definition:</b> <a href="general_8h_source.html#l00015">general.h:15</a></div></div>
 <div class="ttc" id="image_8h_html"><div class="ttname"><a href="image_8h.html">image.h</a></div></div>
 <div class="ttc" id="structlfgui_1_1color_html_aeb0a907229a752e83162d675165d33de"><div class="ttname"><a href="structlfgui_1_1color.html#aeb0a907229a752e83162d675165d33de">lfgui::color::b</a></div><div class="ttdeci">uint8_t b</div><div class="ttdef"><b>Definition:</b> <a href="general_8h_source.html#l00023">general.h:23</a></div></div>
-<div class="ttc" id="classcimg__library_1_1_c_img_html"><div class="ttname"><a href="classcimg__library_1_1_c_img.html">cimg_library::CImg</a></div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00018">image.h:18</a></div></div>
+<div class="ttc" id="classcimg__library_1_1_c_img_html"><div class="ttname"><a href="classcimg__library_1_1_c_img.html">cimg_library::CImg</a></div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00017">image.h:17</a></div></div>
+<div class="ttc" id="structlfgui_1_1font_1_1bitmap_html_afa2606aa585dd58ba8e44a99933cff48"><div class="ttname"><a href="structlfgui_1_1font_1_1bitmap.html#afa2606aa585dd58ba8e44a99933cff48">lfgui::font::bitmap::width</a></div><div class="ttdeci">int width() const </div><div class="ttdef"><b>Definition:</b> <a href="font_8h_source.html#l00029">font.h:29</a></div></div>
+<div class="ttc" id="namespacelfgui_html_ade20c527fc4eb3eaef9c2abc6b6dbcb5"><div class="ttname"><a href="namespacelfgui.html#ade20c527fc4eb3eaef9c2abc6b6dbcb5">lfgui::alignment</a></div><div class="ttdeci">alignment</div><div class="ttdoc">Currently only used by the draw_text function. Specifies how the text is aligned. ...</div><div class="ttdef"><b>Definition:</b> <a href="general_8h_source.html#l00008">general.h:8</a></div></div>
 <div class="ttc" id="structlfgui_1_1color_html_a9bfae457df4879bf08603c7efe23222a"><div class="ttname"><a href="structlfgui_1_1color.html#a9bfae457df4879bf08603c7efe23222a">lfgui::color::r</a></div><div class="ttdeci">uint8_t r</div><div class="ttdef"><b>Definition:</b> <a href="general_8h_source.html#l00025">general.h:25</a></div></div>
+<div class="ttc" id="structlfgui_1_1font_1_1bitmap_html_ad085bf5f8f0080263e0234a30cfb70d3"><div class="ttname"><a href="structlfgui_1_1font_1_1bitmap.html#ad085bf5f8f0080263e0234a30cfb70d3">lfgui::font::bitmap::y0</a></div><div class="ttdeci">int y0</div><div class="ttdef"><b>Definition:</b> <a href="font_8h_source.html#l00026">font.h:26</a></div></div>
+<div class="ttc" id="structlfgui_1_1font_1_1bitmap_html_ae52146e6b3156a0221c35fefcde56589"><div class="ttname"><a href="structlfgui_1_1font_1_1bitmap.html#ae52146e6b3156a0221c35fefcde56589">lfgui::font::bitmap::x0</a></div><div class="ttdeci">int x0</div><div class="ttdef"><b>Definition:</b> <a href="font_8h_source.html#l00024">font.h:24</a></div></div>
+<div class="ttc" id="classlfgui_1_1font_html_a83e5ac4adabf67dc223f3854b2dbfa4a"><div class="ttname"><a href="classlfgui_1_1font.html#a83e5ac4adabf67dc223f3854b2dbfa4a">lfgui::font::get_glyph_cached</a></div><div class="ttdeci">bitmap &amp; get_glyph_cached(unsigned int character, size_t font_size)</div><div class="ttdoc">Returns a single drawn character cached version. If the character has been drawn before the cached ve...</div><div class="ttdef"><b>Definition:</b> <a href="font_8cpp_source.html#l00079">font.cpp:79</a></div></div>
+<div class="ttc" id="classlfgui_1_1font_html_a422e5805330bb45681c8013015f7c654"><div class="ttname"><a href="classlfgui_1_1font.html#a422e5805330bb45681c8013015f7c654">lfgui::font::text_length</a></div><div class="ttdeci">int text_length(const std::string &amp;text, int font_size)</div><div class="ttdoc">Returns the length of the given text in font size font_size in pixels. </div><div class="ttdef"><b>Definition:</b> <a href="font_8cpp_source.html#l00096">font.cpp:96</a></div></div>
+<div class="ttc" id="classlfgui_1_1font_html"><div class="ttname"><a href="classlfgui_1_1font.html">lfgui::font</a></div><div class="ttdoc">Wrapper class for stb_truetype.h. </div><div class="ttdef"><b>Definition:</b> <a href="font_8h_source.html#l00018">font.h:18</a></div></div>
+<div class="ttc" id="structlfgui_1_1font_1_1bitmap_html_ad6dd4e316f8634e75226aa61d6ef3a81"><div class="ttname"><a href="structlfgui_1_1font_1_1bitmap.html#ad6dd4e316f8634e75226aa61d6ef3a81">lfgui::font::bitmap::data</a></div><div class="ttdeci">unsigned char * data</div><div class="ttdef"><b>Definition:</b> <a href="font_8h_source.html#l00028">font.h:28</a></div></div>
+<div class="ttc" id="structlfgui_1_1font_1_1bitmap_html_a76eb19e04f6570411e5573f3d153065f"><div class="ttname"><a href="structlfgui_1_1font_1_1bitmap.html#a76eb19e04f6570411e5573f3d153065f">lfgui::font::bitmap::height</a></div><div class="ttdeci">int height() const </div><div class="ttdef"><b>Definition:</b> <a href="font_8h_source.html#l00030">font.h:30</a></div></div>
+<div class="ttc" id="namespacelfgui_html_ac369bc64c2c3508b7b17a9c2a90c7195"><div class="ttname"><a href="namespacelfgui.html#ac369bc64c2c3508b7b17a9c2a90c7195">lfgui::utf8_to_unicode</a></div><div class="ttdeci">uint32_t utf8_to_unicode(const char *&amp;data, size_t len)</div><div class="ttdef"><b>Definition:</b> <a href="font_8cpp_source.html#l00008">font.cpp:8</a></div></div>
+<div class="ttc" id="classlfgui_1_1image_html_a70688882bde17a62348618ddf40323cf"><div class="ttname"><a href="classlfgui_1_1image.html#a70688882bde17a62348618ddf40323cf">lfgui::image::cropped</a></div><div class="ttdeci">image cropped(int x, int y, int w, int h) const </div><div class="ttdoc">Returns a cropped version of this image. </div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00068">image.h:68</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 Generated for LFGUI by 

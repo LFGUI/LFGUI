@@ -28,6 +28,7 @@ public:
         {
             img.draw_text(0,0,_text,_text_color,_text_size);
         });
+        set_focusable(false);
     }
 
     label(int width=100,int height=20) : label(0,0,width,height){}

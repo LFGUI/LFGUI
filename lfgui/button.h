@@ -27,6 +27,7 @@ public:
     button(int x,int y,int width,int height=25,const std::string& text="",color text_color=color({0,0,0}),int border_width=10)
         : label(x,y,width,height),border_width(border_width),img_ptr(&img_normal)
     {
+        set_focusable(true);
         prepare_images();
         set_text_color(text_color);
         set_text(text);

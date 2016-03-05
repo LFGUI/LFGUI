@@ -61,6 +61,7 @@ public:
         }
 
         widget_content=add_child<widget>()->set_pos(6,30)->set_size(-13,-37,1,1);
+        widget_content->set_focusable(false);
     }
 
     window(int width=100,int height=20,const std::string& text="")

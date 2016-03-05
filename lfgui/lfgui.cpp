@@ -23,21 +23,23 @@ bool widget::_insert_event_mouse_press(const event_mouse& event)
             return true;
     }
 
-    bool ret=true;
+    bool ret=false;
 
     // check this widget
     if(is_over(event.pos))
     {
-        _gui->set_focus(this);
-        _gui->_held_widget=this;
+        if(focusable())
+        {
+            _gui->set_focus(this);
+            _gui->_held_widget=this;
+            ret=true;
+        }
         if(on_mouse_press)
         {
             dirty=true;
             ret=on_mouse_press.call(event);
         }
     }
-    else
-        ret=false;
 
     return ret;
 }

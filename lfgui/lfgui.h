@@ -108,6 +108,7 @@ protected:
     widget* parent=0;
     gui* _gui=0;
     point size_old;
+    bool _focusable=true;
 public:
     /// \brief Determines if this widget and all its children are fully redrawn the next time redraw() gets called.
     bool dirty=true;
@@ -259,6 +260,13 @@ public:
 
     /// \brief Returns true if this widget has keyboard focus.
     bool has_focus()const;
+
+    /// \brief Set the focusable state of this widget. Non-focusable widgets are transparent for some events (like
+    /// click and drag).
+    void set_focusable(bool focusable) {_focusable=focusable;}
+    /// \brief Returns true if this widget can get keyboard and mouse focus (default true but some widgets like label
+    /// disable the focusable flag). Non-focusable widgets are transparent for some events (like click and drag).
+    bool focusable() const {return _focusable;}
 
 protected:
     widget* _add_child(std::unique_ptr<widget>&& w);

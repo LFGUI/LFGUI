@@ -19,7 +19,8 @@ DESTDIR = $${PWD}
 
 SOURCES += main.cpp\
         ../lfgui/lfgui.cpp \
-        ../lfgui/image.cpp
+        ../lfgui/image.cpp \
+        ../lfgui/font.cpp
 
 HEADERS  += \
         ../lfgui/font.h \

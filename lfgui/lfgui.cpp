@@ -221,7 +221,67 @@ widget::~widget()
         _gui->_hovering_over_widget_old=0;
 }
 
+void widget::raise() const
+{
+    if(!parent)
+        return;
+    auto it=parent->children.begin();
+    for(;it->get()!=this;it++)
+        if(it==parent->children.end())  // should never happen
+            return;
+
+    auto next=it;
+    next++;
+
+    for(;next!=parent->children.end();it++,next++)
+        it->swap(*next);
 }
 
-std::function<lfgui::image(std::string)> lfgui::image::load=[](std::string){throw std::logic_error("LFGUI Error: Image loading not supported. No wrapper set this std::function.");return lfgui::image();};
+// //////////////////////////////////// gui
+
+void gui::insert_event_mouse_move(int mouse_x,int mouse_y)
+{
+    event_mouse em(mouse_old_pos,point(mouse_x,mouse_y),event_button_last,button_state_last);
+    _insert_event_mouse_move(em);
+    mouse_old_pos=point(mouse_x,mouse_y);
+    if(_hovering_over_widget_old!=_hovering_over_widget)
+    {
+        if(_hovering_over_widget_old&&_hovering_over_widget_old->on_mouse_leave)
+        {
+            _hovering_over_widget_old->on_mouse_leave.call(em.translated(_hovering_over_widget_old->to_local(point(0,0))));
+            _hovering_over_widget_old->dirty=true;
+        }
+        if(_hovering_over_widget&&_hovering_over_widget->on_mouse_enter)
+        {
+            _hovering_over_widget->on_mouse_enter.call(em.translated(_hovering_over_widget->to_local(point(0,0))));
+            _hovering_over_widget->dirty=true;
+        }
+    }
+    _hovering_over_widget_old=_hovering_over_widget;
+}
+
+void gui::set_focus(widget* w)
+{
+    if(_focus_widget==w)
+        return;
+    if(_focus_widget&&_focus_widget->on_focus_out)
+    {
+        _focus_widget->dirty=true;
+        _focus_widget->on_focus_out.call();
+    }
+    _focus_widget=w;
+    if(_focus_widget&&_focus_widget->on_focus_in)
+    {
+        _focus_widget->dirty=true;
+        _focus_widget->on_focus_in.call();
+    }
+}
+
+}
+
+std::function<lfgui::image(std::string)> lfgui::image::load=[](std::string)
+{
+    throw std::logic_error("LFGUI Error: Image loading not supported. No wrapper set this std::function.");return lfgui::image();
+};
+
 lfgui::gui* lfgui::gui::instance=0;

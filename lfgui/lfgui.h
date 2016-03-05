@@ -230,21 +230,7 @@ public:
 
     /// \brief Moves this widget to the end of the parents child list. This means that it is drawn as the last (on top)
     /// and receives events first.
-    void raise() const
-    {
-        if(!parent)
-            return;
-        auto it=parent->children.begin();
-        for(;it->get()!=this;it++)
-            if(it==parent->children.end())  // should never happen
-                return;
-
-        auto next=it;
-        next++;
-
-        for(;next!=parent->children.end();it++,next++)
-            it->swap(*next);
-    }
+    void raise() const;
 
     /// \brief Gives this widget keyboard focus.
     void focus();
@@ -315,26 +301,7 @@ public:
     }
 
     /// \brief Used by a wrapper to inject a mouse move event.
-    void insert_event_mouse_move(int mouse_x,int mouse_y)
-    {
-        event_mouse em(mouse_old_pos,point(mouse_x,mouse_y),event_button_last,button_state_last);
-        _insert_event_mouse_move(em);
-        mouse_old_pos=point(mouse_x,mouse_y);
-        if(_hovering_over_widget_old!=_hovering_over_widget)
-        {
-            if(_hovering_over_widget_old&&_hovering_over_widget_old->on_mouse_leave)
-            {
-                _hovering_over_widget_old->on_mouse_leave.call(em.translated(_hovering_over_widget_old->to_local(point(0,0))));
-                _hovering_over_widget_old->dirty=true;
-            }
-            if(_hovering_over_widget&&_hovering_over_widget->on_mouse_enter)
-            {
-                _hovering_over_widget->on_mouse_enter.call(em.translated(_hovering_over_widget->to_local(point(0,0))));
-                _hovering_over_widget->dirty=true;
-            }
-        }
-        _hovering_over_widget_old=_hovering_over_widget;
-    }
+    void insert_event_mouse_move(int mouse_x,int mouse_y);
 
     /// \brief Used by a wrapper to inject a mouse wheel event.
     void insert_event_mouse_wheel(int delta_wheel_x,int delta_wheel_y)
@@ -362,22 +329,7 @@ public:
 
     /// \brief Gives the given widget keyboard focus and calls on_focus_out and on_focus_in. Does nothing if the given
     /// widget has already focus.
-    void set_focus(widget* w)
-    {
-        if(_focus_widget==w)
-            return;
-        if(_focus_widget&&_focus_widget->on_focus_out)
-        {
-            _focus_widget->on_focus_out.call();
-            _focus_widget->dirty=true;
-        }
-        _focus_widget=w;
-        if(_focus_widget&&_focus_widget->on_focus_in)
-        {
-            _focus_widget->on_focus_in.call();
-            _focus_widget->dirty=true;
-        }
-    }
+    void set_focus(widget* w);
 };
 
 }   // namespace lfgui

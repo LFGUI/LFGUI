@@ -113,7 +113,7 @@ bool clip_line(int& x0,int& y0,int& x1,int& y1,int max_x,int max_y)
                 y=y0+(y1-y0)*float(max_x-x0)/(x1-x0);
                 x=max_x;
             }
-            else if(outcodeOut&position::left)      // point is to the left of clip rectangle
+            else// if(outcodeOut&position::left)      // point is to the left of clip rectangle
             {
                 y=y0+(y1-y0)*float(0-x0)/(x1-x0);
                 x=0;
@@ -315,5 +315,111 @@ void image::clear()
 }
 
 image::~image(){}
+
+image& image::multiply(color c)
+{
+    int size=count();
+    auto d=data();
+    for(int i=0;i<size;i++)
+    {
+        *d=(*d)*c.b/255;
+        d++;
+    }
+    for(int i=0;i<size;i++)
+    {
+        *d=(*d)*c.g/255;
+        d++;
+    }
+    for(int i=0;i<size;i++)
+    {
+        *d=(*d)*c.r/255;
+        d++;
+    }
+    return *this;
+}
+
+image& image::add(color c)
+{
+    int size=count();
+    auto d=data();
+    for(int i=0;i<size;i++)
+    {
+        *d=std::min(255,(*d)+c.b);
+        d++;
+    }
+    for(int i=0;i<size;i++)
+    {
+        *d=std::min(255,(*d)+c.g);
+        d++;
+    }
+    for(int i=0;i<size;i++)
+    {
+        *d=std::min(255,(*d)+c.r);
+        d++;
+    }
+    return *this;
+}
+
+void image::draw_text(int x,int y,const std::string& text,const color& color,int font_size,alignment a,font& f)
+{
+    int x_orig=x;
+    int w=f.text_length(text,font_size);
+    if(a==alignment::center)
+        x-=w/2;
+    else if(a==alignment::right)
+        x-=w;
+    const char* end=text.data()+text.size();
+    for(const char* data=text.data();data<end;data++)
+    {
+        if(*data=='\n')
+        {
+            x=x_orig;
+            y+=font_size;
+        }
+        else
+            draw_character(x,y,lfgui::utf8_to_unicode(data,end-data),color,font_size);
+    }
+}
+
+void image::draw_character(int& x,int y,unsigned int character,const color& color,int font_size,font& f)
+{
+    if(character==' ')
+    {
+        x+=font_size/3;
+        return;
+    }
+    if(character=='\t')
+    {
+        x+=font_size/3*4;
+        return;
+    }
+    if(character<0x20)
+        return;
+    const font::bitmap& b=f.get_glyph_cached(character,font_size);
+    for(int y2=0;y2<b.height();y2++)
+        for(int x2=0;x2<b.width();x2++) // just adding 13 seems weird. Maybe there has to be some other calculation.
+            blend_pixel_safe(x+x2+b.x0,y+y2+b.y0+13,color.alpha_multiplied(b.data[x2+y2*b.width()]));
+    x+=b.width()+1;
+}
+
+void image::draw_path(const std::vector<point>& vec,color _color,bool connect_last_point_with_first)
+{
+    if(vec.size()<2)
+        return;
+    auto first_point=vec.begin();
+    auto second_point=first_point;
+    second_point++;
+    while(second_point!=vec.end())
+    {
+        draw_line(first_point->x,first_point->y,second_point->x,second_point->y,_color);
+        first_point=second_point;
+        second_point++;
+    }
+    if(connect_last_point_with_first)
+    {
+        second_point=vec.begin();
+        draw_line(first_point->x,first_point->y,second_point->x,second_point->y,_color);
+    }
+}
 
 }

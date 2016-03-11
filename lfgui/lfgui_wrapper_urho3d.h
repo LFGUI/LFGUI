@@ -9,6 +9,7 @@
 #include <Urho3D/Engine/Application.h>
 #include <Urho3D/Engine/Engine.h>
 #include <Urho3D/UI/Sprite.h>
+#include <Urho3D/UI/Cursor.h>
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Input/InputEvents.h>
 #include <Urho3D/Graphics/Texture.h>
@@ -219,6 +220,15 @@ public:
         int w=eventData[Urho3D::ScreenMode::P_WIDTH].GetInt();
         int h=eventData[Urho3D::ScreenMode::P_HEIGHT].GetInt();
         lfgui::widget::resize(w,h);
+    }
+
+    void set_cursor(mouse_cursor c) override
+    {
+        Urho3D::Cursor* cursor=_context->GetSubsystem<Urho3D::Cursor>();
+        if(c==mouse_cursor::beam)
+            GetSubsystem<UI>()->SetCursorShape(Urho3D::CursorShape::CS_IBEAM);
+        else
+            GetSubsystem<UI>()->SetCursorShape(Urho3D::CursorShape::CS_NORMAL);
     }
 
     URHO3D_OBJECT(gui,Urho3D::Object)

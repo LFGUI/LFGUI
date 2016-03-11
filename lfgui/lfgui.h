@@ -109,6 +109,7 @@ protected:
     gui* _gui=0;
     point size_old;
     bool _focusable=true;
+    bool _visible=true;
 public:
     /// \brief Determines if this widget and all its children are fully redrawn the next time redraw() gets called.
     bool dirty=true;
@@ -135,6 +136,11 @@ public:
     signal<void> on_focus_in;                       ///< called when this widgets gets keyboard focus.
     signal<void> on_focus_out;                      ///< called when this widgets loses keyboard focus.
 
+    widget(int width=1,int height=1);
+    widget(int x,int y,int width,int height) : widget(width,height)
+    {
+        geometry.pos_absolute=point(x,y);
+    }
     virtual ~widget();
 
     /// \brief Inserts a mouse press event with local coordinates. Normally only called from the parent widget (or the
@@ -163,7 +169,7 @@ public:
     /// bounding box check per default.
     virtual bool is_over(point p) const
     {
-        return rect(0,0,width(),height()).contains(p);
+        return lfgui::rect(0,0,width(),height()).contains(p);
     }
 
     int width()const{return img.width();}
@@ -176,6 +182,11 @@ public:
     widget* set_pos(int x,int y,float x_percent=0,float y_percent=0){geometry.set_pos(x,y,x_percent,y_percent);return this;}
     widget* set_size(int x,int y,float x_percent=0,float y_percent=0){geometry.set_size(x,y,x_percent,y_percent);resize(geometry.calc_size(parent?parent->width():0,parent?parent->height():0));return this;}
     widget* set_offset(float x_percent,float y_percent){geometry.set_offset(x_percent,y_percent);return this;}
+    widget* set_pos_min(int x,int y,float x_percent=0,float y_percent=0){geometry.set_pos_min(x,y,x_percent,y_percent);return this;}
+    widget* set_size_min(int x,int y,float x_percent=0,float y_percent=0){geometry.set_size_min(x,y,x_percent,y_percent);resize(geometry.calc_size(parent?parent->width():0,parent?parent->height():0));return this;}
+    widget* set_pos_max(int x,int y,float x_percent=0,float y_percent=0){geometry.set_pos_max(x,y,x_percent,y_percent);return this;}
+    widget* set_size_max(int x,int y,float x_percent=0,float y_percent=0){geometry.set_size_max(x,y,x_percent,y_percent);resize(geometry.calc_size(parent?parent->width():0,parent?parent->height():0));return this;}
+
     bool need_redraw()
     {
         if(redraw_every_n_seconds!=0&&redraw_every_n_seconds<redraw_timer.until_now())
@@ -188,16 +199,54 @@ public:
         return false;
     }
 
-    /// \brief Constructs and adds a child widget. Returns a pointer to the widget (uses a std::unique_ptr internally,
-    /// no need for delete).
+    /// \brief Sets the dirty flag of all children.
+    void dirty_children()
+    {
+        for(auto& e:children)
+            e->dirty=true;
+    }
+
+    void update_geometry()
+    {
+        point p;
+        if(parent)
+            p=geometry.calc_size(parent->width(),parent->height());
+        else
+            p=geometry.calc_size(0,0);
+        if(width()!=p.x||height()!=p.y)
+            resize(p.x,p.y);
+    }
+
+    /// \brief Returns a rectangle with this widgets size (same as img.rect()).
+    lfgui::rect rect() const
+    {
+        return img.rect();
+    }
+    /// \brief Adds a child widget. Returns a pointer to the widget. std::unique_ptr is used internally to handle the
+    /// given widget, no need for a manual delete.
     ///
     /// Example:
     /// \code
-    /// auto button=widget->add_child<lfgui::button>(50,155,100,25);    // add a button at 50,155 with the size 100,25
-    /// auto slider=widget->add_child<lfgui::slider>(50,95,180,50);     // add a slider
+    /// auto button=widget->add_child(new lfgui::button(50,155,100,25));    // add a button at 50,155 with the size 100,25
+    /// auto slider=widget->add_child(new lfgui::slider(50,95,180,50));     // add a slider
+    /// \endcode
+    template<typename T>
+    T* add_child(T* w)
+    {
+        static_assert(std::is_base_of<lfgui::widget,T>::value,"LFGUI Error: lfgui::widget has to be a base of T or T a lfgui::widget.");
+        return (T*)_add_child(std::unique_ptr<widget>(w));
+    }
+
+    /// \brief Constructs and adds a child widget. Returns a pointer to the widget. std::unique_ptr is used internally,
+    /// no need for a manual delete).
+    ///
+    /// Example:
+    /// \code
+    /// auto button=widget->create_child<lfgui::button>(50,155,100,25);    // add a button at 50,155 with the size 100,25
+    /// auto slider=widget->create_child<lfgui::slider>(50,95,180,50);     // add a slider
     /// \endcode
     template<typename T,typename... Args>
-    T* add_child(Args... args)
+    T* create_child(Args... args)
     {
         return (T*)_add_child(std::unique_ptr<widget>(new T(args...)));
     }
@@ -215,9 +264,18 @@ public:
     }
 
     /// \brief Moves this widget.
-    void translate(int x,int y){geometry.pos_absolute.x+=x;geometry.pos_absolute.y+=y;}
+    widget* translate(int x,int y){geometry.pos_absolute.x+=x;geometry.pos_absolute.y+=y;return this;}
     /// \brief Moves this widget.
-    void translate(point p){geometry.pos_absolute+=p;}
+    widget* translate(point p){geometry.pos_absolute+=p;return this;}
+    /// \brief Changes the size by adding x and y.
+    widget* adjust_size(int x,int y)
+    {
+        geometry.set_size(geometry.size_absolute.x+x,geometry.size_absolute.y+y);
+        resize(geometry.calc_size(parent?parent->width():0,parent?parent->height():0));
+        return this;
+    }
+    /// \brief Changes the size by adding x and y.
+    widget* adjust_size(point p){return adjust_size(p.x,p.y);}
 
     /// \brief Transforms the given point with local coordinates of this widget into global coordinates (global as in
     /// relative to the gui class managing this widget).
@@ -268,6 +326,20 @@ public:
     /// disable the focusable flag). Non-focusable widgets are transparent for some events (like click and drag).
     bool focusable() const {return _focusable;}
 
+    /// \brief Changes the mouse cursor when the mouse is hovering over this widget. Works by adding an on_mouse_enter
+    /// signal handler that sets the mouse cursor to the given cursor and by setting an on_mouse_leave signal handler
+    /// that sets the cursor to lfgui::mouse_cursor::arrow (the normal mouse cursor).
+    void set_hover_cursor(mouse_cursor c);
+
+    /// \brief Returns true if this widget is displayed or false if not.
+    bool visible()const{return _visible;}
+    /// \brief Sets if this widget is displayed or not.
+    void set_visible(bool visible=true){_visible=visible;dirty=true;}
+    /// \brief Same as set_visible(false);.
+    void hide(){set_visible(false);}
+    /// \brief Same as set_visible(true);.
+    void show(){set_visible(true);}
+
 protected:
     widget* _add_child(std::unique_ptr<widget>&& w);
 
@@ -280,14 +352,7 @@ protected:
         return ret;
     }
 
-    friend class gui;
-
-    widget(int width=1,int height=1);
-
-    widget(int x,int y,int width,int height) : widget(width,height)
-    {
-        geometry.pos_absolute=point(x,y);
-    }
+//    friend class gui;
 
     bool _check_mouse_hover(point p) const;
 };

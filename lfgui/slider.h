@@ -43,7 +43,7 @@ public:
         img_handle_pressed.resize_linear(height,height);
         img_background=temp;
 
-        handle=add_child<widget>(0,0,height,height);
+        handle=add_child(new widget(0,0,height,height));
 
         on_paint([this](lfgui::image& img)
         {

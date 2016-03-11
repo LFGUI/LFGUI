@@ -64,7 +64,7 @@ public:
 
     button(int width=100,int height=20,const std::string& text="",color text_color=color({0,0,0}),int border_width=10)
         : button(0,0,width,height,text,text_color,border_width){}
-    button(const std::string& text="",color text_color=color({0,0,0}),int border_width=10) : button(0,0,100,100,text,text_color,border_width){}
+    button(const std::string& text,color text_color=color({0,0,0}),int border_width=10) : button(0,0,100,100,text,text_color,border_width){}
 
 private:
     // called by the constructor to create the button images that are draw when drawing the widget

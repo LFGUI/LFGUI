@@ -51,7 +51,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
     });
 
     {
-        auto mover=gui->add_child<lfgui::widget>(20,210,200,70);
+        auto mover=gui->add_child(new lfgui::widget(20,210,200,70));
         mover->on_paint=[&](lfgui::image& img)
         {
             img.draw_rect(0,0,img.width(),img.height(),{222,222,255,192});
@@ -70,10 +70,10 @@ inline void setup_sample_gui(lfgui::widget* gui)
         });
     }
     {
-        auto movable=gui->add_child<lfgui::window>(280,50,250,200,"example window");
+        lfgui::window* movable=gui->add_child(new lfgui::window(280,50,250,200,"example window",false,true));
 
         {
-            auto movable2=movable->add_child<lfgui::widget>(50,35,150,20);
+            auto movable2=movable->add_child_to_content_widget(new lfgui::widget(15,5,150,20));
             movable2->on_paint([&](lfgui::image& img)
             {
                 img.draw_rect(0,0,img.width(),img.height(),{64,64,64});
@@ -81,16 +81,16 @@ inline void setup_sample_gui(lfgui::widget* gui)
             });
             movable2->on_mouse_drag([movable2](lfgui::event_mouse e){movable2->translate(e.movement);});
         }
-        movable->add_child<lfgui::label>(10,60,150,20,"example slider",lfgui::color{128,22,92},20);
+        movable->add_child_to_content_widget(new lfgui::label(10,35,150,20,"example slider",lfgui::color{128,22,92},20));
         {
-            auto slider=movable->add_child<lfgui::slider>(50,80,100,20);
+            auto slider=movable->add_child_to_content_widget(new lfgui::slider(50,55,100,20));
             slider->on_value_change([](float v)
             {
                 std::cout<<"slider 1: "<<v<<std::endl;
             });
         }
         {
-            auto slider=movable->add_child<lfgui::slider>(50,105,180,50);
+            auto slider=movable->add_child_to_content_widget(new lfgui::slider(50,80,180,50));
             slider->on_value_change([](float v)
             {
                 std::cout<<"slider 2: "<<v<<std::endl;
@@ -102,11 +102,12 @@ inline void setup_sample_gui(lfgui::widget* gui)
             slider->on_value_change([]               {std::cout<<"### 3"<<std::endl;});         // this handler is not called. Also the parameter can be ommited.
         }
         {
-            auto button=movable->add_child<lfgui::button>(50,160,100,25,"New window",lfgui::color({30,30,30}));
+            auto button=movable->add_child_to_content_widget(new lfgui::button(50,125,100,25,"New window",lfgui::color({30,30,30})));
             button->on_mouse_click([gui]
             {
                 static int count=1; // give the window unique titles (no technical reason, just to have different titles)
-                gui->add_child<lfgui::window>(rand()%(gui->width()-150),rand()%(gui->height()-100),150,100,"window #"+std::to_string(count),true);
+                lfgui::window* new_window=gui->add_child(new lfgui::window(rand()%(gui->width()-150),rand()%(gui->height()-100),170,100,"window #"+std::to_string(count),true));
+                new_window->add_child_to_content_widget(new lfgui::label("This window is not\nresizeable but closable."))->set_size(0,0,1,1);
                 count++;
             });
         }
@@ -114,7 +115,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
 
     {
         static lfgui::color color_background({75,50,25});
-        auto movable=gui->add_child<lfgui::widget>(300,320,220,190);
+        auto movable=gui->add_child(new lfgui::widget(300,320,220,190));
         movable->on_paint([&](lfgui::image& img)
         {
             img.draw_rect(0,0,img.width(),img.height(),color_background);
@@ -122,50 +123,50 @@ inline void setup_sample_gui(lfgui::widget* gui)
         });
         movable->on_mouse_drag([movable](lfgui::event_mouse e){movable->translate(0,e.movement.y);});
 
-        movable->add_child<lfgui::label>(10,30,200,20,"Change the color:",lfgui::color{255,222,192},20);
+        movable->add_child(new lfgui::label(10,30,200,20,"Change the color:",lfgui::color{255,222,192},20));
 
-        lfgui::slider* slider_r=movable->add_child<lfgui::slider>(10,60,100,25,0,255,color_background.r);
+        lfgui::slider* slider_r=movable->add_child(new lfgui::slider(10,60,100,25,0,255,color_background.r));
         slider_r->on_value_change([&](float v){color_background.r=v;});
         slider_r->img_handle_normal.multiply(lfgui::color({255,128,128}));
         slider_r->img_handle_hover.multiply(lfgui::color({255,128,128}));
         slider_r->img_handle_pressed.multiply(lfgui::color({255,128,128}));
         slider_r->img_background.multiply(lfgui::color({255,128,128}));
 
-        lfgui::slider* slider_g=movable->add_child<lfgui::slider>(10,90,100,25,0,255,color_background.g);
+        lfgui::slider* slider_g=movable->add_child(new lfgui::slider(10,90,100,25,0,255,color_background.g));
         slider_g->on_value_change([&](float v){color_background.g=v;});
         slider_g->img_handle_normal.multiply({128,255,128});
         slider_g->img_handle_hover.multiply({128,255,128});
         slider_g->img_handle_pressed.multiply({128,255,128});
         slider_g->img_background.multiply({128,255,128});
 
-        lfgui::slider* slider_b=movable->add_child<lfgui::slider>(10,120,100,25,0,255,color_background.b);
+        lfgui::slider* slider_b=movable->add_child(new lfgui::slider(10,120,100,25,0,255,color_background.b));
         slider_b->on_value_change([&](float v){color_background.b=v;});
         slider_b->img_handle_normal.multiply({128,128,255});
         slider_b->img_handle_hover.multiply({128,128,255});
         slider_b->img_handle_pressed.multiply({128,128,255});
         slider_b->img_background.multiply({128,128,255});
 
-        lfgui::slider* slider_a=movable->add_child<lfgui::slider>(10,150,100,25,0,255,color_background.a);
+        lfgui::slider* slider_a=movable->add_child(new lfgui::slider(10,150,100,25,0,255,color_background.a));
         slider_a->on_value_change([&](float v){color_background.a=v;});
     }
 
     {
-        gui->add_child<lfgui::lineedit>(550,120,200,20,"Edit this text!",lfgui::color{0,0,64})->focus();
-        gui->add_child<lfgui::lineedit>(550,150,240,20,"Edit this other text!",lfgui::color{64,0,0});
+        gui->add_child(new lfgui::lineedit(550,120,200,20,"Edit this text!",lfgui::color{0,0,64}))->focus();
+        gui->add_child(new lfgui::lineedit(550,150,240,20,"Edit this other text!",lfgui::color{64,0,0}));
     }
 
     {
-        gui->add_child<lfgui::button>(50,500,150,30,"top left corner",lfgui::color({50,0,0}))->set_pos(0,0,0,0);
-        gui->add_child<lfgui::button>(50,500,150,30,"top right corner",lfgui::color({50,0,0}))->set_pos(0,0,1,0)->set_offset(-1,0);
-        gui->add_child<lfgui::button>(50,500,150,30,"bottom left corner",lfgui::color({50,0,0}))->set_pos(0,0,0,1)->set_offset(0,-1);
-        gui->add_child<lfgui::button>(50,500,150,30,"bottom right corner",lfgui::color({50,0,0}))->set_pos(0,0,1,1)->set_offset(-1,-1);
+        gui->add_child(new lfgui::button(50,500,150,30,"top left corner",lfgui::color({50,0,0})))->set_pos(0,0,0,0);
+        gui->add_child(new lfgui::button(50,500,150,30,"top right corner",lfgui::color({50,0,0})))->set_pos(0,0,1,0)->set_offset(-1,0);
+        gui->add_child(new lfgui::button(50,500,150,30,"bottom left corner",lfgui::color({50,0,0})))->set_pos(0,0,0,1)->set_offset(0,-1);
+        gui->add_child(new lfgui::button(50,500,150,30,"bottom right corner",lfgui::color({50,0,0})))->set_pos(0,0,1,1)->set_offset(-1,-1);
 /*
-        gui->add_child<lfgui::button>(50,500,150,30,"top center",lfgui::color({0,50,0}))->set_pos(0,0,0.5,0)->set_offset(-0.5,0);
-        gui->add_child<lfgui::button>(50,500,150,30,"right center",lfgui::color({0,50,0}))->set_pos(0,0,1,0.5)->set_offset(-1,-0.5);
-        gui->add_child<lfgui::button>(50,500,150,30,"bottom center",lfgui::color({0,50,0}))->set_pos(0,0,0.5,1)->set_offset(-0.5,-1);
-        gui->add_child<lfgui::button>(50,500,150,30,"left center",lfgui::color({0,50,0}))->set_pos(0,0,0,0.5)->set_offset(0,-0.5);
+        gui->add_child(new lfgui::button(50,500,150,30,"top center",lfgui::color({0,50,0})))->set_pos(0,0,0.5,0)->set_offset(-0.5,0);
+        gui->add_child(new lfgui::button(50,500,150,30,"right center",lfgui::color({0,50,0})))->set_pos(0,0,1,0.5)->set_offset(-1,-0.5);
+        gui->add_child(new lfgui::button(50,500,150,30,"bottom center",lfgui::color({0,50,0})))->set_pos(0,0,0.5,1)->set_offset(-0.5,-1);
+        gui->add_child(new lfgui::button(50,500,150,30,"left center",lfgui::color({0,50,0})))->set_pos(0,0,0,0.5)->set_offset(0,-0.5);
 
-        gui->add_child<lfgui::button>(50,500,150,30,"center",lfgui::color({0,0,50}))->set_pos(0,0,0.5,0.5)->set_offset(-0.5,-0.5);
+        gui->add_child(new lfgui::button(50,500,150,30,"center",lfgui::color({0,0,50})))->set_pos(0,0,0.5,0.5)->set_offset(-0.5,-0.5);
         */
     }
 }

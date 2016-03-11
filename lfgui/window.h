@@ -24,15 +24,17 @@ public:
     image img_highlighted;
     std::string title;
 private:
-    bool closable;
+    bool _closable;
+    bool _resizeable;
 public:
     widget* widget_content;
     widget* widget_this;
 
-    window(int x,int y,int width,int height,const std::string& title="",bool closable=false)
-        : widget(x,y,width,height),title(title),closable(closable),widget_this(this)
+    window(int x,int y,int width,int height,const std::string& title="",bool closable=false,bool resizeable=false)
+        : widget(x,y,width,height),title(title),_closable(closable),_resizeable(resizeable),widget_this(this)
     {
         prepare_images();
+        set_size_min(100,100);
 
         on_paint([this](lfgui::image& img)
         {
@@ -41,7 +43,7 @@ public:
             else
                 img.draw_image(0,0,img_normal);
 
-            if(this->closable)
+            if(this->_closable)
                 img.draw_text(img.width()/2-15,7,this->title,_title_color,18,alignment::center);
             else
                 img.draw_text(img.width()/2,7,this->title,_title_color,18,alignment::center);
@@ -53,14 +55,57 @@ public:
 
         if(closable)
         {
-            auto button=add_child<lfgui::button>(width-30,4,24,24,"X",lfgui::color({0,0,0}),6);
+            auto button=add_child(new lfgui::button(width-30,4,24,24,"X",lfgui::color({0,0,0}),6));
             button->img_normal.multiply({255,192,192});
             button->img_hover.multiply({255,192,192});
             button->img_pressed.multiply({255,192,192});
             button->on_mouse_click([this](lfgui::event_mouse,bool& b){b=true;close();});    // close the window and abort event handling
         }
+        if(resizeable)
+        {
+            widget* w_resize_top=add_child(new widget())->set_pos(10,0)->set_size(-19,5,1,0);
+            w_resize_top->on_mouse_press([this]{this->focus();});
+            w_resize_top->on_mouse_drag([this](lfgui::event_mouse e){this->translate(0,e.movement.y);this->adjust_size(0,-e.movement.y);prepare_images();this->focus();});
+            w_resize_top->set_hover_cursor(lfgui::mouse_cursor::size_vertical);
 
-        widget_content=add_child<widget>()->set_pos(6,30)->set_size(-13,-37,1,1);
+            widget* w_resize_right=add_child(new widget())->set_pos(-5,10,1,0)->set_size(5,-19,0,1);
+            w_resize_right->on_mouse_press([this]{this->focus();});
+            w_resize_right->on_mouse_drag([this](lfgui::event_mouse e){this->adjust_size(e.movement.x,0);prepare_images();this->focus();});
+            w_resize_right->set_hover_cursor(lfgui::mouse_cursor::size_horizontal);
+
+            widget* w_resize_bottom=add_child(new widget())->set_pos(10,-5,0,1)->set_size(-19,5,1,0);
+            w_resize_bottom->on_mouse_press([this]{this->focus();});
+            w_resize_bottom->on_mouse_drag([this](lfgui::event_mouse e){this->adjust_size(0,e.movement.y);prepare_images();this->focus();});
+            w_resize_bottom->set_hover_cursor(lfgui::mouse_cursor::size_vertical);
+
+            widget* w_resize_left=add_child(new widget())->set_pos(0,10)->set_size(5,-19,0,1);
+            w_resize_left->on_mouse_press([this]{this->focus();});
+            w_resize_left->on_mouse_drag([this](lfgui::event_mouse e){this->translate(e.movement.x,0);this->adjust_size(-e.movement.x,0);prepare_images();this->focus();});
+            w_resize_left->set_hover_cursor(lfgui::mouse_cursor::size_horizontal);
+
+
+            widget* w_resize_topleft=add_child(new widget())->set_pos(0,0)->set_size(10,10);
+            w_resize_topleft->on_mouse_press([this]{this->focus();});
+            w_resize_topleft->on_mouse_drag([this](lfgui::event_mouse e){this->translate(e.movement);this->adjust_size(-e.movement);prepare_images();this->focus();});
+            w_resize_topleft->set_hover_cursor(lfgui::mouse_cursor::size_topleft_bottomright);
+
+            widget* w_resize_bottomright=add_child(new widget())->set_pos(0,0,1,1)->set_size(10,10)->set_offset(-1,-1);
+            w_resize_bottomright->on_mouse_press([this]{this->focus();});
+            w_resize_bottomright->on_mouse_drag([this](lfgui::event_mouse e){this->adjust_size(e.movement);prepare_images();this->focus();});
+            w_resize_bottomright->set_hover_cursor(lfgui::mouse_cursor::size_topleft_bottomright);
+
+            widget* w_resize_topright=add_child(new widget())->set_pos(0,0,1,0)->set_size(10,10)->set_offset(-1,0);
+            w_resize_topright->on_mouse_press([this]{this->focus();});
+            w_resize_topright->on_mouse_drag([this](lfgui::event_mouse e){this->translate(0,e.movement.y);this->adjust_size(e.movement.x,-e.movement.y);prepare_images();this->focus();});
+            w_resize_topright->set_hover_cursor(lfgui::mouse_cursor::size_topright_bottomleft);
+
+            widget* w_resize_bottomleft=add_child(new widget())->set_pos(0,0,0,1)->set_size(10,10)->set_offset(0,-1);
+            w_resize_bottomleft->on_mouse_press([this]{this->focus();});
+            w_resize_bottomleft->on_mouse_drag([this](lfgui::event_mouse e){this->translate(e.movement.x,0);this->adjust_size(-e.movement.x,e.movement.y);prepare_images();this->focus();});
+            w_resize_bottomleft->set_hover_cursor(lfgui::mouse_cursor::size_topright_bottomleft);
+        }
+
+        widget_content=add_child(new widget())->set_pos(6,30)->set_size(-13,-37,1,1);
         widget_content->set_focusable(false);
     }
 
@@ -75,12 +120,20 @@ public:
         parent->remove_child(this);
     }
 
-    /// \brief Same as widget::add_child but adds directly to the widget_content which represents the
+    /// \brief Same as widget::create_child but adds directly to the widget_content which represents the
     /// content area of this window.
     template<typename T,typename... Args>
-    T* add_child_to_content_widget(Args... args)
+    T* create_child_in_content_widget(Args... args)
     {
-        return widget_content->add_child<T>(args...);
+        return widget_content->create_child<T>(args...);
+    }
+
+    /// \brief Same as widget::add_child but adds directly to the widget_content which represents the
+    /// content area of this window.
+    template<typename T>
+    T* add_child_to_content_widget(T* w)
+    {
+        return widget_content->add_child<T>(w);
     }
 
 private:

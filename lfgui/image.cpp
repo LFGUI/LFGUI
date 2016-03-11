@@ -16,7 +16,7 @@ image::image(std::string filename)
 
 image::image(int width,int height)
 {
-    cimage.reset(new cimg(width,height,1,4));
+    cimage.reset(new cimg(std::max(0,width),std::max(0,height),1,4));
     clear();
 }
 
@@ -35,9 +35,9 @@ int image::width()const{return cimage->width();}
 int image::height()const{return cimage->height();}
 uint8_t* image::data() const {return cimage->_data;}
 
-image& image::resize_nearest(int w,int h){cimage->resize(w,h,1,4,1);return *this;}
-image& image::resize_linear(int w,int h){cimage->resize(w,h,1,4,3);return *this;}
-image& image::resize_cubic(int w,int h){cimage->resize(w,h,1,4,5);return *this;}
+image& image::resize_nearest(int w,int h){cimage->resize(std::max(0,w),std::max(0,h),1,4,1);return *this;}
+image& image::resize_linear(int w,int h){cimage->resize(std::max(0,w),std::max(0,h),1,4,3);return *this;}
+image& image::resize_cubic(int w,int h){cimage->resize(std::max(0,w),std::max(0,h),1,4,5);return *this;}
 image& image::crop(int x,int y,int w,int h){cimage->crop(x,y,x+w,y+h);return *this;}
 
 void image::blend_pixel(int x,int y,color c)

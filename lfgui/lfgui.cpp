@@ -153,6 +153,8 @@ void widget::_insert_event_key_release(const event_key& event)
 void widget::resize(int width,int height)
 {
     img=img.resize_nearest(width,height);   // cheap and ugly image resize, is supposed to be redrawn anyway
+    for(auto& e:children)
+        e->update_geometry();
     dirty=true;
 }
 
@@ -167,6 +169,9 @@ void widget::redraw()
 redraw:
     // clear image before drawing anything
     img.clear();
+
+    if(!visible())
+        return;
 
     if(size()!=size_old&&on_resize)
         on_resize.call(size());
@@ -247,6 +252,12 @@ bool widget::_check_mouse_hover(point p) const
         return false;
     _gui->_hovering_over_widget=(widget*)this;
     return true;
+}
+
+void widget::set_hover_cursor(mouse_cursor c)
+{
+    on_mouse_enter([this,c]{_gui->set_cursor(c);});
+    on_mouse_leave([this,c]{_gui->set_cursor(lfgui::mouse_cursor::arrow);});
 }
 
 // //////////////////////////////////// gui

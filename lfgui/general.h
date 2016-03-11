@@ -148,6 +148,16 @@ struct widget_geometry
     point_float size_percent;
     point_float offset_percent;
 
+    point pos_absolute_min;
+    point_float pos_percent_min;
+    point size_absolute_min=point(0,0);
+    point_float size_percent_min;
+
+    point pos_absolute_max;
+    point_float pos_percent_max;
+    point size_absolute_max=point(0,0);
+    point_float size_percent_max;
+
     rect calc_geometry(int parent_width,int parent_height) const
     {
         point p(pos_absolute.x+pos_percent.x*parent_width,
@@ -166,8 +176,15 @@ struct widget_geometry
 
     point calc_size(int parent_width,int parent_height) const
     {
-        return point(size_absolute.x+size_percent.x*parent_width,
-                     size_absolute.y+size_percent.y*parent_height);
+        int w=size_absolute.x+size_percent.x*parent_width;
+        int h=size_absolute.y+size_percent.y*parent_height;
+        w=std::max<int>(size_absolute_min.x+size_percent_min.x*parent_width,w);
+        if(size_absolute_max.x>0||size_percent_max.x>0)
+            w=std::min<int>(size_absolute_max.x+size_percent_max.x*parent_width,w);
+        h=std::max<int>(size_absolute_min.y+size_percent_min.y*parent_height,h);
+        if(size_absolute_max.y>0||size_percent_max.y>0)
+            h=std::min<int>(size_absolute_max.y+size_percent_max.y*parent_height,h);
+        return point(w,h);
     }
 
     widget_geometry& set_pos(int x,int y,float x_percent=0,float y_percent=0)
@@ -179,12 +196,48 @@ struct widget_geometry
         return *this;
     }
 
+    widget_geometry& set_pos_min(int x,int y,float x_percent=0,float y_percent=0)
+    {
+        pos_absolute_min.x=x;
+        pos_absolute_min.y=y;
+        pos_percent_min.x=x_percent;
+        pos_percent_min.y=y_percent;
+        return *this;
+    }
+
+    widget_geometry& set_pos_max(int x,int y,float x_percent=0,float y_percent=0)
+    {
+        pos_absolute_max.x=x;
+        pos_absolute_max.y=y;
+        pos_percent_max.x=x_percent;
+        pos_percent_max.y=y_percent;
+        return *this;
+    }
+
     widget_geometry& set_size(int x,int y,float x_percent=0,float y_percent=0)
     {
         size_absolute.x=x;
         size_absolute.y=y;
         size_percent.x=x_percent;
         size_percent.y=y_percent;
+        return *this;
+    }
+
+    widget_geometry& set_size_min(int x,int y,float x_percent=0,float y_percent=0)
+    {
+        size_absolute_min.x=x;
+        size_absolute_min.y=y;
+        size_percent_min.x=x_percent;
+        size_percent_min.y=y_percent;
+        return *this;
+    }
+
+    widget_geometry& set_size_max(int x,int y,float x_percent=0,float y_percent=0)
+    {
+        size_absolute_max.x=x;
+        size_absolute_max.y=y;
+        size_percent_max.x=x_percent;
+        size_percent_max.y=y_percent;
         return *this;
     }
 

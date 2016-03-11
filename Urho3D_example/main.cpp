@@ -106,7 +106,6 @@ public:
         // the rest below is creating a 3D scene and a Urho3D::GUI window and is not related to LFGUI
 
         ResourceCache* cache=GetSubsystem<ResourceCache>();
-        GetSubsystem<UI>()->GetRoot()->SetDefaultStyle(cache->GetResource<XMLFile>("UI/DefaultStyle.xml"));
 
         scene_=new Scene(context_);
         scene_->CreateComponent<Octree>();
@@ -114,8 +113,8 @@ public:
 
         cameraNode_=scene_->CreateChild("Camera");
         camera_=cameraNode_->CreateComponent<Camera>();
-        camera_->SetFarClip(50000);
-        camera_->SetNearClip(0.01);
+        camera_->SetFarClip(5000);
+        camera_->SetNearClip(0.1);
         camera_->SetFov(75);
         SoundListener* listener=cameraNode_->CreateComponent<SoundListener>();
         GetSubsystem<Audio>()->SetListener(listener);
@@ -136,8 +135,8 @@ public:
         Node* zoneNode=scene_->CreateChild("Zone");
         Zone* zone=zoneNode->CreateComponent<Zone>();
         zone->SetBoundingBox(BoundingBox(-50000.0f,50000.0f));
-        zone->SetFogStart(100000.0f);
-        zone->SetFogEnd(200000.0f);
+        zone->SetFogStart(1000.0f);
+        zone->SetFogEnd(2000.0f);
         zone->SetAmbientColor(Color(0.1,0.1,0.1));
 
         SubscribeToEvent(E_KEYDOWN,URHO3D_HANDLER(SampleApplication,HandleKeyDown));
@@ -148,8 +147,17 @@ public:
 
         // create a transparent window with some text to display things like help and FPS
         {
+            GetSubsystem<Input>()->SetMouseVisible(false);
+            XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
+            UI* ui=GetSubsystem<UI>();
+            ui->GetRoot()->SetDefaultStyle(style);
+            SharedPtr<Cursor> cursor(new Cursor(context_));
+            cursor->SetStyleAuto(style);
+            cursor->SetShape(Urho3D::CursorShape::CS_RESIZEHORIZONTAL);
+            ui->SetCursor(cursor);
+
             window=new Window(context_);
-            GetSubsystem<UI>()->GetRoot()->AddChild(window);
+            ui->GetRoot()->AddChild(window);
             window->SetStyle("Window");
             window->SetSize(600,70);
             window->SetColor(Color(.0,.15,.3,.5));
@@ -159,6 +167,7 @@ public:
             window_text->SetFont(cache->GetResource<Font>("Fonts/Anonymous Pro.ttf"),14);
             window_text->SetColor(Color(.8,.85,.9));
             window_text->SetAlignment(HA_LEFT,VA_TOP);
+            window_text->SetText("Hello Urho!");
             window->AddChild(window_text);
         }
 
@@ -230,7 +239,7 @@ public:
             Light* light=lightNode->CreateComponent<Light>();
             light->SetLightType(LIGHT_DIRECTIONAL);
             light->SetCastShadows(true);
-            light->SetShadowBias(BiasParameters(0.00002f,0.5f));
+            light->SetShadowBias(BiasParameters(0.002f,0.5f));
             light->SetShadowCascade(CascadeParameters(10.0f,50.0f,200.0f,400.0f,0.8f));
             light->SetShadowResolution(1.0);
             light->SetBrightness(1.0);
@@ -261,10 +270,9 @@ public:
             terrain->SetHeightMap(cache->GetResource<Image>("Textures/HeightMap.png"));
             terrain->SetMaterial(cache->GetResource<Material>("Materials/Terrain.xml"));
             terrain->SetCastShadows(true);
-            terrain->SetOccluder(true);
+            //terrain->SetOccluder(true);
         }
 
-        GetSubsystem<Input>()->SetMouseVisible(true);
         GetSubsystem<Input>()->SetMouseGrabbed(false);
     }
 
@@ -333,16 +341,35 @@ public:
         int key=eventData[P_KEY].GetInt();
 
         if(key==KEY_TAB)
-        {
-            GetSubsystem<Input>()->SetMouseVisible(!GetSubsystem<Input>()->IsMouseVisible());
             GetSubsystem<Input>()->SetMouseGrabbed(!GetSubsystem<Input>()->IsMouseGrabbed());
-        }
         else if(key==KEY_ESC)
             engine_->Exit();
         else if(key==KEY_G)
-            window_text->SetVisible(!window_text->IsVisible());
+        {
+            //window_text->SetVisible(!window_text->IsVisible());
+            gui->set_visible(!gui->visible());
+        }
         else if(key==KEY_T)
             camera_->SetFillMode(camera_->GetFillMode()==FILL_WIREFRAME?FILL_SOLID:FILL_WIREFRAME);
+        else if(key==KEY_1)
+        {
+            IntVector2 v=terrain->WorldToHeightMap(cameraNode_->GetWorldPosition());
+            Image* i=terrain->GetHeightMap();
+            for(int x=-10;x<10;x++)
+                for(int y=-10;y<10;y++)
+                    i->SetPixel(v.x_+x,v.y_+y,i->GetPixel(v.x_+x,v.y_+y)+Color(0.1,0.1,0.1));
+            terrain->ApplyHeightMap();
+        }
+        else if(key==KEY_2)
+        {
+            IntVector2 v=terrain->WorldToHeightMap(cameraNode_->GetWorldPosition());
+            Texture2D* t=(Texture2D*)terrain->GetMaterial()->GetTexture(TU_DIFFUSE);
+            uint32_t c=Color(1,0,0).ToUInt();
+            for(int x=-10;x<10;x++)
+                for(int y=-10;y<10;y++)
+                    t->SetData(0,v.x_+x,v.y_+y,1,1,&c);
+            terrain->GetMaterial()->SetTexture(TU_DIFFUSE,t);
+        }
     }
 };
 

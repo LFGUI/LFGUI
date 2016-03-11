@@ -180,8 +180,7 @@ public:
         });
 
         on_focus_out([]{}); // widgets get redrawn when they have signals connected and that's all that should be done here (to remove the highlight effect and the cursor).
-        on_mouse_enter([this]{_gui->set_cursor(mouse_cursor::beam);});
-        on_mouse_leave([this]{_gui->set_cursor(mouse_cursor::arrow);});
+        set_hover_cursor(mouse_cursor::beam);
     }
 
     lineedit(int width=100,int height=20) : lineedit(0,0,width,height){}

@@ -32,6 +32,8 @@ public:
     }
 
     label(int width=100,int height=20) : label(0,0,width,height){}
+    label(const std::string& text,color text_color={0,0,0},int text_size=14) : label(0,0,100,20,text,text_color,text_size){}
+    label(const std::string& text,int text_size) : label(0,0,100,20,text,{0,0,0},text_size){}
 
     std::string text(){return _text;}
     void set_text(const std::string& t){_text=t;}

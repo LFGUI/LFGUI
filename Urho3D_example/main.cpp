@@ -147,13 +147,12 @@ public:
 
         // create a transparent window with some text to display things like help and FPS
         {
-            GetSubsystem<Input>()->SetMouseVisible(false);
+            GetSubsystem<Input>()->SetMouseVisible(true);
             XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
             UI* ui=GetSubsystem<UI>();
             ui->GetRoot()->SetDefaultStyle(style);
             SharedPtr<Cursor> cursor(new Cursor(context_));
             cursor->SetStyleAuto(style);
-            cursor->SetShape(Urho3D::CursorShape::CS_RESIZEHORIZONTAL);
             ui->SetCursor(cursor);
 
             window=new Window(context_);
@@ -319,19 +318,15 @@ public:
         {
             IntVector2 mouseMove=input->GetMouseMove();
 
-            // avoid the weird super fast movement that occurs sometimes
-            if(mouseMove.x_>-20000000&&mouseMove.y_>-20000000&&mouseMove.x_<20000000&&mouseMove.y_<20000000)
-            {
-                static float yaw_=0;
-                static float pitch_=0;
-                yaw_+=MOUSE_SENSITIVITY*mouseMove.x_;
-                pitch_+=MOUSE_SENSITIVITY*mouseMove.y_;
-                pitch_=Clamp(pitch_,-90.0f,90.0f);
-                // Reset rotation and set yaw and pitch again
-                cameraNode_->SetDirection(Vector3::FORWARD);
-                cameraNode_->Yaw(yaw_);
-                cameraNode_->Pitch(pitch_);
-            }
+            static float yaw_=0;
+            static float pitch_=0;
+            yaw_+=MOUSE_SENSITIVITY*mouseMove.x_;
+            pitch_+=MOUSE_SENSITIVITY*mouseMove.y_;
+            pitch_=Clamp(pitch_,-90.0f,90.0f);
+            // Reset rotation and set yaw and pitch again
+            cameraNode_->SetDirection(Vector3::FORWARD);
+            cameraNode_->Yaw(yaw_);
+            cameraNode_->Pitch(pitch_);
         }
     }
 
@@ -341,7 +336,10 @@ public:
         int key=eventData[P_KEY].GetInt();
 
         if(key==KEY_TAB)
+        {
             GetSubsystem<Input>()->SetMouseGrabbed(!GetSubsystem<Input>()->IsMouseGrabbed());
+            GetSubsystem<Input>()->SetMouseVisible(!GetSubsystem<Input>()->IsMouseVisible());
+        }
         else if(key==KEY_ESC)
             engine_->Exit();
         else if(key==KEY_G)

@@ -2,6 +2,10 @@
 
 #include "font.h"
 
+#define STB_TRUETYPE_IMPLEMENTATION
+#include "../external/stb_truetype.h"
+#undef STB_TRUETYPE_IMPLEMENTATION
+
 namespace lfgui
 {
 

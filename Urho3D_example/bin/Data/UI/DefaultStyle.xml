@@ -76,7 +76,16 @@
                 <variant type="ResourceRef" value="Image;Textures/UI.png" />
                 <variant type="IntRect" value="128 64 148 85" />
                 <variant type="IntVector2" value="9 9" />
-            </variant>              
+            </variant>
+
+            <variant type="VariantVector" >
+                <variant type="String" value="IBeam" />
+                <variant type="ResourceRef" value="Image;Textures/UI.png" />
+                <variant type="IntRect" value="12 0 15 15" />
+                <variant type="IntVector2" value="1 0" />
+            </variant>
+
+
         </attribute>
     </element>
     <element type="DropDownList" style="BorderImage">

@@ -1,9 +1,6 @@
 #include "image.h"
 #include "../external/cimg/CImg.h"
 
-#define STB_TRUETYPE_IMPLEMENTATION
-#include "../external/stb_truetype.h"
-
 using namespace std;
 
 namespace lfgui

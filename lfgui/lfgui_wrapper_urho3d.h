@@ -50,6 +50,7 @@ class gui : public lfgui::gui,public Urho3D::Object
     Urho3D::SharedPtr<Urho3D::Image> _image;
     Urho3D::SharedPtr<Urho3D::Texture2D> _texture;
     static gui*& _instance(){static gui* inst;return inst;}
+    lfgui::mouse_cursor active_mouse_cursor=lfgui::mouse_cursor::arrow;
 public:
     Urho3D::Context* _context;
 
@@ -125,6 +126,25 @@ public:
     void e_update(Urho3D::StringHash eventType,Urho3D::VariantMap& eventData)
     {
         redraw();
+
+        if(active_mouse_cursor==mouse_cursor::beam)
+            GetSubsystem<Urho3D::UI>()->GetCursor()->SetShape(Urho3D::CursorShape::CS_IBEAM);
+        else if(active_mouse_cursor==mouse_cursor::busy)
+            GetSubsystem<Urho3D::UI>()->GetCursor()->SetShape(Urho3D::CursorShape::CS_BUSY);
+        else if(active_mouse_cursor==mouse_cursor::cross)
+            GetSubsystem<Urho3D::UI>()->GetCursor()->SetShape(Urho3D::CursorShape::CS_CROSS);
+        else if(active_mouse_cursor==mouse_cursor::size_topleft_bottomright)
+            GetSubsystem<Urho3D::UI>()->GetCursor()->SetShape(Urho3D::CursorShape::CS_RESIZEDIAGONAL_TOPLEFT);
+        else if(active_mouse_cursor==mouse_cursor::size_topright_bottomleft)
+            GetSubsystem<Urho3D::UI>()->GetCursor()->SetShape(Urho3D::CursorShape::CS_RESIZEDIAGONAL_TOPRIGHT);
+        else if(active_mouse_cursor==mouse_cursor::size_horizontal)
+            GetSubsystem<Urho3D::UI>()->GetCursor()->SetShape(Urho3D::CursorShape::CS_RESIZEHORIZONTAL);
+        else if(active_mouse_cursor==mouse_cursor::size_vertical)
+            GetSubsystem<Urho3D::UI>()->GetCursor()->SetShape(Urho3D::CursorShape::CS_RESIZEVERTICAL);
+        else if(active_mouse_cursor==mouse_cursor::size_all)
+            GetSubsystem<Urho3D::UI>()->GetCursor()->SetShape(Urho3D::CursorShape::CS_RESIZE_ALL);
+        else
+            GetSubsystem<Urho3D::UI>()->GetCursor()->SetShape(Urho3D::CursorShape::CS_NORMAL);
     }
 
     void e_mouse_press(Urho3D::StringHash eventType,Urho3D::VariantMap& eventData)
@@ -224,11 +244,7 @@ public:
 
     void set_cursor(mouse_cursor c) override
     {
-        Urho3D::Cursor* cursor=_context->GetSubsystem<Urho3D::Cursor>();
-        if(c==mouse_cursor::beam)
-            GetSubsystem<UI>()->SetCursorShape(Urho3D::CursorShape::CS_IBEAM);
-        else
-            GetSubsystem<UI>()->SetCursorShape(Urho3D::CursorShape::CS_NORMAL);
+        active_mouse_cursor=c;
     }
 
     URHO3D_OBJECT(gui,Urho3D::Object)

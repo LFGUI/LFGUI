@@ -85,6 +85,7 @@ public:
     SharedPtr<Node> skyNode;
     SharedPtr<Node> node_torch;
     SharedPtr<Node> lightNode;
+    SharedPtr<Cursor> cursor;
     std::unique_ptr<lfgui::wrapper_urho3d::gui> gui;
 
     SampleApplication(Context * context) : Application(context) {}
@@ -134,7 +135,7 @@ public:
 
         Node* zoneNode=scene_->CreateChild("Zone");
         Zone* zone=zoneNode->CreateComponent<Zone>();
-        zone->SetBoundingBox(BoundingBox(-50000.0f,50000.0f));
+        zone->SetBoundingBox(BoundingBox(-5000.0f,5000.0f));
         zone->SetFogStart(1000.0f);
         zone->SetFogEnd(2000.0f);
         zone->SetAmbientColor(Color(0.1,0.1,0.1));
@@ -147,13 +148,13 @@ public:
 
         // create a transparent window with some text to display things like help and FPS
         {
-            GetSubsystem<Input>()->SetMouseVisible(true);
             XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
             UI* ui=GetSubsystem<UI>();
             ui->GetRoot()->SetDefaultStyle(style);
-            SharedPtr<Cursor> cursor(new Cursor(context_));
+            cursor=new Cursor(context_);
             cursor->SetStyleAuto(style);
             ui->SetCursor(cursor);
+            GetSubsystem<Input>()->SetMouseVisible(true);
 
             window=new Window(context_);
             ui->GetRoot()->AddChild(window);
@@ -238,10 +239,10 @@ public:
             Light* light=lightNode->CreateComponent<Light>();
             light->SetLightType(LIGHT_DIRECTIONAL);
             light->SetCastShadows(true);
-            light->SetShadowBias(BiasParameters(0.002f,0.5f));
-            light->SetShadowCascade(CascadeParameters(10.0f,50.0f,200.0f,400.0f,0.8f));
-            light->SetShadowResolution(1.0);
-            light->SetBrightness(1.0);
+            light->SetShadowBias(BiasParameters(0.0005f,0.9f));
+            light->SetShadowCascade(CascadeParameters(10.0f,50.0f,200.0f,0.0f,0.8f));
+            //light->SetShadowResolution(1.0);
+            //light->SetBrightness(1.0);
             light->SetColor(Color(1.0,0.9,0.8,1));
             lightNode->SetDirection(Vector3::FORWARD);
             lightNode->Yaw(-150);   // horizontal
@@ -339,6 +340,10 @@ public:
         {
             GetSubsystem<Input>()->SetMouseGrabbed(!GetSubsystem<Input>()->IsMouseGrabbed());
             GetSubsystem<Input>()->SetMouseVisible(!GetSubsystem<Input>()->IsMouseVisible());
+            if(GetSubsystem<UI>()->GetCursor())
+                GetSubsystem<UI>()->SetCursor(0);
+            else
+                GetSubsystem<UI>()->SetCursor(cursor);
         }
         else if(key==KEY_ESC)
             engine_->Exit();

@@ -127,6 +127,9 @@ public:
     {
         redraw();
 
+        if(!GetSubsystem<Urho3D::UI>()->GetCursor())
+            return;
+
         if(active_mouse_cursor==mouse_cursor::beam)
             GetSubsystem<Urho3D::UI>()->GetCursor()->SetShape(Urho3D::CursorShape::CS_IBEAM);
         else if(active_mouse_cursor==mouse_cursor::busy)

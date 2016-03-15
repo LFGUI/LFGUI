@@ -1,7 +1,7 @@
 # LFGUI
 Lightweight Flexible Graphical User Interface
 
-Webpage: [http://lfgui.github.io/](http://lfgui.github.io/)
+Webpage: [http://lfgui.org/](http://lfgui.org/)
 
 This is a C++11 GUI toolkit designed to be:
 - lightweight: being easy to integrate and having no required dependencies that require complicate building 

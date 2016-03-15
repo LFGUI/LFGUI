@@ -338,12 +338,16 @@ public:
 
         if(key==KEY_TAB)
         {
-            GetSubsystem<Input>()->SetMouseGrabbed(!GetSubsystem<Input>()->IsMouseGrabbed());
-            GetSubsystem<Input>()->SetMouseVisible(!GetSubsystem<Input>()->IsMouseVisible());
-            if(GetSubsystem<UI>()->GetCursor())
-                GetSubsystem<UI>()->SetCursor(0);
+            if(GetSubsystem<Input>()->GetMouseMode()==MM_RELATIVE)
+            {
+                GetSubsystem<Input>()->SetMouseMode(MM_ABSOLUTE);
+                cursor->SetVisible(true);
+            }
             else
-                GetSubsystem<UI>()->SetCursor(cursor);
+            {
+                GetSubsystem<Input>()->SetMouseMode(MM_RELATIVE);
+                cursor->SetVisible(false);
+            }
         }
         else if(key==KEY_ESC)
             engine_->Exit();

@@ -108,6 +108,8 @@ inline void setup_sample_gui(lfgui::widget* gui)
                 static int count=1; // give the window unique titles (no technical reason, just to have different titles)
                 lfgui::window* new_window=gui->add_child(new lfgui::window(rand()%(gui->width()-150),rand()%(gui->height()-100),170,100,"window #"+std::to_string(count),true));
                 new_window->add_child_to_content_widget(new lfgui::label("This window is not\nresizeable but closable."))->set_size(0,0,1,1);
+                new_window->on_close([]{std::cout<<"closed"<<std::endl;});
+                new_window->on_reject([]{std::cout<<"rejected"<<std::endl;});
                 count++;
             });
         }

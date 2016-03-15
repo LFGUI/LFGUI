@@ -38,7 +38,7 @@ struct event_function<void>
 /// \brief This class is the signal slot system of LFGUI. Functions can be set to be called by using the = or () operator.
 /// The functions are called by using the call() command. Functions can have an optional argument that is given by the
 /// T template parameter. Functions have a priority, lower priority numbers are called first. (default priority is 0)
-template <typename T>
+template <typename T=void>
 class signal
 {
 public:

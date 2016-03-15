@@ -29,6 +29,9 @@ private:
 public:
     widget* widget_content;
     widget* widget_this;
+    signal<> on_accept; ///< Called when the accept() function is used to close this window.
+    signal<> on_reject; ///< Called when this widget is closed with the X or if the close() function is called otherwise.
+    signal<> on_close;  ///< Called when this widget is closed.
 
     window(int x,int y,int width,int height,const std::string& title="",bool closable=false,bool resizeable=false)
         : widget(x,y,width,height),title(title),_closable(closable),_resizeable(resizeable),widget_this(this)
@@ -112,9 +115,22 @@ public:
     window(int width=100,int height=20,const std::string& text="")
         : window(0,0,width,height,text){}
 
-    /// \brief Closes this window. Removes this window from the parent and destroys it.
+    /// \brief Closes this window. Removes this window from the parent and destroys it. Calls on_accept and on_close.
+    /// This should be called by an "Ok" or "Yes" button to provide a standardized dialog interface (like Qt).
+    void accept()
+    {
+        on_accept.call();
+        on_close.call();
+        if(!parent)
+            throw std::logic_error("LFGUI Error: close() called without having a parent.");
+        parent->remove_child(this);
+    }
+
+    /// \brief Closes this window. Removes this window from the parent and destroys it. Calls on_reject and on_close.
     void close()
     {
+        on_reject.call();
+        on_close.call();
         if(!parent)
             throw std::logic_error("LFGUI Error: close() called without having a parent.");
         parent->remove_child(this);

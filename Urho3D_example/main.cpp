@@ -96,6 +96,7 @@ public:
         engineParameters_["WindowWidth"]=1280;
         engineParameters_["WindowHeight"]=720;
         engineParameters_["WindowResizable"]=true;
+        engineParameters_["Multisample"]=8;
     }
 
     virtual void Start()
@@ -126,12 +127,13 @@ public:
         renderer->SetViewport(0,viewport);
         renderer->SetShadowMapSize(1024);
         renderer->SetHDRRendering(true);
+        renderer->SetShadowQuality(SHADOWQUALITY_PCF_24BIT);
 
         RenderPath* effectRenderPath=viewport->GetRenderPath();
-        //effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/AutoExposure.xml"));
+        effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/AutoExposure.xml"));
         //effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/BloomHDR.xml"));
         effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/BloomHDR_stronger.xml"));
-        //effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/FXAA2.xml"));
+        effectRenderPath->Append(cache->GetResource<XMLFile>("PostProcess/FXAA2.xml"));
 
         Node* zoneNode=scene_->CreateChild("Zone");
         Zone* zone=zoneNode->CreateComponent<Zone>();

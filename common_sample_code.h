@@ -116,8 +116,8 @@ inline void setup_sample_gui(lfgui::widget* gui)
     }
 
     {
-        static lfgui::color color_background({75,50,25});
-        auto movable=gui->add_child(new lfgui::widget(300,320,220,190));
+        static lfgui::color color_background({75,50,25,150});
+        auto movable=gui->add_child(new lfgui::widget(30,320,520,190));
         movable->on_paint([&](lfgui::image& img)
         {
             img.draw_rect(0,0,img.width(),img.height(),color_background);
@@ -150,6 +150,19 @@ inline void setup_sample_gui(lfgui::widget* gui)
 
         lfgui::slider* slider_a=movable->add_child(new lfgui::slider(10,150,100,25,0,255,color_background.a));
         slider_a->on_value_change([&](float v){color_background.a=v;});
+
+        lfgui::widget* paint_area=movable->add_child(new lfgui::widget(210,10,300,170));
+        std::cout<<paint_area->rect()<<std::endl;
+        static lfgui::image painted_image(300,170);
+        paint_area->on_paint([&](lfgui::image& img)
+        {
+            img.draw_rect(0,0,img.width(),img.height(),{255,255,255});
+            img.draw_image(0,0,painted_image);
+        });
+        paint_area->on_mouse_drag([&](lfgui::event_mouse e)
+        {
+            painted_image.draw_line(e.old_pos,e.pos,color_background);
+        });
     }
 
     {

@@ -121,7 +121,13 @@ public:
 
     void draw_character(int& x,int y,unsigned int character,const color& color,int font_size=15,font& f=font::default_font());
     void draw_line(int x1,int y1,int x2,int y2,color _color);
+    /// \brief Draws a line with the given thickness. The drawn color gets more transparent when further away from the
+    /// center of the line. This can be adjusted with the fading parameter where 1 is no fading and 0 fading starting in the center.
+    void draw_line(int x1,int y1,int x2,int y2,color _color,float thickness,float fading=0.7);
     void draw_line(point start,point end,color _color){draw_line(start.x,start.y,end.x,end.y,_color);}
+    /// \brief Draws a line with the given thickness. The drawn color gets more transparent when further away from the
+    /// center of the line. This can be adjusted with the fading parameter where 1 is no fading and 0 fading starting in the center.
+    void draw_line(point start,point end,color _color,float width,float fading_start=0.7){draw_line(start.x,start.y,end.x,end.y,_color,width,fading_start);}
     /// \brief Draw a path along the given points. The last point is connected with the first if connect_last_point_with_first is set to true.
     void draw_path(const std::vector<point>& vec,color _color,bool connect_last_point_with_first=false);
     void draw_rect(int x,int y,int width,int height,color color);

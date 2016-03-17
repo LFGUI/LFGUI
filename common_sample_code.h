@@ -37,7 +37,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
 
         // draw some blue lines
         for(int i=10;i<=190;i+=20)
-            img.draw_line(100,100,i,200,{128,128,255});
+            img.draw_line(100,100,i,200,{64,64,128},(i+10)/20);
 
         // draw text centered at the bottom with different alignments
         img.draw_text(img.width()/2,img.height()-90,"alignment left",{55,55,0},16,lfgui::alignment::left);
@@ -116,7 +116,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
     }
 
     {
-        static lfgui::color color_background({75,50,25,150});
+        static lfgui::color color_background({155,100,15,200});
         auto movable=gui->add_child(new lfgui::widget(30,320,520,190));
         movable->on_paint([&](lfgui::image& img)
         {
@@ -161,7 +161,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
         });
         paint_area->on_mouse_drag([&](lfgui::event_mouse e)
         {
-            painted_image.draw_line(e.old_pos,e.pos,color_background);
+            painted_image.draw_line(e.old_pos,e.pos,lfgui::color(color_background.r,color_background.g,color_background.b),4,0.5);
         });
     }
 

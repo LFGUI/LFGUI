@@ -168,6 +168,141 @@ void image::draw_line(int x0,int y0,int x1,int y1,color c)
     }
 }
 
+// based on http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+inline float distance_point_line(int point_x,int point_y,int line_x0,int line_y0,int line_x1,int line_y1)
+{
+    int A=point_x-line_x0;
+    int B=point_y-line_y0;
+    int C=line_x1-line_x0;
+    int D=line_y1-line_y0;
+
+    int dot=A*C+B*D;
+    float len_sq=C*C+D*D;
+    float param=-1;
+    if(len_sq!=0) //in case of 0 length line
+        param=dot/len_sq;
+
+    int xx,yy;
+
+    if(param<0)
+    {
+        xx=line_x0;
+        yy=line_y0;
+    }
+    else if(param>1)
+    {
+        xx=line_x1;
+        yy=line_y1;
+    }
+    else
+    {
+        xx=line_x0+param*C;
+        yy=line_y0+param*D;
+    }
+
+    int dx=point_x-xx;
+    int dy=point_y-yy;
+    return sqrt(dx*dx+dy*dy);
+}
+
+void image::draw_line(int x0,int y0,int x1,int y1,color c,float w,float fading_start)
+{
+    if(clip_line(x0,y0,x1,y1,width()-1,height()-1))
+        return;
+
+    int dx=x1-x0;
+    int dy=y1-y0;
+    if(dx==0&&dy==0)
+    {
+        blend_pixel_safe(x0,y0,c);
+        return;
+    }
+
+    // calculate a polygon that is the outer shape of our line. Like a bounding box, but not axis aligned.
+    std::vector<point> polygon;
+    {
+        float d=sqrt(dx*dx+dy*dy);
+        float rx=dx/d;
+        float ry=dy/d;
+        rx*=w;
+        ry*=w;
+
+        polygon.emplace_back(x0+ry-rx,y0-rx-ry);
+        polygon.emplace_back(x1+ry+rx,y1-rx+ry);
+        polygon.emplace_back(x1-ry+rx,y1+rx+ry);
+        polygon.emplace_back(x0-ry-rx,y0+rx-ry);
+    }
+
+    // draw the actual line
+    {
+        std::vector<int> edges;
+        edges.resize(height());
+        int image_width=width();
+        int image_height=height();
+
+        int pixelX,pixelY,i,j,swap,node_count;
+
+        //  Loop through the rows of the image.
+        for(pixelY=0;pixelY<image_height;pixelY++)
+        {
+            //  Build a list of nodes.
+            edges.resize(0);
+            j=4-1;
+            for(i=0;i<4;i++)
+            {
+                if((polygon[i].y<(double)pixelY&&polygon[j].y>=(double)pixelY)
+                 ||(polygon[j].y<(double)pixelY&&polygon[i].y>=(double)pixelY))
+                    edges.push_back((polygon[i].x+(pixelY-polygon[i].y)/double(polygon[j].y-polygon[i].y)*(polygon[j].x-polygon[i].x)));
+                j=i;
+            }
+            node_count=edges.size();
+
+            //  Sort the nodes, via a simple "Bubble" sort.
+            i=0;
+            while(i<node_count-1)
+            {
+                if(edges[i]>edges[i+1])
+                {
+                    swap=edges[i];
+                    edges[i]=edges[i+1];
+                    edges[i+1]=swap;
+                    if(i)
+                        i--;
+                }
+                else
+                    i++;
+            }
+
+            //  Fill the pixels between node pairs.
+            for(i=0;i<node_count;i+=2)
+            {
+                if(edges[i  ]>=image_width)
+                    break;
+                if(edges[i+1]> 0 )
+                {
+                    if(edges[i  ]<0 )
+                        edges[i  ]=0 ;
+                    if(edges[i+1]>image_width)
+                        edges[i+1]=image_width;
+
+                    for(pixelX=edges[i];pixelX<edges[i+1];pixelX++)
+                    {
+                        float s=distance_point_line(pixelX,pixelY,x0,y0,x1,y1)/w;
+                        s-=fading_start/2;
+                        if(s>0)
+                            s/=(1.0f-fading_start);
+                        int si=s*255;
+                        si=std::min(255,si);
+                        si=std::max(0,si);
+                        si=255-si;
+                        blend_pixel(pixelX,pixelY,c.alpha_multiplied(si));
+                    }
+                }
+            }
+        }
+    }
+}
+
 void image::draw_rect(int x,int y,int width,int height,color color_foreground)
 {
     cimage->draw_rectangle(x,y,x+width,y+height,color_foreground.array);

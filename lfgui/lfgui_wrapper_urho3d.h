@@ -89,7 +89,7 @@ public:
 
     void redraw() override
     {
-        URHO3D_PROFILE(LFGUI_redraw);
+        URHO3D_PROFILE(lfgui_redraw);
 
         int h=height();
         int w=width();

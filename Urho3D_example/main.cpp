@@ -10,9 +10,9 @@
 
 #include <Urho3D/Urho3D.h>
 #include <Urho3D/Core/CoreEvents.h>
-#include <Urho3D/Graphics/RenderPath.h>
 #include <Urho3D/Engine/Application.h>
 #include <Urho3D/Engine/Engine.h>
+#include <Urho3D/Engine/DebugHud.h>
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Input/InputEvents.h>
 #include <Urho3D/Resource/ResourceCache.h>
@@ -30,6 +30,7 @@
 #include <Urho3D/Graphics/Camera.h>
 #include <Urho3D/Graphics/Geometry.h>
 #include <Urho3D/Graphics/Renderer.h>
+#include <Urho3D/Graphics/RenderPath.h>
 #include <Urho3D/Graphics/DebugRenderer.h>
 #include <Urho3D/Graphics/Octree.h>
 #include <Urho3D/Graphics/Light.h>
@@ -38,13 +39,14 @@
 #include <Urho3D/Graphics/Material.h>
 #include <Urho3D/Graphics/Skybox.h>
 #include <Urho3D/Graphics/Zone.h>
+#include <Urho3D/Graphics/ParticleEmitter.h>
+#include <Urho3D/Graphics/ParticleEffect.h>
+#include <Urho3D/Graphics/Terrain.h>
 #include <Urho3D/Audio/Sound.h>
 #include <Urho3D/Audio/SoundSource3D.h>
 #include <Urho3D/Audio/SoundListener.h>
 #include <Urho3D/Audio/Audio.h>
-#include <Urho3D/Graphics/ParticleEmitter.h>
-#include <Urho3D/Graphics/ParticleEffect.h>
-#include <Urho3D/Graphics/Terrain.h>
+
 
 #include "../lfgui/lfgui_wrapper_urho3d.h"
 #include "../lfgui/slider.h"
@@ -171,6 +173,9 @@ public:
             window_text->SetAlignment(HA_LEFT,VA_TOP);
             window_text->SetText("Hello Urho!");
             window->AddChild(window_text);
+
+            DebugHud* debugHud=engine_->CreateDebugHud();
+            debugHud->SetDefaultStyle(style);
         }
 
         // a rotating planet
@@ -378,6 +383,22 @@ public:
                 for(int y=-10;y<10;y++)
                     t->SetData(0,v.x_+x,v.y_+y,1,1,&c);
             terrain->GetMaterial()->SetTexture(TU_DIFFUSE,t);
+        }
+        else if(key==KEY_F2)
+        {
+            DebugHud* debugHud=GetSubsystem<DebugHud>();
+            if (debugHud->GetMode()!=DEBUGHUD_SHOW_ALL)
+                debugHud->SetMode(DEBUGHUD_SHOW_ALL);
+            else
+                debugHud->SetMode(DEBUGHUD_SHOW_NONE);
+        }
+        else if (key == KEY_F3)
+        {
+            DebugHud* debugHud=GetSubsystem<DebugHud>();
+            if (debugHud->GetMode()!=DEBUGHUD_SHOW_ALL_MEMORY)
+                debugHud->SetMode(DEBUGHUD_SHOW_ALL_MEMORY);
+            else
+                debugHud->SetMode(DEBUGHUD_SHOW_NONE);
         }
     }
 };

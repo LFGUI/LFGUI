@@ -15,6 +15,7 @@
 #include <Urho3D/Graphics/Texture.h>
 #include <Urho3D/Graphics/Texture2D.h>
 #include <Urho3D/Resource/ResourceCache.h>
+#include <Urho3D/Core/Profiler.h>
 
 #include "lfgui.h"
 
@@ -88,33 +89,43 @@ public:
 
     void redraw() override
     {
-        lfgui::widget::redraw();
-
-        if(_texture->GetWidth()!=width()||_texture->GetHeight()!=height())
-            _texture->SetSize(width(),height(),Urho3D::Graphics::GetRGBAFormat(),Urho3D::TEXTURE_STATIC);
-        if(_image->GetWidth()!=width()||_image->GetHeight()!=height())
-            _image->SetSize(width(),height(),4);
+        URHO3D_PROFILE(LFGUI_redraw);
 
         int h=height();
         int w=width();
-        int count=w*h;
-        int countx2=count*2;
-        int countx3=count*3;
-        // due to the channel seperation in the first image, the pixel have to be copyed byte/color vise
-        uint8_t* data_target=_image->GetData();
-        uint8_t* data_source=this->img.data();
-        uint8_t* data_source_end=this->img.data()+count;
-        for(;data_source<data_source_end;)
+
+        if(visible())
         {
-            *data_target=*(data_source+countx2);    // cIMG has the colors as BGRA and Urho3D as RGBA
-            data_target++;
-            *data_target=*(data_source+count);
-            data_target++;
-            *data_target=*data_source;
-            data_target++;
-            *data_target=*(data_source+countx3);
-            data_target++;
-            data_source++;
+            lfgui::widget::redraw();
+
+            if(_texture->GetWidth()!=width()||_texture->GetHeight()!=height())
+                _texture->SetSize(width(),height(),Urho3D::Graphics::GetRGBAFormat(),Urho3D::TEXTURE_STATIC);
+            if(_image->GetWidth()!=width()||_image->GetHeight()!=height())
+                _image->SetSize(width(),height(),4);
+
+            int count=w*h;
+            int countx2=count*2;
+            int countx3=count*3;
+            // due to the channel seperation in the first image, the pixel have to be copyed byte/color vise
+            uint8_t* data_target=_image->GetData();
+            uint8_t* data_source=this->img.data();
+            uint8_t* data_source_end=this->img.data()+count;
+            for(;data_source<data_source_end;)
+            {
+                *data_target=*(data_source+countx2);    // cIMG has the colors as BGRA and Urho3D as RGBA
+                data_target++;
+                *data_target=*(data_source+count);
+                data_target++;
+                *data_target=*data_source;
+                data_target++;
+                *data_target=*(data_source+countx3);
+                data_target++;
+                data_source++;
+            }
+        }
+        else
+        {
+            _image->ClearInt(0);
         }
 
         _texture->SetData(0,0,0,w,h,_image->GetData());

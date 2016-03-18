@@ -333,6 +333,8 @@ public:
 
     /// \brief Returns true if this widget is displayed or false if not.
     bool visible()const{return _visible;}
+    /// \brief Returns true if this widget is not displayed or false if it is.
+    bool hidden()const{return !_visible;}
     /// \brief Sets if this widget is displayed or not.
     void set_visible(bool visible=true){_visible=visible;dirty=true;}
     /// \brief Same as set_visible(false);.

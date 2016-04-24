@@ -4,18 +4,39 @@
 namespace lfgui
 {
 
+template<typename Function,typename Return,typename... Parameter>
+class is_callable
+{
+public:
+    static const bool value=std::is_same<decltype(&Function::operator()),Return(Function::*)(Parameter...)const>::value;
+};
+
+template<typename Return=void,typename... Parameter>
+class function_strict
+{
+    std::function<Return(Parameter...)> func;
+public:
+    function_strict(){}
+
+    template<typename T,typename = typename std::enable_if<is_callable<T,Return,Parameter...>::value>::type>
+    function_strict(T func):func(func){}
+
+    Return operator()(Parameter... parameter)const{return func(parameter...);}
+    operator bool()const{return bool(func);}
+};
+
 /// \brief Used by signal to store std::functions.
 template <typename T>
 struct event_function
 {
-    std::function<void()> void_void;
-    std::function<void(T)> void_em;
-    std::function<void(T,bool&)> bool_em;
+    function_strict<void> void_void;
+    function_strict<void,T> void_em;
+    function_strict<void,T,bool&> bool_em;
 
     event_function(){}
-    event_function(std::function<void()> f) : void_void(f) {}
-    event_function(std::function<void(T)> f) : void_em(f) {}
-    event_function(std::function<void(T,bool&)> f) : bool_em(f) {}
+    event_function(function_strict<void> f) : void_void(f) {}
+    event_function(function_strict<void,T> f) : void_em(f) {}
+    event_function(function_strict<void,T,bool&> f) : bool_em(f) {}
     /// \brief Returns true if this even_function has a std::function set.
     operator bool()const{return void_void||void_em||bool_em;}
 };
@@ -24,12 +45,12 @@ struct event_function
 template<>
 struct event_function<void>
 {
-    std::function<void()> void_void;
-    std::function<void(bool&)> bool_em;
+    function_strict<void> void_void;
+    function_strict<void,bool&> bool_em;
 
     event_function(){}
-    event_function(std::function<void()> f) : void_void(f) {}
-    event_function(std::function<void(bool&)> f) : bool_em(f) {}
+    event_function(function_strict<void> f) : void_void(f) {}
+    event_function(function_strict<void,bool&> f) : bool_em(f) {}
     /// \brief Returns true if this even_function has a std::function set.
     operator bool()const{return void_void||bool_em;}
 };
@@ -69,17 +90,17 @@ public:
     /// \brief Adds a callback that is called when this signal is activated via call().
     void operator()(int priority,const event_function<T>& f){functions.emplace(priority,f);}
     /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(std::function<void()> f){functions.emplace(0,event_function<T>(f));}
+    void operator()(function_strict<void> f){functions.emplace(0,event_function<T>(f));}
     /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(std::function<void(T)> f){functions.emplace(0,event_function<T>(f));}
+    void operator()(function_strict<void,T> f){functions.emplace(0,event_function<T>(f));}
     /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(std::function<void(T,bool&)> f){functions.emplace(0,event_function<T>(f));}
+    void operator()(function_strict<void,T,bool&> f){functions.emplace(0,event_function<T>(f));}
     /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(int priority,std::function<void()> f){functions.emplace(priority,event_function<T>(f));}
+    void operator()(int priority,function_strict<void> f){functions.emplace(priority,event_function<T>(f));}
     /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(int priority,std::function<void(T)> f){functions.emplace(priority,event_function<T>(f));}
+    void operator()(int priority,function_strict<void,T> f){functions.emplace(priority,event_function<T>(f));}
     /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(int priority,std::function<void(T,bool&)> f){functions.emplace(priority,event_function<T>(f));}
+    void operator()(int priority,function_strict<void,T,bool&> f){functions.emplace(priority,event_function<T>(f));}
     template <typename T2>
     void operator=(const T2& o){(*this)(o);}
 
@@ -129,13 +150,13 @@ public:
     /// \brief Adds a callback that is called when this signal is activated via call().
     void operator()(int priority,const event_function<void>& f){functions.emplace(priority,f);}
     /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(std::function<void()> f){functions.emplace(0,event_function<void>(f));}
+    void operator()(function_strict<void> f){functions.emplace(0,event_function<void>(f));}
     /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(std::function<void(bool&)> f){functions.emplace(0,event_function<void>(f));}
+    void operator()(function_strict<void,bool&> f){functions.emplace(0,event_function<void>(f));}
     /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(int priority,std::function<void()> f){functions.emplace(priority,event_function<void>(f));}
+    void operator()(int priority,function_strict<void> f){functions.emplace(priority,event_function<void>(f));}
     /// \brief Adds a callback that is called when this signal is activated via call().
-    void operator()(int priority,std::function<void(bool&)> f){functions.emplace(priority,event_function<void>(f));}
+    void operator()(int priority,function_strict<void,bool&> f){functions.emplace(priority,event_function<void>(f));}
     template <typename T2>
     void operator=(const T2& o){(*this)(o);}
 

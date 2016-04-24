@@ -7,6 +7,7 @@
 #include <string>
 #include <stdexcept>
 #include <memory>
+#include <functional>
 
 #include "general.h"
 #include "font.h"

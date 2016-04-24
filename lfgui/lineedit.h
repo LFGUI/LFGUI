@@ -176,7 +176,7 @@ public:
                 cursor_position+=ek.character_unicode.size();
             }
 
-            cursor_position=std::min(cursor_position,_text.size());
+            cursor_position=min(cursor_position,_text.size());
         });
 
         on_focus_out([]{}); // widgets get redrawn when they have signals connected and that's all that should be done here (to remove the highlight effect and the cursor).

@@ -7,6 +7,7 @@
 #include <string>
 #include <stdexcept>
 #include <memory>
+#include <algorithm>
 
 #include "lfgui.h"
 
@@ -60,8 +61,8 @@ public:
             img_handle=&img_handle_pressed;
             //handle->pos.x=from_global(pos.x);
             handle->translate(e.movement.x,0);
-            handle->geometry.pos_absolute.x=std::max(handle->geometry.pos_absolute.x,0);
-            handle->geometry.pos_absolute.x=std::min(handle->geometry.pos_absolute.x,this->width()-this->height());
+            handle->geometry.pos_absolute.x=max(handle->geometry.pos_absolute.x,0);
+            handle->geometry.pos_absolute.x=min(handle->geometry.pos_absolute.x,this->width()-this->height());
             on_value_change.call(this->value());
         });
 
@@ -113,8 +114,8 @@ public:
     /// \brief Sets the current value to v. If emit_event is set on_value_change will be emitted.
     void set_value(float v,bool emit_event=true)
     {
-        v=std::max(value_min(),v);
-        v=std::min(value_max(),v);
+        v=max(value_min(),v);
+        v=min(value_max(),v);
         handle->geometry.pos_absolute.x=v/(value_max()-value_min())*(width()-height());
         if(emit_event)
             on_value_change.call(this->value());

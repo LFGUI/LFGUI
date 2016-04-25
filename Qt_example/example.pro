@@ -15,6 +15,8 @@ CONFIG += C++11
 
 INCLUDEPATH +=  ../external/
 
+DEFINES += NOTRACKMOUSEEVENT "cimg_display=0"
+
 DESTDIR = $${PWD}
 
 SOURCES += main.cpp\

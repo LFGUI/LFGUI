@@ -6,7 +6,7 @@
 #include <memory>
 #include <exception>
 
-class stbtt_fontinfo;
+struct stbtt_fontinfo;
 
 namespace lfgui
 {

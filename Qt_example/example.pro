@@ -32,6 +32,7 @@ HEADERS  += \
         ../lfgui/image.h \
         ../lfgui/slider.h \
         ../lfgui/button.h \
+        ../lfgui/checkbox.h \
         ../lfgui/lfgui_wrapper_qt.h \
         ../lfgui/general.h \
         ../lfgui/label.h \

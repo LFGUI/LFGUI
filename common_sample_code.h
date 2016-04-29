@@ -2,6 +2,7 @@
 #include "lfgui/lfgui.h"
 #include "lfgui/label.h"
 #include "lfgui/button.h"
+#include "lfgui/checkbox.h"
 #include "lfgui/lineedit.h"
 #include "lfgui/window.h"
 
@@ -70,7 +71,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
         });
     }
     {
-        lfgui::window* movable=gui->add_child(new lfgui::window(280,50,250,200,"example window",false,true));
+        lfgui::window* movable=gui->add_child(new lfgui::window(280,50,240,230,"example window",false,true));
 
         {
             auto movable2=movable->add_child_to_content_widget(new lfgui::widget(15,5,150,20));
@@ -112,6 +113,11 @@ inline void setup_sample_gui(lfgui::widget* gui)
                 new_window->on_reject([]{std::cout<<"rejected"<<std::endl;});
                 count++;
             });
+        }
+
+        {
+            movable->add_child_to_content_widget(new lfgui::checkbox( 20,155,100,25,"option 1",lfgui::color({30,30,30})));
+            movable->add_child_to_content_widget(new lfgui::checkbox(120,155,100,25,"option 2",lfgui::color({30,130,30}),true));
         }
     }
 

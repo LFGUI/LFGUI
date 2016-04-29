@@ -6,6 +6,8 @@
 namespace lfgui
 {
 
+#ifdef _MSC_VER     // THANKS C++11
+
 template<typename Function,typename Return,typename... Parameter>
 class is_callable
 {
@@ -39,6 +41,7 @@ struct event_function
     event_function(function_strict<void> f) : void_void(f) {}
     event_function(function_strict<void,T> f) : void_em(f) {}
     event_function(function_strict<void,T,bool&> f) : bool_em(f) {}
+
     /// \brief Returns true if this even_function has a std::function set.
     operator bool()const{return void_void||void_em||bool_em;}
 };
@@ -57,6 +60,40 @@ struct event_function<void>
     operator bool()const{return void_void||bool_em;}
 };
 
+#else
+
+/// \brief Used by signal to store std::functions.
+template <typename T>
+struct event_function
+{
+    std::function<void()> void_void;
+    std::function<void(T)> void_em;
+    std::function<void(T,bool&)> bool_em;
+
+    event_function(){}
+    event_function(std::function<void()> f) : void_void(f) {}
+    event_function(std::function<void(T)> f) : void_em(f) {}
+    event_function(std::function<void(T,bool&)> f) : bool_em(f) {}
+
+    /// \brief Returns true if this even_function has a std::function set.
+    operator bool()const{return void_void||void_em||bool_em;}
+};
+
+/// \brief Used by signal to store std::functions.
+template<>
+struct event_function<void>
+{
+    std::function<void()> void_void;
+    std::function<void(bool&)> bool_em;
+
+    event_function(){}
+    event_function(std::function<void()> f) : void_void(f) {}
+    event_function(std::function<void(bool&)> f) : bool_em(f) {}
+    /// \brief Returns true if this even_function has a std::function set.
+    operator bool()const{return void_void||bool_em;}
+};
+
+#endif
 
 /// \brief This class is the signal slot system of LFGUI. Functions can be set to be called by using the = or () operator.
 /// The functions are called by using the call() command. Functions can have an optional argument that is given by the
@@ -91,6 +128,9 @@ public:
     void operator()(const event_function<T>& f){functions.emplace(0,f);}
     /// \brief Adds a callback that is called when this signal is activated via call().
     void operator()(int priority,const event_function<T>& f){functions.emplace(priority,f);}
+
+#ifdef _MSC_VER     // THANKS C++11
+
     /// \brief Adds a callback that is called when this signal is activated via call().
     void operator()(function_strict<void> f){functions.emplace(0,event_function<T>(f));}
     /// \brief Adds a callback that is called when this signal is activated via call().
@@ -103,6 +143,24 @@ public:
     void operator()(int priority,function_strict<void,T> f){functions.emplace(priority,event_function<T>(f));}
     /// \brief Adds a callback that is called when this signal is activated via call().
     void operator()(int priority,function_strict<void,T,bool&> f){functions.emplace(priority,event_function<T>(f));}
+
+#else
+
+    /// \brief Adds a callback that is called when this signal is activated via call().
+    void operator()(std::function<void()> f){functions.emplace(0,event_function<T>(f));}
+    /// \brief Adds a callback that is called when this signal is activated via call().
+    void operator()(std::function<void(T)> f){functions.emplace(0,event_function<T>(f));}
+    /// \brief Adds a callback that is called when this signal is activated via call().
+    void operator()(std::function<void(T,bool&)> f){functions.emplace(0,event_function<T>(f));}
+    /// \brief Adds a callback that is called when this signal is activated via call().
+    void operator()(int priority,std::function<void()> f){functions.emplace(priority,event_function<T>(f));}
+    /// \brief Adds a callback that is called when this signal is activated via call().
+    void operator()(int priority,std::function<void(T)> f){functions.emplace(priority,event_function<T>(f));}
+    /// \brief Adds a callback that is called when this signal is activated via call().
+    void operator()(int priority,std::function<void(T,bool&)> f){functions.emplace(priority,event_function<T>(f));}
+
+#endif
+
     template <typename T2>
     void operator=(const T2& o){(*this)(o);}
 
@@ -151,6 +209,9 @@ public:
     void operator()(const event_function<void>& f){functions.emplace(0,f);}
     /// \brief Adds a callback that is called when this signal is activated via call().
     void operator()(int priority,const event_function<void>& f){functions.emplace(priority,f);}
+
+#ifdef _MSC_VER
+
     /// \brief Adds a callback that is called when this signal is activated via call().
     void operator()(function_strict<void> f){functions.emplace(0,event_function<void>(f));}
     /// \brief Adds a callback that is called when this signal is activated via call().
@@ -159,6 +220,20 @@ public:
     void operator()(int priority,function_strict<void> f){functions.emplace(priority,event_function<void>(f));}
     /// \brief Adds a callback that is called when this signal is activated via call().
     void operator()(int priority,function_strict<void,bool&> f){functions.emplace(priority,event_function<void>(f));}
+
+#else
+
+    /// \brief Adds a callback that is called when this signal is activated via call().
+    void operator()(std::function<void()> f){functions.emplace(0,event_function<void>(f));}
+    /// \brief Adds a callback that is called when this signal is activated via call().
+    void operator()(std::function<void(bool&)> f){functions.emplace(0,event_function<void>(f));}
+    /// \brief Adds a callback that is called when this signal is activated via call().
+    void operator()(int priority,std::function<void()> f){functions.emplace(priority,event_function<void>(f));}
+    /// \brief Adds a callback that is called when this signal is activated via call().
+    void operator()(int priority,std::function<void(bool&)> f){functions.emplace(priority,event_function<void>(f));}
+
+#endif
+
     template <typename T2>
     void operator=(const T2& o){(*this)(o);}
 

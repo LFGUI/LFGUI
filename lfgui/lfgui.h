@@ -14,6 +14,9 @@
 #include "signal.h"
 #include "../external/stk_timer.h"
 
+#undef min  // sometimes Visual Studio has these terrible macros which break a lot
+#undef max
+
 namespace lfgui
 {
 

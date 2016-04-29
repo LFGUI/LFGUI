@@ -38,3 +38,4 @@ Makefile*
 *Build*
 *.exe
 *.blend1
+*.pdb

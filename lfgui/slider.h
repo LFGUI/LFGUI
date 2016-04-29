@@ -7,6 +7,7 @@
 #include <string>
 #include <stdexcept>
 #include <memory>
+#include <algorithm>
 
 #include "lfgui.h"
 
@@ -28,8 +29,8 @@ public:
     widget* handle;
     signal<float> on_value_change;
 
-    slider(int x,int y,int width,int height=20,float min=0,float max=1,float value=0)
-        : widget(x,y,width,height),_value_min(min),_value_max(max),img_handle(&img_handle_normal)
+    slider(int x,int y,int width,int height=20,float min_value=0,float max_value=1,float value=0)
+        : widget(x,y,width,height),_value_min(min_value),_value_max(max_value),img_handle(&img_handle_normal)
     {
         // the drawing is currently a bit weird. The height is used weirdly.
         img_background.resize_linear(height,height);

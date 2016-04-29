@@ -1,6 +1,8 @@
 #ifndef LFGUI_GENERAL_H
 #define LFGUI_GENERAL_H
 
+#include <algorithm>
+
 namespace lfgui
 {
 

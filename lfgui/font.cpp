@@ -85,7 +85,7 @@ font::bitmap& font::get_glyph_cached(unsigned int character,size_t font_size)
     if(glyph_cache.size()<font_size)
         glyph_cache.resize(font_size+1);
 
-    if(character<=glyph_cache[font_size].size())
+    if(character<glyph_cache[font_size].size())
     {
         if(glyph_cache[font_size][character].width()==0)
             goto create_glyph;

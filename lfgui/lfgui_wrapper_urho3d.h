@@ -124,9 +124,7 @@ public:
             }
         }
         else
-        {
             _image->ClearInt(0);
-        }
 
         _texture->SetData(0,0,0,w,h,_image->GetData());
 

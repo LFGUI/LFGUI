@@ -1,6 +1,8 @@
 #ifndef LFGUI_SIGNAL_H
 #define LFGUI_SIGNAL_H
 
+#include <functional>
+
 namespace lfgui
 {
 

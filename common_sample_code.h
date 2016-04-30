@@ -72,7 +72,7 @@ inline void setup_sample_gui(lfgui::widget* gui)
         });
     }
     {
-        lfgui::window* movable=gui->add_child(new lfgui::window(280,50,240,245,"example window",false,true));
+        lfgui::window* movable=gui->add_child(new lfgui::window(280,10,240,285,"example window",false,true));
 
         {
             auto movable2=movable->add_child_to_content_widget(new lfgui::widget(15,5,150,20));
@@ -118,17 +118,28 @@ inline void setup_sample_gui(lfgui::widget* gui)
 
         {
             movable->add_child_to_content_widget(new lfgui::checkbox( 20,155,100,16,"option 1",lfgui::color({30,30,30})));
-            movable->add_child_to_content_widget(new lfgui::checkbox(120,155,100,16,"option 2",lfgui::color({30,130,30}),true));
+            movable->add_child_to_content_widget(new lfgui::checkbox(120,155,100,16,"option 2",lfgui::color({130,20,20}),true));
         }
 
         {
-            movable->add_child_to_content_widget(new lfgui::radio( 20,180,100,16,"radio 1",lfgui::color({30,30,30}),true));
-            movable->add_child_to_content_widget(new lfgui::radio(120,180,100,16,"radio 2",lfgui::color({30,130,30})));
+            auto radio_1=movable->add_child_to_content_widget(new lfgui::radio( 20,180,100,16,"radio A 1",lfgui::color(30,30,30)));
+            auto radio_2=movable->add_child_to_content_widget(new lfgui::radio( 20,200,100,16,"radio A 2",lfgui::color(30,30,30),true));
+            auto radio_3=movable->add_child_to_content_widget(new lfgui::radio( 20,220,100,16,"radio A 3",lfgui::color(30,30,30)));
+            radio_2->group_with(radio_1);
+            radio_3->group_with(radio_1);
+        }
+        {
+            auto radio_1=movable->add_child_to_content_widget(new lfgui::radio(120,180,100,16,"radio B 1",lfgui::color(0,80,130)));
+            auto radio_2=movable->add_child_to_content_widget(new lfgui::radio(120,200,100,16,"radio B 2",lfgui::color(0,80,130)));
+            auto radio_3=movable->add_child_to_content_widget(new lfgui::radio(120,220,100,16,"radio B 3",lfgui::color(0,80,130)));
+            radio_2->group_with(radio_1);
+            radio_3->group_with(radio_1);
+            radio_3->set_checked();
         }
     }
 
     {
-        static lfgui::color color_background({155,100,15,200});
+        static lfgui::color color_background({55,10,150,200});
         auto movable=gui->add_child(new lfgui::widget(30,320,520,190));
         movable->on_paint([&](lfgui::image& img)
         {

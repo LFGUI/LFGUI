@@ -1,9 +1,3 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2016-01-05T05:23:18
-#
-#-------------------------------------------------
-
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -22,7 +16,10 @@ DESTDIR = $${PWD}
 SOURCES += main.cpp\
         ../lfgui/lfgui.cpp \
         ../lfgui/image.cpp \
-        ../lfgui/font.cpp
+        ../lfgui/font.cpp \
+        ../lfgui/window.cpp \
+        ../lfgui/lineedit.cpp \
+        ../lfgui/slider.cpp
 
 HEADERS  += \
         ../lfgui/font.h \

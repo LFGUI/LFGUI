@@ -14,7 +14,6 @@ image::image(std::string filename)
 image::image(int width,int height)
 {
     cimage.reset(new cimg(std::max(0,width),std::max(0,height),1,4));
-    clear();
 }
 
 image::image(const image& o)
@@ -552,6 +551,30 @@ void image::draw_path(const std::vector<point>& vec,color _color,bool connect_la
         second_point=vec.begin();
         draw_line(first_point->x,first_point->y,second_point->x,second_point->y,_color);
     }
+}
+
+image image::rotated90()
+{
+    image ret(height(),width());
+
+    const int w=width();
+    const int h=height();
+    const int count=w*h;
+    uint8_t* source=data();
+    uint8_t* target=ret.data();
+
+    for(int y=0;y<h;y++)
+        for(int x=0;x<w;x++)
+        {
+            int i=x+y*w;
+            int j=y+x*h;
+            target[j]=source[i];
+            target[j+count]=source[i+count];
+            target[j+count*2]=source[i+count*2];
+            target[j+count*3]=source[i+count*3];
+        }
+
+    return ret;
 }
 
 }

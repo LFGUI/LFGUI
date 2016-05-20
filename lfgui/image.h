@@ -63,6 +63,11 @@ public:
     /// \brief Returns a scaled version of this image. Same as resize_linear().
     image scaled(int w,int h)const{return resized_linear(w,h);}
 
+    /// \brief Rotates the image by 90 degrees clockwise.
+    image& rotate90(){*this=rotated90();return *this;}
+    /// \brief Returns a rotated image by 90 degrees clockwise.
+    image rotated90();
+
     /// \brief Crops the image to the given size.
     image& crop(int x,int y,int w,int h);
     /// \brief Returns a cropped version of this image.

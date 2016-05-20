@@ -4,6 +4,7 @@
 #include "lfgui/button.h"
 #include "lfgui/checkbox.h"
 #include "lfgui/radio.h"
+#include "lfgui/slider.h"
 #include "lfgui/lineedit.h"
 #include "lfgui/window.h"
 
@@ -72,10 +73,9 @@ inline void setup_sample_gui(lfgui::widget* gui)
         });
     }
     {
-        lfgui::window* movable=gui->add_child(new lfgui::window(280,10,240,285,"example window",false,true));
-
+        lfgui::window* window=gui->add_child(new lfgui::window(240,10,270,300,"example window",false,true));
         {
-            auto movable2=movable->add_child_to_content_widget(new lfgui::widget(15,5,150,20));
+            auto movable2=window->add_child_to_content_widget(new lfgui::widget(15,5,150,20));
             movable2->on_paint([&](lfgui::image& img)
             {
                 img.draw_rect(0,0,img.width(),img.height(),{64,64,64});
@@ -83,16 +83,16 @@ inline void setup_sample_gui(lfgui::widget* gui)
             });
             movable2->on_mouse_drag([movable2](lfgui::event_mouse e){movable2->translate(e.movement);});
         }
-        movable->add_child_to_content_widget(new lfgui::label(10,35,150,20,"example slider",lfgui::color{128,22,92},20));
+        window->add_child_to_content_widget(new lfgui::label(10,35,150,20,"example slider",lfgui::color{128,22,92},20));
         {
-            auto slider=movable->add_child_to_content_widget(new lfgui::slider(50,55,100,20));
+            auto slider=window->add_child_to_content_widget(new lfgui::slider(50,55,100,20));
             slider->on_value_change([](float v)
             {
                 std::cout<<"slider 1: "<<v<<std::endl;
             });
         }
         {
-            auto slider=movable->add_child_to_content_widget(new lfgui::slider(50,80,180,50));
+            auto slider=window->add_child_to_content_widget(new lfgui::slider(50,80,180,50));
             slider->on_value_change([](float v)
             {
                 std::cout<<"slider 2: "<<v<<std::endl;
@@ -103,8 +103,9 @@ inline void setup_sample_gui(lfgui::widget* gui)
             slider->on_value_change([](float,bool& b){std::cout<<"### 2"<<std::endl;b=true;});  // set the bool& to true to stop the event at this handler
             slider->on_value_change([]               {std::cout<<"### 3"<<std::endl;});         // this handler is not called. Also the parameter can be ommited.
         }
+        window->add_child_to_content_widget(new lfgui::slider(230,10,30,220,0,1,0.1,true));
         {
-            auto button=movable->add_child_to_content_widget(new lfgui::button(50,125,100,25,"New window",lfgui::color({30,30,30})));
+            auto button=window->add_child_to_content_widget(new lfgui::button(50,125,100,25,"New window",lfgui::color({30,30,30})));
             button->on_mouse_click([gui]
             {
                 static int count=1; // give the window unique titles (no technical reason, just to have different titles)
@@ -117,21 +118,21 @@ inline void setup_sample_gui(lfgui::widget* gui)
         }
 
         {
-            movable->add_child_to_content_widget(new lfgui::checkbox( 20,155,100,16,"option 1",lfgui::color({30,30,30})));
-            movable->add_child_to_content_widget(new lfgui::checkbox(120,155,100,16,"option 2",lfgui::color({130,20,20}),true));
+            window->add_child_to_content_widget(new lfgui::checkbox( 20,155,100,16,"option 1",lfgui::color({30,30,30})));
+            window->add_child_to_content_widget(new lfgui::checkbox(120,155,100,16,"option 2",lfgui::color({130,20,20}),true));
         }
 
         {
-            auto radio_1=movable->add_child_to_content_widget(new lfgui::radio( 20,180,100,16,"radio A 1",lfgui::color(30,30,30)));
-            auto radio_2=movable->add_child_to_content_widget(new lfgui::radio( 20,200,100,16,"radio A 2",lfgui::color(30,30,30),true));
-            auto radio_3=movable->add_child_to_content_widget(new lfgui::radio( 20,220,100,16,"radio A 3",lfgui::color(30,30,30)));
+            auto radio_1=window->add_child_to_content_widget(new lfgui::radio( 20,180,100,16,"radio A 1",lfgui::color(30,30,30)));
+            auto radio_2=window->add_child_to_content_widget(new lfgui::radio( 20,200,100,16,"radio A 2",lfgui::color(30,30,30),true));
+            auto radio_3=window->add_child_to_content_widget(new lfgui::radio( 20,220,100,16,"radio A 3",lfgui::color(30,30,30)));
             radio_2->group_with(radio_1);
             radio_3->group_with(radio_1);
         }
         {
-            auto radio_1=movable->add_child_to_content_widget(new lfgui::radio(120,180,100,16,"radio B 1",lfgui::color(0,80,130)));
-            auto radio_2=movable->add_child_to_content_widget(new lfgui::radio(120,200,100,16,"radio B 2",lfgui::color(0,80,130)));
-            auto radio_3=movable->add_child_to_content_widget(new lfgui::radio(120,220,100,16,"radio B 3",lfgui::color(0,80,130)));
+            auto radio_1=window->add_child_to_content_widget(new lfgui::radio(120,180,100,16,"radio B 1",lfgui::color(0,80,130)));
+            auto radio_2=window->add_child_to_content_widget(new lfgui::radio(120,200,100,16,"radio B 2",lfgui::color(0,80,130)));
+            auto radio_3=window->add_child_to_content_widget(new lfgui::radio(120,220,100,16,"radio B 3",lfgui::color(0,80,130)));
             radio_2->group_with(radio_1);
             radio_3->group_with(radio_1);
             radio_3->set_checked();

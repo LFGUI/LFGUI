@@ -65,8 +65,16 @@ public:
 
     /// \brief Rotates the image by 90 degrees clockwise.
     image& rotate90(){*this=rotated90();return *this;}
-    /// \brief Returns a rotated image by 90 degrees clockwise.
-    image rotated90();
+    /// \brief Rotates the image by 180 degrees clockwise.
+    image& rotate180();
+    /// \brief Rotates the image by 270 degrees clockwise.
+    image& rotate270(){*this=rotated270();return *this;}
+    /// \brief Returns a by 180 degrees clockwise rotated image.
+    image rotated90() const;
+    /// \brief Returns a by 180 degrees clockwise rotated image.
+    image rotated180() const {auto ret=*this;ret.rotate180();return ret;}
+    /// \brief Returns a by 180 degrees clockwise rotated image.
+    image rotated270() const;
 
     /// \brief Crops the image to the given size.
     image& crop(int x,int y,int w,int h);

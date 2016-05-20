@@ -553,7 +553,7 @@ void image::draw_path(const std::vector<point>& vec,color _color,bool connect_la
     }
 }
 
-image image::rotated90()
+image image::rotated90() const
 {
     image ret(height(),width());
 
@@ -572,6 +572,61 @@ image image::rotated90()
             target[j+count]=source[i+count];
             target[j+count*2]=source[i+count*2];
             target[j+count*3]=source[i+count*3];
+        }
+
+    return ret;
+}
+
+image& image::rotate180()
+{
+    const int w=width();
+    const int h=height();
+    const int count=w*h;
+    uint8_t* source=data();
+    const int end=count*4-1;
+    uint8_t temp[4];
+
+    for(int y=0;y<h;y++)
+        for(int x=0;x<w;x++)
+        {
+            int i=x+y*w;
+            temp[0]=source[i];
+            temp[1]=source[i+count];
+            temp[2]=source[i+count*2];
+            temp[3]=source[i+count*3];
+            source[i]=source[end-(i+count*3)];
+            source[i+count]=source[end-(i+count*2)];
+            source[i+count*2]=source[end-(i+count)];
+            source[i+count*3]=source[end-i];
+            source[end-i]=temp[3];
+            source[end-(i+count)]=temp[2];
+            source[end-(i+count*2)]=temp[1];
+            source[end-(i+count*3)]=temp[0];
+        }
+
+    return *this;
+}
+
+image image::rotated270() const
+{
+    image ret(height(),width());
+
+    const int w=width();
+    const int h=height();
+    const int count=w*h;
+    uint8_t* source=data();
+    uint8_t* target=ret.data();
+    const int end=count*4-1;
+
+    for(int y=0;y<h;y++)
+        for(int x=0;x<w;x++)
+        {
+            int i=x+y*w;
+            int j=y+x*h;
+            target[end-(j+count*3)]=source[i];
+            target[end-(j+count*2)]=source[i+count];
+            target[end-(j+count)]=source[i+count*2];
+            target[end-j]=source[i+count*3];
         }
 
     return ret;

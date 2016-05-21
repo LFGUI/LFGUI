@@ -16,8 +16,11 @@ widget::widget(int width,int height) : uid(generate_uid()),size_old(width,height
 
 bool widget::_insert_event_mouse_press(const event_mouse& event)
 {
+    if(!rect().contains(event.pos))
+        return false;
+
     // check if any children accepts this event
-    for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start with the topmost drawn one.
+    for(auto&& it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start with the topmost drawn one.
     {
         if((*it)->_insert_event_mouse_press(event.translated(-(*it)->geometry.calc_pos(width(),height()))))
             return true;
@@ -46,6 +49,9 @@ bool widget::_insert_event_mouse_press(const event_mouse& event)
 
 bool widget::_insert_event_mouse_release(const event_mouse& event)
 {
+    if(!rect().contains(event.pos))
+        return false;
+
     bool ret=false;
     auto _gui=this->_gui;
 
@@ -81,6 +87,9 @@ bool widget::_insert_event_mouse_release(const event_mouse& event)
 
 bool widget::_insert_event_mouse_move(const event_mouse& event)
 {
+    if(!rect().contains(event.pos))
+        return false;
+cout<<this->uid<<endl;
     if(_gui->_held_widget)
         if(_gui->_held_widget->on_mouse_drag)
         {
@@ -112,6 +121,9 @@ bool widget::_insert_event_mouse_move(const event_mouse& event)
 
 bool widget::_insert_event_mouse_wheel(const event_mouse& event)
 {
+    if(!rect().contains(event.pos))
+        return false;
+
     // check if any children accepts this event
     for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start with the topmost drawn one.
     {
@@ -245,6 +257,8 @@ void widget::raise() const
 
 bool widget::_check_mouse_hover(point p) const
 {
+    if(!rect().contains(p))
+        return false;
     for(auto it=children.rbegin();it!=children.rend();it++) // Reverse iteration to start with the topmost drawn one.
         if((*it)->_check_mouse_hover(p-(*it)->geometry.calc_pos(width(),height())))
             return true;

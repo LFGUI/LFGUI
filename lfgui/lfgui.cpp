@@ -49,9 +49,6 @@ bool widget::_insert_event_mouse_press(const event_mouse& event)
 
 bool widget::_insert_event_mouse_release(const event_mouse& event)
 {
-    if(!rect().contains(event.pos))
-        return false;
-
     bool ret=false;
     auto _gui=this->_gui;
 
@@ -89,7 +86,7 @@ bool widget::_insert_event_mouse_move(const event_mouse& event)
 {
     if(!rect().contains(event.pos))
         return false;
-cout<<this->uid<<endl;
+
     if(_gui->_held_widget)
         if(_gui->_held_widget->on_mouse_drag)
         {

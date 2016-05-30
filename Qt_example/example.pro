@@ -19,7 +19,8 @@ SOURCES += main.cpp\
         ../lfgui/font.cpp \
         ../lfgui/window.cpp \
         ../lfgui/lineedit.cpp \
-        ../lfgui/slider.cpp
+        ../lfgui/slider.cpp \
+        ../common_sample_code.cpp \
 
 HEADERS  += \
         ../lfgui/font.h \

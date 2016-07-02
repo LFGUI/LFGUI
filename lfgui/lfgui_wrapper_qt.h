@@ -56,7 +56,7 @@ public:
         setFocusPolicy(Qt::StrongFocus);
         QTimer *timer=new QTimer(this);
         connect(timer,&QTimer::timeout,[this]{redraw();});
-        timer->start(100);
+        timer->start(1000/25);  // draw with up to 25 FPS
     }
 
     int width()const{return lfgui::widget::width();}

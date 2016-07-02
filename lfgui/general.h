@@ -271,4 +271,11 @@ inline std::ostream& operator<<(std::ostream& os,const lfgui::color& c)
     return os;
 }
 
+inline std::ostream& operator<<(std::ostream& os,const lfgui::widget_geometry& g)
+{
+    os<<g.pos_absolute.x<<":"<<g.pos_absolute.x<<'+'<<g.pos_percent.x*100<<"%:"<<g.pos_percent.y*100<<"% "
+      <<g.size_absolute.x<<":"<<g.size_absolute.x<<'+'<<g.size_percent.x*100<<"%:"<<g.size_percent.y*100<<"%";
+    return os;
+}
+
 #endif  // LFGUI_GENERAL_H

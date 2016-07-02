@@ -165,7 +165,6 @@ void setup_sample_gui(lfgui::widget* gui)
         slider_a->on_value_change([&](float v){color_background.a=v;});
 
         lfgui::widget* paint_area=movable->add_child(new lfgui::widget(210,10,300,170));
-        std::cout<<paint_area->rect()<<std::endl;
         static lfgui::image painted_image(300,170);
         paint_area->on_paint([&](lfgui::image& img)
         {
@@ -176,6 +175,51 @@ void setup_sample_gui(lfgui::widget* gui)
         {
             painted_image.draw_line(e.old_pos,e.pos,lfgui::color(color_background.r,color_background.g,color_background.b),4,0.5);
         });
+    }
+
+    {
+        static lfgui::color color_background({55,10,150,200});
+        lfgui::window* movable=gui->add_child(new lfgui::window(530,220,270,190,"Curves",false,true));
+
+        lfgui::slider* slider_cos=movable->add_child_to_content_widget(new lfgui::slider(10,10,70,20,0,1,0.5));
+        lfgui::slider* slider_sin=movable->add_child_to_content_widget(new lfgui::slider(90,10,70,20,0,1,0.5));
+        lfgui::slider* slider_speed=movable->add_child_to_content_widget(new lfgui::slider(170,10,70,20,0,20,5));
+
+        lfgui::widget* paint_area=movable->add_child_to_content_widget(new lfgui::widget(10,40,100,100));
+        paint_area->set_size(-20,-50,1,1);
+        movable->on_resize([paint_area]{paint_area->set_size(-20,-50,1,1);});
+
+        paint_area->on_paint([paint_area,slider_cos,slider_sin,slider_speed](lfgui::image& img)
+        {
+            static float degree=0;
+            img.draw_rect(img.rect(),{0,0,0});
+            int h=img.height()/2;
+            float factor_cos=slider_cos->value();
+            float factor_sin=slider_sin->value();
+            const int stepsize=5;
+            float sin_old;
+            float sin_new;
+            float cos_old;
+            float cos_new;
+            sin_old=sinf(degree*3.14f/180.0f)*factor_sin;
+            cos_old=cosf(degree*3.14f/180.0f)*factor_cos;
+
+            for(int x=0;x<img.width();x+=stepsize)
+            {
+                sin_new=sinf((degree+x)*3.14f/180.0f)*factor_sin;
+                cos_new=cosf((degree+x*2)*3.14f/180.0f)*factor_cos;
+
+                img.draw_line(x,sin_old*h+h,x+stepsize,sin_new*h+h,{192,192,255});
+                img.draw_line(x,cos_old*h+h,x+stepsize,cos_new*h+h,{192,255,192});
+                img.draw_line(x,(sin_old+cos_old)*h+h,x+stepsize,(sin_new+cos_new)*h+h,{255,192,192});
+
+                sin_old=sin_new;
+                cos_old=cos_new;
+            }
+            // this should be time based instead of "counting redraws" but that's enough for a simple example
+            degree+=slider_speed->value();
+        });
+        paint_area->redraw_every_n_seconds=1/25.0f; // try drawing with 25 FPS
     }
 
     {

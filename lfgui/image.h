@@ -108,7 +108,38 @@ public:
 
     /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
     /// top using the colors alpha.
-    void blend_pixel(int x,int y,color c);
+    inline void blend_pixel(int x,int y,color c)
+    {
+        //if(x<0||y<0||x>=width()||y>=height()) // useful for debugging
+        //    throw std::logic_error("");
+        if(c.a==0)
+            return;
+
+        int count=width()*height();
+        int i=x+y*width();
+        uint8_t* d=data();
+        d+=i;
+        if(c.a==255)
+        {
+            *d=c.b;
+            d+=count;
+            *d=c.g;
+            d+=count;
+            *d=c.r;
+            d+=count;
+            *d=255;
+            return;
+        }
+
+        *d=((*d)*(255-c.a)+c.b*c.a)/255;
+        d+=count;
+        *d=((*d)*(255-c.a)+c.g*c.a)/255;
+        d+=count;
+        *d=((*d)*(255-c.a)+c.r*c.a)/255;
+        d+=count;
+        auto a=(*d)+c.a;
+        *d=a>255?255:a;
+    }
     void blend_pixel_safe(int x,int y,color c)
     {
         if(x<0||y<0||x>=width()||y>=height())
@@ -148,6 +179,8 @@ public:
     void draw_rect(rect rectangle,color color){draw_rect(rectangle.x,rectangle.y,rectangle.width,rectangle.height,color);}
     /// \brief Draws a filled polygon.
     void draw_polygon(const std::vector<point>& vec,color color);
+    /// \brief Fills the whole image with one color.
+    void fill(color color);
 
     /// \brief Returns the pixel length of the given text from start_character to end_character.
     int text_length(const std::string& str,int font_size,size_t start_character,size_t end_character)const

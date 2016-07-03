@@ -3,7 +3,7 @@
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
- */
+*/
 
 #ifndef STK_TIMER_H
 #define STK_TIMER_H
@@ -11,6 +11,9 @@
 #include <iostream>
 #include <vector>
 #include <chrono>
+
+/// \file
+/// \brief Various timer classes to measure real time, used processor time and used cycles.
 
 namespace stk
 {
@@ -50,19 +53,19 @@ class timer
     {
     public:
         std::string text;
-        std::chrono::high_resolution_clock::time_point start;
-        measure_point(std::string text) : text(text),start(std::chrono::high_resolution_clock::now()) {}
+        std::chrono::steady_clock::time_point start;
+        measure_point(std::string text) : text(text),start(std::chrono::steady_clock::now()) {}
     };
 
     std::string text;
     std::vector<measure_point> points;
     bool output;            ///< if the timer should print something on destruction
 public:
-    std::chrono::high_resolution_clock::time_point start;
+    std::chrono::steady_clock::time_point start;
     /// \brief The text is the general name for this timer. Setting output to false disables printing anything on destruction.
-    timer(std::string text="",bool output=true) : text(text),output(output) {start=std::chrono::high_resolution_clock::now();}
+    timer(std::string text="",bool output=true) : text(text),output(output) {start=std::chrono::steady_clock::now();}
     /// \brief The text is the general name for this timer. Setting output to false disables printing anything on destruction.
-    timer(const char* text,   bool output=true) : text(text),output(output) {start=std::chrono::high_resolution_clock::now();}
+    timer(const char* text,   bool output=true) : text(text),output(output) {start=std::chrono::steady_clock::now();}
     timer(const timer&)=default;
     timer(timer&&)=default;
     timer& operator=(const timer&)=default;
@@ -73,7 +76,7 @@ public:
         if(!output)
             return;
         auto start=this->start;
-        auto diff=std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-start).count()/1000000.0;
+        auto diff=std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now()-start).count()/1000000.0;
         if(text.size())
             std::cout<<diff<<" \t<- "<<text<<std::endl;
         else
@@ -88,14 +91,14 @@ public:
             std::cout<<"  "<<diff<<" \t<- "<<p.text<<std::endl;
             start=p.start;
         }
-        diff=std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-start).count()/1000000.0;
+        diff=std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now()-start).count()/1000000.0;
         std::cout<<"  "<<diff<<" to end"<<std::endl;
     }
 
     /// \brief Returns the time passed since the timer was started or reset in seconds.
     double until_now() const
     {
-        return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-start).count()/1000000.0;
+        return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now()-start).count()/1000000.0;
     }
 
     void add(const std::string& name="")
@@ -107,7 +110,7 @@ public:
     }
 
     /// \brief Resets the starting time to the current time. Measure points added before this will display a negative time in the summary.
-    void reset(){start=std::chrono::high_resolution_clock::now();}
+    void reset(){start=std::chrono::steady_clock::now();}
 };
 
 /**

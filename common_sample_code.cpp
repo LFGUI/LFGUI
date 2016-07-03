@@ -46,7 +46,7 @@ void setup_sample_gui(lfgui::widget* gui)
         auto mover=gui->add_child(new lfgui::widget(20,210,200,70));
         mover->on_paint=[&](lfgui::image& img)
         {
-            img.draw_rect(0,0,img.width(),img.height(),{222,222,255,192});
+            img.fill({222,222,255,192});
             img.draw_text(10,3,"I move on left and right\nmouse clicks and\nmouse wheel movement",{64,0,0});
         };
         mover->on_mouse_press([mover](lfgui::event_mouse e)
@@ -67,7 +67,7 @@ void setup_sample_gui(lfgui::widget* gui)
             auto movable2=window->add_child_to_content_widget(new lfgui::widget(15,5,150,20));
             movable2->on_paint([&](lfgui::image& img)
             {
-                img.draw_rect(0,0,img.width(),img.height(),{64,64,64});
+                img.fill({64,64,64});
                 img.draw_text(10,3,"I can be dragged",{255,0,255});
             });
             movable2->on_mouse_drag([movable2](lfgui::event_mouse e){movable2->translate(e.movement);});
@@ -133,7 +133,7 @@ void setup_sample_gui(lfgui::widget* gui)
         auto movable=gui->add_child(new lfgui::widget(30,320,520,190));
         movable->on_paint([&](lfgui::image& img)
         {
-            img.draw_rect(0,0,img.width(),img.height(),color_background);
+            img.fill(color_background);
             img.draw_text(10,3,"I can be dragged vertically",{255,255,255});
         });
         movable->on_mouse_drag([movable](lfgui::event_mouse e){movable->translate(0,e.movement.y);});
@@ -168,7 +168,7 @@ void setup_sample_gui(lfgui::widget* gui)
         static lfgui::image painted_image(300,170);
         paint_area->on_paint([&](lfgui::image& img)
         {
-            img.draw_rect(0,0,img.width(),img.height(),{255,255,255});
+            img.fill({255,255,255});
             img.draw_image(0,0,painted_image);
         });
         paint_area->on_mouse_drag([&](lfgui::event_mouse e)
@@ -192,7 +192,7 @@ void setup_sample_gui(lfgui::widget* gui)
         paint_area->on_paint([paint_area,slider_cos,slider_sin,slider_speed](lfgui::image& img)
         {
             static float degree=0;
-            img.draw_rect(img.rect(),{0,0,0});
+            img.fill({0,0,0});
             int h=img.height()/2;
             float factor_cos=slider_cos->value();
             float factor_sin=slider_sin->value();
@@ -203,7 +203,6 @@ void setup_sample_gui(lfgui::widget* gui)
             float cos_new;
             sin_old=sinf(degree*3.14f/180.0f)*factor_sin;
             cos_old=cosf(degree*3.14f/180.0f)*factor_cos;
-
             for(int x=0;x<img.width();x+=stepsize)
             {
                 sin_new=sinf((degree+x)*3.14f/180.0f)*factor_sin;

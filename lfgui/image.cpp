@@ -36,20 +36,6 @@ image& image::resize_linear(int w,int h){cimage->resize(std::max(0,w),std::max(0
 image& image::resize_cubic(int w,int h){cimage->resize(std::max(0,w),std::max(0,h),1,4,5);return *this;}
 image& image::crop(int x,int y,int w,int h){cimage->crop(x,y,x+w,y+h);return *this;}
 
-void image::blend_pixel(int x,int y,color c)
-{
-    //if(x<0||y<0||x>=width()||y>=height()) // useful for debugging
-    //    throw std::logic_error("");
-    if(c.a==0)
-        return;
-    int count=width()*height();
-    int i=x+y*width();
-    cimage->_data[i]=(cimage->_data[i]*(255-c.a)+c.b*c.a)/255;
-    cimage->_data[i+count]=(cimage->_data[i+count]*(255-c.a)+c.g*c.a)/255;
-    cimage->_data[i+count*2]=(cimage->_data[i+count*2]*(255-c.a)+c.r*c.a)/255;
-    cimage->_data[i+count*3]=std::min(255,cimage->_data[i+count*3]+c.a);
-}
-
 // based on https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
 namespace
 {
@@ -440,9 +426,23 @@ void image::draw_image_corners_stretched(int border_width,const image& img)
     draw_image(border_width,border_width,img.cropped(w/2,h/2,0,0).scale(width()-border_width*2,height()-border_width*2));
 }
 
+void image::fill(color c)
+{
+    int size=count();
+    auto d=data();
+
+    memset(d,c.b,size);
+    d+=size;
+    memset(d,c.g,size);
+    d+=size;
+    memset(d,c.r,size);
+    d+=size;
+    memset(d,c.a,size);
+}
+
 void image::clear()
 {
-    cimage->fill((uint8_t)0,(uint8_t)0);
+    memset(data(),0,count()*4);
 }
 
 image::~image(){}

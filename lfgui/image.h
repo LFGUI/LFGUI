@@ -108,34 +108,33 @@ public:
 
     /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
     /// top using the colors alpha.
-    inline void blend_pixel(int index,uint8_t b,uint8_t g,uint8_t r,uint8_t a)
+    inline void blend_pixel(int index,int channel_size,uint8_t b,uint8_t g,uint8_t r,uint8_t a)
     {
         //if(x<0||y<0||x>=width()||y>=height()) // useful for debugging
         //    throw std::logic_error("");
         if(a==0)
             return;
 
-        int count=width()*height();
         uint8_t* d=data();
         d+=index;
         if(a==255)
         {
             *d=b;
-            d+=count;
+            d+=channel_size;
             *d=g;
-            d+=count;
+            d+=channel_size;
             *d=r;
-            d+=count;
+            d+=channel_size;
             *d=255;
             return;
         }
 
         *d=((*d)*(255-a)+b*a)/255;
-        d+=count;
+        d+=channel_size;
         *d=((*d)*(255-a)+g*a)/255;
-        d+=count;
+        d+=channel_size;
         *d=((*d)*(255-a)+r*a)/255;
-        d+=count;
+        d+=channel_size;
         auto alpha=(*d)+a;
         *d=alpha>255?255:alpha;
     }
@@ -143,7 +142,7 @@ public:
     /// top using the colors alpha.
     inline void blend_pixel(int index,color c)
     {
-        blend_pixel(index,c.b,c.g,c.r,c.a);
+        blend_pixel(index,width()*height(),c.b,c.g,c.r,c.a);
     }
     /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
     /// top using the colors alpha.

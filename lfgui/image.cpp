@@ -403,6 +403,7 @@ void image::draw_image(int start_x,int start_y,const image& img)
     int index;
     int img_index;
     uint8_t* img_data=img.data();
+    int count=width()*height();
     int img_count=img.width()*img.height();
     for(int y=0;y<end_y;y++)
     {
@@ -419,7 +420,7 @@ void image::draw_image(int start_x,int start_y,const image& img)
         if(0<=target_y)
             for(int x=x_offset;x<end_x;x++)
             {
-                blend_pixel(index,img_data[img_index],img_data[img_index+img_count],img_data[img_index+img_count*2],img_data[img_index+img_count*3]);
+                blend_pixel(index,count,img_data[img_index],img_data[img_index+img_count],img_data[img_index+img_count*2],img_data[img_index+img_count*3]);
                 target_x++;
                 index++;
                 img_index++;

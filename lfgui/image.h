@@ -108,37 +108,48 @@ public:
 
     /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
     /// top using the colors alpha.
-    inline void blend_pixel(int x,int y,color c)
+    inline void blend_pixel(int index,uint8_t b,uint8_t g,uint8_t r,uint8_t a)
     {
         //if(x<0||y<0||x>=width()||y>=height()) // useful for debugging
         //    throw std::logic_error("");
-        if(c.a==0)
+        if(a==0)
             return;
 
         int count=width()*height();
-        int i=x+y*width();
         uint8_t* d=data();
-        d+=i;
-        if(c.a==255)
+        d+=index;
+        if(a==255)
         {
-            *d=c.b;
+            *d=b;
             d+=count;
-            *d=c.g;
+            *d=g;
             d+=count;
-            *d=c.r;
+            *d=r;
             d+=count;
             *d=255;
             return;
         }
 
-        *d=((*d)*(255-c.a)+c.b*c.a)/255;
+        *d=((*d)*(255-a)+b*a)/255;
         d+=count;
-        *d=((*d)*(255-c.a)+c.g*c.a)/255;
+        *d=((*d)*(255-a)+g*a)/255;
         d+=count;
-        *d=((*d)*(255-c.a)+c.r*c.a)/255;
+        *d=((*d)*(255-a)+r*a)/255;
         d+=count;
-        auto a=(*d)+c.a;
-        *d=a>255?255:a;
+        auto alpha=(*d)+a;
+        *d=alpha>255?255:alpha;
+    }
+    /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
+    /// top using the colors alpha.
+    inline void blend_pixel(int index,color c)
+    {
+        blend_pixel(index,c.b,c.g,c.r,c.a);
+    }
+    /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
+    /// top using the colors alpha.
+    inline void blend_pixel(int x,int y,color c)
+    {
+        blend_pixel(x+y*width(),c);
     }
     void blend_pixel_safe(int x,int y,color c)
     {
@@ -169,14 +180,23 @@ public:
     /// \brief Draws a line with the given thickness. The drawn color gets more transparent when further away from the
     /// center of the line. This can be adjusted with the fading parameter where 1 is no fading and 0 fading starting in the center.
     void draw_line(int x1,int y1,int x2,int y2,color _color,float thickness,float fading=0.7);
-    void draw_line(point start,point end,color _color){draw_line(start.x,start.y,end.x,end.y,_color);}
+    void draw_line(point start,point end,color _color)
+    {
+        draw_line(start.x,start.y,end.x,end.y,_color);
+    }
     /// \brief Draws a line with the given thickness. The drawn color gets more transparent when further away from the
     /// center of the line. This can be adjusted with the fading parameter where 1 is no fading and 0 fading starting in the center.
-    void draw_line(point start,point end,color _color,float width,float fading_start=0.7){draw_line(start.x,start.y,end.x,end.y,_color,width,fading_start);}
+    void draw_line(point start,point end,color _color,float width,float fading_start=0.7)
+    {
+        draw_line(start.x,start.y,end.x,end.y,_color,width,fading_start);
+    }
     /// \brief Draw a path along the given points. The last point is connected with the first if connect_last_point_with_first is set to true.
     void draw_path(const std::vector<point>& vec,color _color,bool connect_last_point_with_first=false);
     void draw_rect(int x,int y,int width,int height,color color);
-    void draw_rect(rect rectangle,color color){draw_rect(rectangle.x,rectangle.y,rectangle.width,rectangle.height,color);}
+    void draw_rect(rect rectangle,color color)
+    {
+        draw_rect(rectangle.x,rectangle.y,rectangle.width,rectangle.height,color);
+    }
     /// \brief Draws a filled polygon.
     void draw_polygon(const std::vector<point>& vec,color color);
     /// \brief Fills the whole image with one color.
@@ -203,6 +223,11 @@ public:
     void draw_image(point p,const image& img){draw_image(p.x,p.y,img);}
     /// \brief Draws another image onto this one.
     void draw_image(point p,const image& img,float opacity){draw_image(p.x,p.y,img,opacity);}
+
+    /// \brief Draws another image onto this one.
+    void draw_image_solid(int x,int y,const image& img);
+    /// \brief Draws another image onto this one.
+    void draw_image_solid(point p,const image& img){draw_image_solid(p.x,p.y,img);}
 
     /// \brief Fills this image with the given image, it is stretched to act as a border with "stretched filling".
     void draw_image_corners_stretched(int border_width,const image& img);

@@ -2,13 +2,13 @@
 
 void setup_sample_gui(lfgui::widget* gui)
 {
-    gui->on_paint([&](lfgui::image& img)
+    gui->on_paint([&](lfgui::event_paint e)
     {
         {
             // draw a filled yellow star (with 10 points)
             float r=50;
             float r2=20;
-            img.draw_polygon({{50+int(sin(0.0*PI)*r),100+int(-cos(0.0*PI)*r)},{50+int(sin(0.2*PI)*r2),100+int(-cos(0.2*PI)*r2)},
+            e.img.draw_polygon({{50+int(sin(0.0*PI)*r),100+int(-cos(0.0*PI)*r)},{50+int(sin(0.2*PI)*r2),100+int(-cos(0.2*PI)*r2)},
                               {50+int(sin(0.4*PI)*r),100+int(-cos(0.4*PI)*r)},{50+int(sin(0.6*PI)*r2),100+int(-cos(0.6*PI)*r2)},
                               {50+int(sin(0.8*PI)*r),100+int(-cos(0.8*PI)*r)},{50+int(sin(1.0*PI)*r2),100+int(-cos(1.0*PI)*r2)},
                               {50+int(sin(1.2*PI)*r),100+int(-cos(1.2*PI)*r)},{50+int(sin(1.4*PI)*r2),100+int(-cos(1.4*PI)*r2)},
@@ -19,7 +19,7 @@ void setup_sample_gui(lfgui::widget* gui)
             // draw a red star (only the outline)
             float r=50;
             float r2=20;
-            img.draw_path({{150+int(sin(0.0*PI)*r),100+int(-cos(0.0*PI)*r)},{150+int(sin(0.2*PI)*r2),100+int(-cos(0.2*PI)*r2)},
+            e.img.draw_path({{150+int(sin(0.0*PI)*r),100+int(-cos(0.0*PI)*r)},{150+int(sin(0.2*PI)*r2),100+int(-cos(0.2*PI)*r2)},
                             {150+int(sin(0.4*PI)*r),100+int(-cos(0.4*PI)*r)},{150+int(sin(0.6*PI)*r2),100+int(-cos(0.6*PI)*r2)},
                             {150+int(sin(0.8*PI)*r),100+int(-cos(0.8*PI)*r)},{150+int(sin(1.0*PI)*r2),100+int(-cos(1.0*PI)*r2)},
                             {150+int(sin(1.2*PI)*r),100+int(-cos(1.2*PI)*r)},{150+int(sin(1.4*PI)*r2),100+int(-cos(1.4*PI)*r2)},
@@ -29,12 +29,12 @@ void setup_sample_gui(lfgui::widget* gui)
 
         // draw some blue lines
         for(int i=10;i<=190;i+=20)
-            img.draw_line(100,100,i,200,{64,64,128},(i+10)/20);
+            e.img.draw_line(100,100,i,200,{64,64,128},(i+10)/20);
 
         // draw text centered at the bottom with different alignments
-        img.draw_text(img.width()/2,img.height()-90,"alignment left",{55,55,0},16,lfgui::alignment::left);
-        img.draw_text(img.width()/2,img.height()-70,"alignment centered",{55,55,0},16,lfgui::alignment::center);
-        img.draw_text(img.width()/2,img.height()-50,"alignment right",{55,55,0},16,lfgui::alignment::right);
+        e.img.draw_text(e.img.width()/2,e.img.height()-90,"alignment left",{55,55,0},16,lfgui::alignment::left);
+        e.img.draw_text(e.img.width()/2,e.img.height()-70,"alignment centered",{55,55,0},16,lfgui::alignment::center);
+        e.img.draw_text(e.img.width()/2,e.img.height()-50,"alignment right",{55,55,0},16,lfgui::alignment::right);
     });
 
     gui->on_resize([&](lfgui::point p)
@@ -44,10 +44,10 @@ void setup_sample_gui(lfgui::widget* gui)
 
     {
         auto mover=gui->add_child(new lfgui::widget(20,210,200,70));
-        mover->on_paint=[&](lfgui::image& img)
+        mover->on_paint=[&](lfgui::event_paint e)
         {
-            img.fill({222,222,255,192});
-            img.draw_text(10,3,"I move on left and right\nmouse clicks and\nmouse wheel movement",{64,0,0});
+            e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),{222,222,255,192});
+            e.img.draw_text(e.offset_x+10,e.offset_y+3,"I move on left and right\nmouse clicks and\nmouse wheel movement",{64,0,0});
         };
         mover->on_mouse_press([mover](lfgui::event_mouse e)
         {
@@ -65,14 +65,14 @@ void setup_sample_gui(lfgui::widget* gui)
         lfgui::window* window=gui->add_child(new lfgui::window(240,10,270,300,"example window",false,true));
         {
             auto movable2=window->add_child_to_content_widget(new lfgui::widget(15,5,150,20));
-            movable2->on_paint([&](lfgui::image& img)
+            movable2->on_paint([](lfgui::event_paint e)
             {
-                img.fill({64,64,64});
-                img.draw_text(10,3,"I can be dragged",{255,0,255});
+                e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),{64,64,64});
+                e.img.draw_text(e.offset_x+10,e.offset_y+3,"I can be dragged",{255,0,255});
             });
             movable2->on_mouse_drag([movable2](lfgui::event_mouse e){movable2->translate(e.movement);});
         }
-        window->add_child_to_content_widget(new lfgui::label(10,35,150,20,"example slider",lfgui::color{128,22,92},20));
+        window->add_child_to_content_widget(new lfgui::label(10,35,150,50,"example slider",lfgui::color{128,22,92},50));
         {
             auto slider=window->add_child_to_content_widget(new lfgui::slider(50,55,100,20));
             slider->on_value_change([](float v)
@@ -131,10 +131,10 @@ void setup_sample_gui(lfgui::widget* gui)
     {
         static lfgui::color color_background({55,10,150,200});
         auto movable=gui->add_child(new lfgui::widget(30,320,520,190));
-        movable->on_paint([&](lfgui::image& img)
+        movable->on_paint([&](lfgui::event_paint e)
         {
-            img.fill(color_background);
-            img.draw_text(10,3,"I can be dragged vertically",{255,255,255});
+            e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),color_background);
+            e.img.draw_text(e.offset_x+10,e.offset_y+3,"I can be dragged vertically",{255,255,255});
         });
         movable->on_mouse_drag([movable](lfgui::event_mouse e){movable->translate(0,e.movement.y);});
 
@@ -166,14 +166,14 @@ void setup_sample_gui(lfgui::widget* gui)
 
         lfgui::widget* paint_area=movable->add_child(new lfgui::widget(210,10,300,170));
         static lfgui::image painted_image(300,170);
-        paint_area->on_paint([&](lfgui::image& img)
+        paint_area->on_paint([&](lfgui::event_paint e)
         {
-            img.fill({255,255,255});
-            img.draw_image(0,0,painted_image);
+            e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),{255,255,255});
+            e.img.draw_image(e.offset_x,e.offset_y,painted_image);
         });
         paint_area->on_mouse_drag([&](lfgui::event_mouse e)
         {
-            painted_image.draw_line(e.old_pos,e.pos,lfgui::color(color_background.r,color_background.g,color_background.b),4,0.5);
+            painted_image.draw_line(e.old_pos,e.pos,color_background,4,0.5);
         });
     }
 
@@ -189,11 +189,11 @@ void setup_sample_gui(lfgui::widget* gui)
         paint_area->set_size(-20,-50,1,1);
         movable->on_resize([paint_area]{paint_area->set_size(-20,-50,1,1);});
 
-        paint_area->on_paint([paint_area,slider_cos,slider_sin,slider_speed](lfgui::image& img)
+        paint_area->on_paint([paint_area,slider_cos,slider_sin,slider_speed](lfgui::event_paint e)
         {
             static float degree=0;
-            img.fill({0,0,0});
-            int h=img.height()/2;
+            e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),{0,0,0});
+            int h=e.widget.height()/2;
             float factor_cos=slider_cos->value();
             float factor_sin=slider_sin->value();
             const int stepsize=5;
@@ -203,14 +203,14 @@ void setup_sample_gui(lfgui::widget* gui)
             float cos_new;
             sin_old=sinf(degree*3.14f/180.0f)*factor_sin;
             cos_old=cosf(degree*3.14f/180.0f)*factor_cos;
-            for(int x=0;x<img.width();x+=stepsize)
+            for(int x=0;x<e.widget.width();x+=stepsize)
             {
                 sin_new=sinf((degree+x)*3.14f/180.0f)*factor_sin;
                 cos_new=cosf((degree+x*2)*3.14f/180.0f)*factor_cos;
 
-                img.draw_line(x,sin_old*h+h,x+stepsize,sin_new*h+h,{192,192,255});
-                img.draw_line(x,cos_old*h+h,x+stepsize,cos_new*h+h,{192,255,192});
-                img.draw_line(x,(sin_old+cos_old)*h+h,x+stepsize,(sin_new+cos_new)*h+h,{255,192,192});
+                e.img.draw_line(e.offset_x+x,e.offset_y+sin_old*h+h,e.offset_x+x+stepsize,e.offset_y+sin_new*h+h,{192,192,255});
+                e.img.draw_line(e.offset_x+x,e.offset_y+cos_old*h+h,e.offset_x+x+stepsize,e.offset_y+cos_new*h+h,{192,255,192});
+                e.img.draw_line(e.offset_x+x,e.offset_y+(sin_old+cos_old)*h+h,e.offset_x+x+stepsize,e.offset_y+(sin_new+cos_new)*h+h,{255,192,192});
 
                 sin_old=sin_new;
                 cos_old=cos_new;

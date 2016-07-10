@@ -6,7 +6,7 @@ using namespace std;
 namespace lfgui
 {
 
-widget::widget(int width,int height) : uid(generate_uid()),size_old(width,height),img(width,height)
+widget::widget(int width,int height) : uid(generate_uid()),size_old(width,height),width_(width),height_(height)
 {
     geometry.size_absolute.x=width;
     geometry.size_absolute.y=height;
@@ -161,24 +161,15 @@ void widget::_insert_event_key_release(const event_key& event)
 
 void widget::resize(int width,int height)
 {
-    img=img.resize_nearest(width,height);   // cheap and ugly image resize, is supposed to be redrawn anyway
+    width_=width;
+    height_=height;
     for(auto& e:children)
         e->update_geometry();
     dirty=true;
 }
 
-void widget::redraw()
+void widget::redraw(image& img,int offset_x,int offset_y)
 {
-    if(dirty)
-        goto redraw;
-    for(auto& e:children)
-        if(e->need_redraw())
-            goto redraw;
-    return;
-redraw:
-    // clear image before drawing anything
-    img.clear();
-
     if(!visible())
         return;
 
@@ -188,13 +179,13 @@ redraw:
 
     // draw this
     if(on_paint)
-        on_paint.call(img);
+        on_paint.call(event_paint(img,offset_x,offset_y,*this));
 
     // draw children
-    for(auto& e:children)
+    for(std::unique_ptr<widget>& e:children)
     {
-        e->redraw();
-        img.draw_image(e->geometry.calc_pos(width(),height()),e->img);
+        point p=e->geometry.calc_pos(width(),height())+point(offset_x,offset_y);
+        e->redraw(img,p.x,p.y);
     }
 
     dirty=false;

@@ -78,6 +78,20 @@ public:
     event_key(int key,const std::string& character_unicode) : key(key),character_unicode(character_unicode){}
 };
 
+class widget;
+
+class event_paint
+{
+public:
+    image& img;
+    int offset_x;
+    int offset_y;
+    lfgui::widget& widget;
+
+    event_paint(image& img,int offset_x,int offset_y,lfgui::widget& widget)
+        : img(img),offset_x(offset_x),offset_y(offset_y),widget(widget){}
+};
+
 /// \brief Used by the set_mouse_cursor functions. Based on the Qt QCursor options but some have been left out to be more portable.
 enum class mouse_cursor
 {
@@ -113,6 +127,8 @@ protected:
     point size_old;
     bool _focusable=true;
     bool _visible=true;
+    int width_=0;
+    int height_=0;
 public:
     /// \brief Determines if this widget and all its children are fully redrawn the next time redraw() gets called.
     bool dirty=true;
@@ -121,7 +137,6 @@ public:
     /// \brief Used to measure the time since the last redraw.
     stk::timer redraw_timer=stk::timer("",false);
     widget_geometry geometry;   ///< The geometry used to position and size this widget.
-    image img;  ///< The cIMG image that is used to display this widget.
 
     signal<event_mouse> on_mouse_press;             ///< called when a mouse button is pressed on this widget
     signal<event_mouse> on_mouse_release;           ///< called when a mouse button is release on this widget
@@ -133,7 +148,7 @@ public:
     signal<event_mouse> on_mouse_leave;             ///< called when the mouse was over this widget and just left this widget
     signal<event_mouse> on_mouse_wheel;             ///< called when the mouse wheel is used while the cursor is over this widget
     signal<point> on_resize;                        ///< called when this widget changes its size. The parameter is the new size.
-    signal<image&> on_paint;                        ///< called when this widget is being drawn.
+    signal<event_paint> on_paint;                        ///< called when this widget is being drawn.
     signal<event_key> on_key_press;                 ///< called on keyboard key press.
     signal<event_key> on_key_release;               ///< called on keyboard key press.
     signal<void> on_focus_in;                       ///< called when this widgets gets keyboard focus.
@@ -166,7 +181,7 @@ public:
     void _insert_event_key_release(const event_key&);
 
     /// \brief Call on_paint().
-    virtual void redraw();
+    virtual void redraw(image& img,int offset_x,int offset_y);
 
     /// \brief Returns true if the given point is over this widget. For detecting if a mouse click hit. Uses a
     /// bounding box check per default.
@@ -175,8 +190,8 @@ public:
         return lfgui::rect(0,0,width(),height()).contains(p);
     }
 
-    int width()const{return img.width();}
-    int height()const{return img.height();}
+    int width()const{return width_;}
+    int height()const{return height_;}
     point size()const{return point(width(),height());}
     /// \brief Resizes this widget to the given width and height. Calls on_resize();
     void resize(int width,int height);
@@ -220,10 +235,10 @@ public:
             resize(p.x,p.y);
     }
 
-    /// \brief Returns a rectangle with this widgets size (same as img.rect()).
+    /// \brief Returns a rectangle with this widgets size.
     lfgui::rect rect() const
     {
-        return img.rect();
+        return lfgui::rect(0,0,width(),height());
     }
     /// \brief Adds a child widget. Returns a pointer to the widget. std::unique_ptr is used internally to handle the
     /// given widget, no need for a manual delete.
@@ -375,6 +390,7 @@ public:
     point mouse_old_pos=0;  // for mouse movement
     uint32_t button_state_last=0;
     uint32_t event_button_last=0;
+    image img;  ///< \brief The image being drawn onto.
 
     gui(int width,int height) : widget(width,height)
     {

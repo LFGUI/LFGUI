@@ -55,16 +55,22 @@ public:
         setMouseTracking(true);
         setFocusPolicy(Qt::StrongFocus);
         QTimer *timer=new QTimer(this);
-        connect(timer,&QTimer::timeout,[this]{redraw();});
+        connect(timer,&QTimer::timeout,[this]{redraw(img,0,0);});
         timer->start(1000/25);  // draw with up to 25 FPS
+        on_resize([this](point p){img=image(p.x,p.y);});
+        img=image(width,height);
     }
 
     int width()const{return lfgui::widget::width();}
     int height()const{return lfgui::widget::height();}
 
-    void redraw() override
+    void redraw(image&,int offset_x,int offset_y) override
     {
-        lfgui::widget::redraw();
+        img.clear();
+        {
+        stk::timer _("redraw GUI");
+        lfgui::widget::redraw(img,offset_x,offset_y);
+        }
 
         auto count=qimage.width()*qimage.height();
         uint8_t* data=qimage.bits();
@@ -85,7 +91,7 @@ public:
         QWidget::resizeEvent(e);
         qimage=QImage(QWidget::width(),QWidget::height(),QImage::Format_ARGB32);
         lfgui::widget::resize(QWidget::width(),QWidget::height());
-        redraw();
+        //redraw();
     }
 
     void paintEvent(QPaintEvent* e) override
@@ -99,19 +105,19 @@ public:
     void mousePressEvent(QMouseEvent* e) override
     {
         insert_event_mouse_press(e->x(),e->y(),e->button(),e->buttons());
-        redraw();
+        //redraw();
     }
 
     void mouseReleaseEvent(QMouseEvent* e) override
     {
         insert_event_mouse_release(e->x(),e->y(),e->button(),e->buttons());
-        redraw();
+        //redraw();
     }
 
     void mouseMoveEvent(QMouseEvent* e) override
     {
         insert_event_mouse_move(e->x(),e->y());
-        redraw();
+        //redraw();
     }
 
     // Some input can't be handled with these functions and has to be handled differently: https://www.kdab.com/qt-input-method-depth/ http://doc.qt.io/qt-5/qinputmethod.html
@@ -129,7 +135,7 @@ public:
         }
 
         insert_event_key_press((lfgui::key)e->key(),character);
-        redraw();
+        //redraw();
     }
 
     void keyReleaseEvent(QKeyEvent* e) override
@@ -138,13 +144,13 @@ public:
         std::string character(arr.data(),arr.size());
 
         insert_event_key_release((lfgui::key)e->key(),character);
-        redraw();
+        //redraw();
     }
 
     void wheelEvent(QWheelEvent* e) override
     {
         insert_event_mouse_wheel(e->angleDelta().x()/12,e->angleDelta().y()/12);
-        redraw();
+        //redraw();
     }
 
     void set_cursor(mouse_cursor c) override

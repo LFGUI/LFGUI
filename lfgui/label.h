@@ -24,9 +24,9 @@ public:
     label(int x,int y,int width,int height=20,const std::string& text="",color text_color={255,255,255},int text_size=16)
         : widget(x,y,width,height),_text(text),_text_color(text_color),_text_size(text_size)
     {
-        on_paint([this](lfgui::image& img)
+        on_paint([this](lfgui::event_paint e)
         {
-            img.draw_text(0,0,_text,_text_color,_text_size);
+            e.img.draw_text(e.offset_x,e.offset_y,_text,_text_color,_text_size);
         });
         set_focusable(false);
     }

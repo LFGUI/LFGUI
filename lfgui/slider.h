@@ -20,7 +20,8 @@ class slider : public widget
     float value_min_=0;
     float value_max_=1;
     int handle_size_;
-    bool vertical_;
+    bool vertical_=false;
+    float handle_thickness_=0;
 public:
     image img_background=image("gui_slider_background.png");
     image* img_handle=0;
@@ -31,7 +32,9 @@ public:
     widget* handle;
     signal<float> on_value_change;
 
-    slider(int x,int y,int width,int height=20,float min_value=0,float max_value=1,float value=0,bool vertical=false);
+    /// \brief handle_thickness is an additional thickness of the handle in percent of the sliders size. This is often
+    /// used to show how much is visible when used as a scrollbar.
+    slider(int x,int y,int width,int height=20,float min_value=0,float max_value=1,float value=0,bool vertical=false,float handle_thickness=0);
 
     float value() const
     {

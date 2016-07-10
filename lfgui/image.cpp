@@ -290,7 +290,41 @@ void image::draw_line(int x0,int y0,int x1,int y1,color c,float w,float fading_s
 
 void image::draw_rect(int x,int y,int width,int height,color color_foreground)
 {
-    cimage->draw_rectangle(x,y,x+width,y+height,color_foreground.array);
+    lfgui::rect r=rect();
+    int x_start=std::max(x,r.left());
+    int y_start=std::max(y,r.top());
+    int x_end=std::min(x+width,r.right());
+    int y_end=std::min(y+height,r.bottom());
+    int w=this->width();
+    int i;
+    uint8_t* d=data();
+    int c=count();
+    for(y=y_start;y<y_end;y++)
+        for(x=x_start;x<x_end;x++)
+        {
+            i=y*w+x;
+            if(color_foreground.a==255)
+            {
+                d[i]=color_foreground.b;
+                i+=c;
+                d[i]=color_foreground.g;
+                i+=c;
+                d[i]=color_foreground.r;
+                i+=c;
+                d[i]=255;
+            }
+            else
+            {
+                d[i]=(d[i]*(255-color_foreground.a)+color_foreground.b*color_foreground.a)/255;
+                i+=c;
+                d[i]=(d[i]*(255-color_foreground.a)+color_foreground.g*color_foreground.a)/255;
+                i+=c;
+                d[i]=(d[i]*(255-color_foreground.a)+color_foreground.r*color_foreground.a)/255;
+                i+=c;
+                auto a=d[i]+color_foreground.a;
+                d[i]=a>255?255:a;
+            }
+        }
 }
 
 // based on http://alienryderflex.com/polygon_fill/
@@ -366,14 +400,30 @@ void image::draw_image(int start_x,int start_y,const image& img)
 
     int target_x=start_x;
     int target_y=start_y;
+    int index;
+    int img_index;
+    uint8_t* img_data=img.data();
+    int img_count=img.width()*img.height();
     for(int y=0;y<end_y;y++)
     {
-        for(int x=0;x<end_x;x++)
+        index=target_y*width()+start_x;
+        img_index=y*img.width();
+        int x_offset=0;
+        if(0>target_x)
         {
-            if(0<=target_x&&0<=target_y)
-                blend_pixel(target_x,target_y,img.get_pixel(x,y));
-            target_x++;
+            x_offset=-target_x;
+            target_x+=x_offset;
+            index+=x_offset;
+            img_index+=x_offset;
         }
+        if(0<=target_y)
+            for(int x=x_offset;x<end_x;x++)
+            {
+                blend_pixel(index,img_data[img_index],img_data[img_index+img_count],img_data[img_index+img_count*2],img_data[img_index+img_count*3]);
+                target_x++;
+                index++;
+                img_index++;
+            }
         target_x=start_x;
         target_y++;
     }
@@ -401,6 +451,35 @@ void image::draw_image(int start_x,int start_y,const image& img,float opacity)
             target_x++;
         }
         target_x=start_x;
+        target_y++;
+    }
+}
+
+void image::draw_image_solid(int start_x,int start_y,const image& img)
+{
+    int end_x=start_x+img.width();
+    int end_y=start_y+img.height();
+    if(end_x>width())
+        end_x=width();
+    if(end_y>height())
+        end_y=height();
+    end_x-=start_x;
+    end_y-=start_y;
+
+    int target_x=start_x;
+    int target_y=start_y;
+    for(int y=0;y<end_y;y++)
+    {
+        /*for(int x=0;x<end_x;x++)
+        {
+            if(0<=target_x&&0<=target_y)
+                set_pixel(target_x,target_y,img.get_pixel(x,y));
+            target_x++;
+        }
+        target_x=start_x;*/
+        int i=target_x+target_y*width();
+        int j=y*img.width();
+        memcpy(data()+i,img.data()+j,1);
         target_y++;
     }
 }

@@ -137,6 +137,12 @@ struct rect
     int left()const{return x;}
     int bottom()const{return y+height;}
     int right()const{return x+width;}
+    rect& translate(int x,int y)
+    {
+        this->x+=x;
+        this->y+=y;
+        return *this;
+    }
 };
 
 /// \brief Used to position and size widgets.

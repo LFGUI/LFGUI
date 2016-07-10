@@ -41,4 +41,5 @@ HEADERS  += \
         ../external/cimg/CImg.h \
         ../external/stb_truetype.h \
         ../common_sample_code.h \
-        example.h
+        example.h \
+        ../external/stk_memory_plain.h

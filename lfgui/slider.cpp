@@ -5,8 +5,8 @@ using namespace std;
 namespace lfgui
 {
 
-slider::slider(int x,int y,int width,int height,float min_value,float max_value,float value,bool vertical)
-        : widget(x,y,width,height),value_min_(min_value),value_max_(max_value),img_handle(&img_handle_normal),vertical_(vertical)
+slider::slider(int x,int y,int width,int height,float min_value,float max_value,float value,bool vertical,float handle_thickness)
+        : widget(x,y,width,height),value_min_(min_value),value_max_(max_value),img_handle(&img_handle_normal),vertical_(vertical),handle_thickness_(handle_thickness)
 {
     // the drawing is currently a bit weird. The height is used weirdly.
     int not_handle_size;
@@ -30,6 +30,9 @@ slider::slider(int x,int y,int width,int height,float min_value,float max_value,
     img_handle_normal.resize_linear(handle_size_,handle_size_);
     img_handle_hover.resize_linear(handle_size_,handle_size_);
     img_handle_pressed.resize_linear(handle_size_,handle_size_);
+
+    //temp.draw_image_corners_stretched(border_width,img_normal);
+
     img_background=temp;
 
     if(vertical_)
@@ -37,14 +40,14 @@ slider::slider(int x,int y,int width,int height,float min_value,float max_value,
 
     handle=add_child(new widget(0,0,handle_size_,handle_size_));
 
-    on_paint([this](lfgui::image& img)
+    on_paint([this](lfgui::event_paint e)
     {
-        img.draw_image(0,0,img_background);
+        e.img.draw_image(e.depth_buffer,e.depth,e.offset_x,e.offset_y,img_background);
     });
 
-    handle->on_paint([this](lfgui::image& img)
+    handle->on_paint([this](lfgui::event_paint e)
     {
-        img.draw_image(0,0,*img_handle);
+        e.img.draw_image(e.depth_buffer,e.depth,e.offset_x,e.offset_y,*img_handle);
     });
 
     handle->on_mouse_drag([this](event_mouse e)

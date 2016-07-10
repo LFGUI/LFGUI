@@ -123,6 +123,37 @@ bool clip_line(int& x0,int& y0,int& x1,int& y1,int max_x,int max_y)
 }
 
 // found at http://members.chello.at/~easyfilter/bresenham.html
+void image::draw_line(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x0,int y0,int x1,int y1,color c)
+{
+    if(clip_line(x0,y0,x1,y1,width()-1,height()-1))
+        return;
+
+    int dx= abs(x1-x0);
+    int sx=x0<x1?1:-1;
+    int dy=-abs(y1-y0);
+    int sy=y0<y1?1:-1;
+    int err=dx+dy,e2; /* error value e_xy */
+
+    for(;;)
+    {
+        blend_pixel(depth_buffer,depth,x0,y0,c);
+        if(x0==x1&&y0==y1)
+            break;
+        e2=2*err;
+        if(e2>=dy)
+        {
+            err+=dy;
+            x0+=sx;
+        } /* e_xy+e_x > 0 */
+        if(e2<=dx)
+        {
+            err+=dx;
+            y0+=sy;
+        } /* e_xy+e_y < 0 */
+    }
+}
+
+// found at http://members.chello.at/~easyfilter/bresenham.html
 void image::draw_line(int x0,int y0,int x1,int y1,color c)
 {
     if(clip_line(x0,y0,x1,y1,width()-1,height()-1))
@@ -288,13 +319,149 @@ void image::draw_line(int x0,int y0,int x1,int y1,color c,float w,float fading_s
     }
 }
 
-void image::draw_rect(int x,int y,int width,int height,color color_foreground)
+void image::draw_line(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x0,int y0,int x1,int y1,color c,float w,float fading_start)
 {
-    cimage->draw_rectangle(x,y,x+width,y+height,color_foreground.array);
+    if(clip_line(x0,y0,x1,y1,width()-1,height()-1))
+        return;
+
+    int dx=x1-x0;
+    int dy=y1-y0;
+    if(dx==0&&dy==0)
+    {
+        blend_pixel_safe(depth_buffer,depth,x0,y0,c);
+        return;
+    }
+
+    // calculate a polygon that is the outer shape of our line. Like a bounding box, but not axis aligned.
+    std::vector<point> polygon;
+    {
+        float d=sqrt(dx*dx+dy*dy);
+        float rx=dx/d;
+        float ry=dy/d;
+        rx*=w;
+        ry*=w;
+
+        polygon.emplace_back(x0+ry-rx,y0-rx-ry);
+        polygon.emplace_back(x1+ry+rx,y1-rx+ry);
+        polygon.emplace_back(x1-ry+rx,y1+rx+ry);
+        polygon.emplace_back(x0-ry-rx,y0+rx-ry);
+    }
+
+    // draw the actual line
+    {
+        std::vector<int> edges;
+        edges.resize(height());
+        int image_width=width();
+        int image_height=height();
+
+        int pixelX,pixelY,i,j,swap,node_count;
+
+        //  Loop through the rows of the image.
+        for(pixelY=0;pixelY<image_height;pixelY++)
+        {
+            //  Build a list of nodes.
+            edges.resize(0);
+            j=4-1;
+            for(i=0;i<4;i++)
+            {
+                if((polygon[i].y<(double)pixelY&&polygon[j].y>=(double)pixelY)
+                 ||(polygon[j].y<(double)pixelY&&polygon[i].y>=(double)pixelY))
+                    edges.push_back((polygon[i].x+(pixelY-polygon[i].y)/double(polygon[j].y-polygon[i].y)*(polygon[j].x-polygon[i].x)));
+                j=i;
+            }
+            node_count=edges.size();
+
+            //  Sort the nodes, via a simple "Bubble" sort.
+            i=0;
+            while(i<node_count-1)
+            {
+                if(edges[i]>edges[i+1])
+                {
+                    swap=edges[i];
+                    edges[i]=edges[i+1];
+                    edges[i+1]=swap;
+                    if(i)
+                        i--;
+                }
+                else
+                    i++;
+            }
+
+            //  Fill the pixels between node pairs.
+            for(i=0;i<node_count;i+=2)
+            {
+                if(edges[i  ]>=image_width)
+                    break;
+                if(edges[i+1]> 0 )
+                {
+                    if(edges[i  ]<0 )
+                        edges[i  ]=0 ;
+                    if(edges[i+1]>image_width)
+                        edges[i+1]=image_width;
+
+                    for(pixelX=edges[i];pixelX<edges[i+1];pixelX++)
+                    {
+                        float s=distance_point_line(pixelX,pixelY,x0,y0,x1,y1)/w;
+                        s-=fading_start/2;
+                        if(s>0)
+                            s/=(1.0f-fading_start);
+                        int si=s*255;
+                        si=std::min(255,si);
+                        si=std::max(0,si);
+                        si=255-si;
+                        blend_pixel(depth_buffer,depth,pixelX,pixelY,c.alpha_multiplied(si));
+                    }
+                }
+            }
+        }
+    }
+}
+
+void image::draw_rect(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x,int y,int width,int height,color color_foreground)
+{
+    lfgui::rect r=rect();
+    int x_start=std::max(x,r.left());
+    int y_start=std::max(y,r.top());
+    int x_end=std::min(x+width,r.right());
+    int y_end=std::min(y+height,r.bottom());
+    int w=this->width();
+    int i;
+    uint8_t* d=data();
+    int c=count();
+    for(y=y_start;y<y_end;y++)
+        for(x=x_start;x<x_end;x++)
+        {
+            i=y*w+x;
+            if(depth>=depth_buffer[i])
+            {
+                if(color_foreground.a==255)
+                {
+                    depth_buffer[i]=depth;
+                    d[i]=color_foreground.b;
+                    i+=c;
+                    d[i]=color_foreground.g;
+                    i+=c;
+                    d[i]=color_foreground.r;
+                    i+=c;
+                    d[i]=255;
+                }
+                else
+                {
+                    d[i]=(d[i]*(255-color_foreground.a)+color_foreground.b*color_foreground.a)/255;
+                    i+=c;
+                    d[i]=(d[i]*(255-color_foreground.a)+color_foreground.g*color_foreground.a)/255;
+                    i+=c;
+                    d[i]=(d[i]*(255-color_foreground.a)+color_foreground.r*color_foreground.a)/255;
+                    i+=c;
+                    auto a=d[i]+color_foreground.a;
+                    d[i]=a>255?255:a;
+                }
+            }
+        }
 }
 
 // based on http://alienryderflex.com/polygon_fill/
-void image::draw_polygon(const std::vector<point>& vec,color c)
+void image::draw_polygon(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,const std::vector<point>& vec,color c)
 {
     int vec_size=vec.size();
     std::vector<int> edges;
@@ -347,7 +514,7 @@ void image::draw_polygon(const std::vector<point>& vec,color c)
                 if(edges[i+1]>image_width)
                     edges[i+1]=image_width;
                 for(pixelX=edges[i];pixelX<edges[i+1];pixelX++)
-                    blend_pixel(pixelX,pixelY,c);
+                    blend_pixel(depth_buffer,depth,pixelX,pixelY,c);
             }
         }
     }
@@ -401,6 +568,87 @@ void image::draw_image(int start_x,int start_y,const image& img,float opacity)
             target_x++;
         }
         target_x=start_x;
+        target_y++;
+    }
+}
+
+void image::draw_image(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int start_x,int start_y,const image& img)
+{
+    int end_x=start_x+img.width();
+    int end_y=start_y+img.height();
+    if(end_x>width())
+        end_x=width();
+    if(end_y>height())
+        end_y=height();
+    end_x-=start_x;
+    end_y-=start_y;
+
+    int target_x=start_x;
+    int target_y=start_y;
+    for(int y=0;y<end_y;y++)
+    {
+        for(int x=0;x<end_x;x++)
+        {
+            if(0<=target_x&&0<=target_y)
+                blend_pixel(depth_buffer,depth,target_x,target_y,img.get_pixel(x,y));
+            target_x++;
+        }
+        target_x=start_x;
+        target_y++;
+    }
+}
+
+void image::draw_image(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int start_x,int start_y,const image& img,float opacity)
+{
+    int end_x=start_x+img.width();
+    int end_y=start_y+img.height();
+    if(end_x>width())
+        end_x=width();
+    if(end_y>height())
+        end_y=height();
+    end_x-=start_x;
+    end_y-=start_y;
+
+    int target_x=start_x;
+    int target_y=start_y;
+    for(int y=0;y<end_y;y++)
+    {
+        for(int x=0;x<end_x;x++)
+        {
+            if(0<=target_x&&0<=target_y)
+                blend_pixel(depth_buffer,depth,target_x,target_y,img.get_pixel(x,y).alpha_multiplied(opacity));
+            target_x++;
+        }
+        target_x=start_x;
+        target_y++;
+    }
+}
+
+void image::draw_image_solid(int start_x,int start_y,const image& img)
+{
+    int end_x=start_x+img.width();
+    int end_y=start_y+img.height();
+    if(end_x>width())
+        end_x=width();
+    if(end_y>height())
+        end_y=height();
+    end_x-=start_x;
+    end_y-=start_y;
+
+    int target_x=start_x;
+    int target_y=start_y;
+    for(int y=0;y<end_y;y++)
+    {
+        /*for(int x=0;x<end_x;x++)
+        {
+            if(0<=target_x&&0<=target_y)
+                set_pixel(target_x,target_y,img.get_pixel(x,y));
+            target_x++;
+        }
+        target_x=start_x;*/
+        int i=target_x+target_y*width();
+        int j=y*img.width();
+        memcpy(data()+i,img.data()+j,1);
         target_y++;
     }
 }
@@ -491,7 +739,7 @@ image& image::add(color c)
     return *this;
 }
 
-void image::draw_text(int x,int y,const std::string& text,const color& color,int font_size,alignment a,font& f)
+void image::draw_text(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x,int y,const std::string& text,const color& color,int font_size,alignment a,font& f)
 {
     int x_orig=x;
     int w=f.text_length(text,font_size);
@@ -508,11 +756,11 @@ void image::draw_text(int x,int y,const std::string& text,const color& color,int
             y+=font_size;
         }
         else
-            draw_character(x,y,lfgui::utf8_to_unicode(data,end-data),color,font_size);
+            draw_character(depth_buffer,depth,x,y,lfgui::utf8_to_unicode(data,end-data),color,font_size);
     }
 }
 
-void image::draw_character(int& x,int y,unsigned int character,const color& color,int font_size,font& f)
+void image::draw_character(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int& x,int y,unsigned int character,const color& color,int font_size,font& f)
 {
     if(character==' ')
     {
@@ -529,11 +777,11 @@ void image::draw_character(int& x,int y,unsigned int character,const color& colo
     const font::bitmap& b=f.get_glyph_cached(character,font_size);
     for(int y2=0;y2<b.height();y2++)
         for(int x2=0;x2<b.width();x2++) // just adding 13 seems weird. Maybe there has to be some other calculation.
-            blend_pixel_safe(x+x2+b.x0,y+y2+b.y0+13,color.alpha_multiplied(b.data[x2+y2*b.width()]));
+            blend_pixel_safe(depth_buffer,depth,x+x2+b.x0,y+y2+b.y0+13,color.alpha_multiplied(b.data[x2+y2*b.width()]));
     x+=b.width()+1;
 }
 
-void image::draw_path(const std::vector<point>& vec,color _color,bool connect_last_point_with_first)
+void image::draw_path(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,const std::vector<point>& vec,color _color,bool connect_last_point_with_first)
 {
     if(vec.size()<2)
         return;
@@ -542,14 +790,14 @@ void image::draw_path(const std::vector<point>& vec,color _color,bool connect_la
     second_point++;
     while(second_point!=vec.end())
     {
-        draw_line(first_point->x,first_point->y,second_point->x,second_point->y,_color);
+        draw_line(depth_buffer,depth,first_point->x,first_point->y,second_point->x,second_point->y,_color);
         first_point=second_point;
         second_point++;
     }
     if(connect_last_point_with_first)
     {
         second_point=vec.begin();
-        draw_line(first_point->x,first_point->y,second_point->x,second_point->y,_color);
+        draw_line(depth_buffer,depth,first_point->x,first_point->y,second_point->x,second_point->y,_color);
     }
 }
 

@@ -30,10 +30,10 @@ public:
         prepare_images();
 
         on_paint.functions.clear(); // remove the draw function from the label
-        on_paint([this](lfgui::image& img)
+        on_paint([this](lfgui::event_paint e)
         {
-            img.draw_image(0,0,checked_?img_checked:img_unchecked);
-            img.draw_text(this->height()+5,this->height()/2-_text_size/2,_text,_text_color,_text_size);
+            e.img.draw_image(e.depth_buffer,e.depth,e.offset_x,e.offset_y,checked_?img_checked:img_unchecked);
+            e.img.draw_text(e.depth_buffer,e.depth,e.offset_x+this->height()+5,e.offset_y+this->height()/2-_text_size/2,_text,_text_color,_text_size);
         });
 
         on_mouse_click([this]

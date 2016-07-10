@@ -24,12 +24,12 @@ lineedit::lineedit(int x,int y,int _width,int _height,const std::string& text,co
         img_background_focused.draw_image_corners_stretched(border_width,img);
     }
 
-    on_paint([this](lfgui::image& img)
+    on_paint([this](lfgui::event_paint e)
     {
         if(has_focus())
-            img.draw_image(0,0,img_background_focused);
+            e.img.draw_image(e.depth_buffer,e.depth,e.offset_x,e.offset_y,img_background_focused);
         else
-            img.draw_image(0,0,img_background);
+            e.img.draw_image(e.depth_buffer,e.depth,e.offset_x,e.offset_y,img_background);
 
         int space_for_n_characters=0;   // calculate how many characters we can display
         int available_space=width()-8;
@@ -38,8 +38,7 @@ lineedit::lineedit(int x,int y,int _width,int _height,const std::string& text,co
         {
             if(space_for_n_characters>(int)_text.size())
                 break;
-            //needed_space=img.text_length(_text,_text_size,cursor_position-space_for_n_characters/2,space_for_n_characters);
-            needed_space=img.text_length(_text,_text_size,0,space_for_n_characters);
+            needed_space=e.img.text_length(_text,_text_size,0,space_for_n_characters);
             space_for_n_characters++;
         }
         space_for_n_characters--;
@@ -51,64 +50,64 @@ lineedit::lineedit(int x,int y,int _width,int _height,const std::string& text,co
         if(space_for_n_characters>=(int)_text.size()) // if enough space
         {
             space_for_n_characters=_text.size();
-            img.draw_text(4,3,_text,_text_color,_text_size);
+            e.img.draw_text(e.depth_buffer,e.depth,e.offset_x+4,e.offset_y+3,_text,_text_color,_text_size);
 
             if(!draw_cursor)
                 return;
 
             int i=0;
             if(cursor_position>0)
-                i=img.text_length(_text,_text_size,cursor_position);
+                i=e.img.text_length(_text,_text_size,cursor_position);
 
             i+=3;
-            img.draw_line(i,3,i,_text_size+3,_text_color);
+            e.img.draw_line(e.depth_buffer,e.depth,e.offset_x+i,e.offset_y+3,e.offset_x+i,e.offset_y+_text_size+3,_text_color);
         }
         else
         {
             if((int)cursor_position<space_for_n_characters/2)    // display first n characters
             {
                 std::string displayed_text=_text.substr(0,space_for_n_characters);
-                img.draw_text(4,4,displayed_text,_text_color,_text_size);
+                e.img.draw_text(e.depth_buffer,e.depth,e.offset_x+4,e.offset_y+4,displayed_text,_text_color,_text_size);
 
                 if(!draw_cursor)
                     return;
 
                 int i=0;
                 if(cursor_position>0)
-                    i=img.text_length(displayed_text,_text_size,cursor_position);
+                    i=e.img.text_length(displayed_text,_text_size,cursor_position);
 
                 i+=3;
-                img.draw_line(i,3,i,_text_size+3,_text_color);
+                e.img.draw_line(e.depth_buffer,e.depth,e.offset_x+i,e.offset_y+3,e.offset_x+i,e.offset_y+_text_size+3,_text_color);
             }
             else if(cursor_position>=_text.size()-space_for_n_characters/2)    // display last n characters
             {
                 std::string displayed_text=_text.substr(_text.size()-space_for_n_characters,space_for_n_characters);
-                img.draw_text(4,4,displayed_text,_text_color,_text_size);
+                e.img.draw_text(e.depth_buffer,e.depth,e.offset_x+4,e.offset_y+4,displayed_text,_text_color,_text_size);
 
                 if(!draw_cursor)
                     return;
 
                 int i=0;
                 if(cursor_position>0)
-                    i=img.text_length(displayed_text,_text_size,cursor_position-(_text.size()-space_for_n_characters));
+                    i=e.img.text_length(displayed_text,_text_size,cursor_position-(_text.size()-space_for_n_characters));
 
                 i+=3;
-                img.draw_line(i,3,i,_text_size+3,_text_color);
+                e.img.draw_line(e.depth_buffer,e.depth,e.offset_x+i,e.offset_y+3,e.offset_x+i,e.offset_y+_text_size+3,_text_color);
             }
             else                                                            // center on the cursor
             {
                 std::string displayed_text=_text.substr(cursor_position-space_for_n_characters/2,space_for_n_characters);
-                img.draw_text(4,4,displayed_text,_text_color,_text_size);
+                e.img.draw_text(e.depth_buffer,e.depth,e.offset_x+4,e.offset_y+4,displayed_text,_text_color,_text_size);
 
                 if(!draw_cursor)
                     return;
 
                 int i=0;
                 if(cursor_position>0)
-                    i=img.text_length(displayed_text,_text_size,space_for_n_characters/2);
+                    i=e.img.text_length(displayed_text,_text_size,space_for_n_characters/2);
 
                 i+=3;
-                img.draw_line(i,3,i,_text_size+3,_text_color);
+                e.img.draw_line(e.depth_buffer,e.depth,e.offset_x+i,e.offset_y+3,e.offset_x+i,e.offset_y+_text_size+3,_text_color);
             }
         }
     });

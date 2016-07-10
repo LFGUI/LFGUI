@@ -11,6 +11,7 @@
 
 #include "general.h"
 #include "font.h"
+#include "../external/stk_memory_plain.h"
 
 namespace cimg_library
 {
@@ -147,6 +148,50 @@ public:
         blend_pixel(x,y,c);
     }
 
+    /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
+    /// top using the colors alpha.
+    inline void blend_pixel(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x,int y,color c)
+    {
+        //if(x<0||y<0||x>=width()||y>=height()) // useful for debugging
+        //    throw std::logic_error("");
+        if(c.a==0)
+            return;
+
+        int count=width()*height();
+        int i=x+y*width();
+        if(depth<depth_buffer[i])
+            return;
+        uint8_t* d=data();
+        d+=i;
+        if(c.a==255)
+        {
+            *d=c.b;
+            d+=count;
+            *d=c.g;
+            d+=count;
+            *d=c.r;
+            d+=count;
+            *d=255;
+            depth_buffer[i]=depth;
+            return;
+        }
+
+        *d=((*d)*(255-c.a)+c.b*c.a)/255;
+        d+=count;
+        *d=((*d)*(255-c.a)+c.g*c.a)/255;
+        d+=count;
+        *d=((*d)*(255-c.a)+c.r*c.a)/255;
+        d+=count;
+        auto a=(*d)+c.a;
+        *d=a>255?255:a;
+    }
+    void blend_pixel_safe(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x,int y,color c)
+    {
+        if(x<0||y<0||x>=width()||y>=height())
+            return;
+        blend_pixel(depth_buffer,depth,x,y,c);
+    }
+
     color get_pixel(int x,int y) const
     {
         int count=width()*height();
@@ -162,23 +207,51 @@ public:
     }
 
     /// \brief The alignment specifies if the given coordinate should be left, centered, or right of the text. Multiple lines of text are not aligned correctly.
-    void draw_text(int x,int y,const std::string& text,const color& color,int font_size=15,alignment a=alignment::left,font& f=font::default_font());
+    void draw_text(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x,int y,const std::string& text,const color& color,int font_size=15,alignment a=alignment::left,font& f=font::default_font());
 
-    void draw_character(int& x,int y,unsigned int character,const color& color,int font_size=15,font& f=font::default_font());
+    void draw_character(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int& x,int y,unsigned int character,const color& color,int font_size=15,font& f=font::default_font());
     void draw_line(int x1,int y1,int x2,int y2,color _color);
     /// \brief Draws a line with the given thickness. The drawn color gets more transparent when further away from the
     /// center of the line. This can be adjusted with the fading parameter where 1 is no fading and 0 fading starting in the center.
     void draw_line(int x1,int y1,int x2,int y2,color _color,float thickness,float fading=0.7);
-    void draw_line(point start,point end,color _color){draw_line(start.x,start.y,end.x,end.y,_color);}
+    void draw_line(point start,point end,color _color)
+    {
+        draw_line(start.x,start.y,end.x,end.y,_color);
+    }
     /// \brief Draws a line with the given thickness. The drawn color gets more transparent when further away from the
     /// center of the line. This can be adjusted with the fading parameter where 1 is no fading and 0 fading starting in the center.
-    void draw_line(point start,point end,color _color,float width,float fading_start=0.7){draw_line(start.x,start.y,end.x,end.y,_color,width,fading_start);}
+    void draw_line(point start,point end,color _color,float width,float fading_start=0.7)
+    {
+        draw_line(start.x,start.y,end.x,end.y,_color,width,fading_start);
+    }
+    void draw_line(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x1,int y1,int x2,int y2,color _color);
+    /// \brief Draws a line with the given thickness. The drawn color gets more transparent when further away from the
+    /// center of the line. This can be adjusted with the fading parameter where 1 is no fading and 0 fading starting in the center.
+    void draw_line(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x1,int y1,int x2,int y2,color _color,float thickness,float fading=0.7);
+    void draw_line(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,point start,point end,color _color)
+    {
+        draw_line(depth_buffer,depth,start.x,start.y,end.x,end.y,_color);
+    }
+    /// \brief Draws a line with the given thickness. The drawn color gets more transparent when further away from the
+    /// center of the line. This can be adjusted with the fading parameter where 1 is no fading and 0 fading starting in the center.
+    void draw_line(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,point start,point end,color _color,float width,float fading_start=0.7)
+    {
+        draw_line(depth_buffer,depth,start.x,start.y,end.x,end.y,_color,width,fading_start);
+    }
     /// \brief Draw a path along the given points. The last point is connected with the first if connect_last_point_with_first is set to true.
-    void draw_path(const std::vector<point>& vec,color _color,bool connect_last_point_with_first=false);
-    void draw_rect(int x,int y,int width,int height,color color);
-    void draw_rect(rect rectangle,color color){draw_rect(rectangle.x,rectangle.y,rectangle.width,rectangle.height,color);}
+    void draw_path(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,const std::vector<point>& vec,color _color,bool connect_last_point_with_first=false);
+    /*void draw_rect(int x,int y,int width,int height,color color);
+    void draw_rect(rect rectangle,color color)
+    {
+        draw_rect(depth_buffer,depth,rectangle.x,rectangle.y,rectangle.width,rectangle.height,color);
+    }*/
+    void draw_rect(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x,int y,int width,int height,color color);
+    void draw_rect(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,rect rectangle,color color)
+    {
+        draw_rect(depth_buffer,depth,rectangle.x,rectangle.y,rectangle.width,rectangle.height,color);
+    }
     /// \brief Draws a filled polygon.
-    void draw_polygon(const std::vector<point>& vec,color color);
+    void draw_polygon(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,const std::vector<point>& vec,color color);
     /// \brief Fills the whole image with one color.
     void fill(color color);
 
@@ -196,6 +269,15 @@ public:
     }
 
     /// \brief Draws another image onto this one.
+    void draw_image(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x,int y,const image& img);
+    /// \brief Draws another image onto this one.
+    void draw_image(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x,int y,const image& img,float opacity);
+    /// \brief Draws another image onto this one.
+    void draw_image(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,point p,const image& img){draw_image(depth_buffer,depth,p.x,p.y,img);}
+    /// \brief Draws another image onto this one.
+    void draw_image(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,point p,const image& img,float opacity){draw_image(depth_buffer,depth,p.x,p.y,img,opacity);}
+
+    /// \brief Draws another image onto this one.
     void draw_image(int x,int y,const image& img);
     /// \brief Draws another image onto this one.
     void draw_image(int x,int y,const image& img,float opacity);
@@ -203,6 +285,11 @@ public:
     void draw_image(point p,const image& img){draw_image(p.x,p.y,img);}
     /// \brief Draws another image onto this one.
     void draw_image(point p,const image& img,float opacity){draw_image(p.x,p.y,img,opacity);}
+
+    /// \brief Draws another image onto this one.
+    void draw_image_solid(int x,int y,const image& img);
+    /// \brief Draws another image onto this one.
+    void draw_image_solid(point p,const image& img){draw_image_solid(p.x,p.y,img);}
 
     /// \brief Fills this image with the given image, it is stretched to act as a border with "stretched filling".
     void draw_image_corners_stretched(int border_width,const image& img);

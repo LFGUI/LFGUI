@@ -9,17 +9,17 @@ window::window(int x,int y,int width,int height,const std::string& title,bool cl
     prepare_images();
     set_size_min(100,100);
 
-    on_paint([this](lfgui::image& img)
+    on_paint([this](lfgui::event_paint e)
     {
         if(has_focus())
-            img.draw_image(0,0,img_highlighted);
+            e.img.draw_image(e.depth_buffer,e.depth,e.offset_x,e.offset_y,img_highlighted);
         else
-            img.draw_image(0,0,img_normal);
+            e.img.draw_image(e.depth_buffer,e.depth,e.offset_x,e.offset_y,img_normal);
 
         if(this->_closable)
-            img.draw_text(img.width()/2-15,7,this->title,_title_color,18,alignment::center);
+            e.img.draw_text(e.depth_buffer,e.depth,e.offset_x+e.widget.width()/2-15,e.offset_y+7,this->title,_title_color,18,alignment::center);
         else
-            img.draw_text(img.width()/2,7,this->title,_title_color,18,alignment::center);
+            e.img.draw_text(e.depth_buffer,e.depth,e.offset_x+e.widget.width()/2,e.offset_y+7,this->title,_title_color,18,alignment::center);
     });
 
     on_focus_out([]{}); // widgets get redrawn when they have signals connected and that's all that should be done here (to remove the highlight effect

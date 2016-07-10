@@ -33,10 +33,10 @@ public:
         set_text(text);
 
         on_paint.functions.clear(); // remove the draw function from the label
-        on_paint([this](lfgui::image& img)
+        on_paint([this](lfgui::event_paint e)
         {
-            img.draw_image(0,0,*img_ptr);
-            img.draw_text(this->width()/2,this->height()/2-_text_size/2,_text,_text_color,_text_size,alignment::center);
+            e.img.draw_image(e.depth_buffer,e.depth,e.offset_x,e.offset_y,*img_ptr);
+            e.img.draw_text(e.depth_buffer,e.depth,e.offset_x+this->width()/2,e.offset_y+this->height()/2-_text_size/2,_text,_text_color,_text_size,alignment::center);
         });
 
         on_mouse_press([this]

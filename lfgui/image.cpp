@@ -585,14 +585,30 @@ void image::draw_image(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,
 
     int target_x=start_x;
     int target_y=start_y;
+    int index;
+    int img_index;
+    uint8_t* img_data=img.data();
+    int img_count=img.width()*img.height();
     for(int y=0;y<end_y;y++)
     {
-        for(int x=0;x<end_x;x++)
+        index=target_y*width()+start_x;
+        img_index=y*img.width();
+        int x_offset=0;
+        if(0>target_x)
         {
-            if(0<=target_x&&0<=target_y)
-                blend_pixel(depth_buffer,depth,target_x,target_y,img.get_pixel(x,y));
-            target_x++;
+            x_offset=-target_x;
+            target_x+=x_offset;
+            index+=x_offset;
+            img_index+=x_offset;
         }
+        if(0<=target_y)
+            for(int x=x_offset;x<end_x;x++)
+            {
+                blend_pixel(depth_buffer,depth,index,img_data[img_index],img_data[img_index+img_count],img_data[img_index+img_count*2],img_data[img_index+img_count*3]);
+                target_x++;
+                index++;
+                img_index++;
+            }
         target_x=start_x;
         target_y++;
     }

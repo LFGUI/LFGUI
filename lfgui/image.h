@@ -150,40 +150,51 @@ public:
 
     /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
     /// top using the colors alpha.
-    inline void blend_pixel(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x,int y,color c)
+    inline void blend_pixel(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int index,uint8_t b,uint8_t g,uint8_t r,uint8_t a)
     {
         //if(x<0||y<0||x>=width()||y>=height()) // useful for debugging
         //    throw std::logic_error("");
-        if(c.a==0)
+        if(a==0)
             return;
 
         int count=width()*height();
-        int i=x+y*width();
-        if(depth<depth_buffer[i])
+        if(depth<depth_buffer[index])
             return;
         uint8_t* d=data();
-        d+=i;
-        if(c.a==255)
+        d+=index;
+        if(a==255)
         {
-            *d=c.b;
+            *d=b;
             d+=count;
-            *d=c.g;
+            *d=g;
             d+=count;
-            *d=c.r;
+            *d=r;
             d+=count;
             *d=255;
-            depth_buffer[i]=depth;
+            depth_buffer[index]=depth;
             return;
         }
 
-        *d=((*d)*(255-c.a)+c.b*c.a)/255;
+        *d=((*d)*(255-a)+b*a)/255;
         d+=count;
-        *d=((*d)*(255-c.a)+c.g*c.a)/255;
+        *d=((*d)*(255-a)+g*a)/255;
         d+=count;
-        *d=((*d)*(255-c.a)+c.r*c.a)/255;
+        *d=((*d)*(255-a)+r*a)/255;
         d+=count;
-        auto a=(*d)+c.a;
-        *d=a>255?255:a;
+        auto alpha=(*d)+a;
+        *d=alpha>255?255:alpha;
+    }
+    /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
+    /// top using the colors alpha.
+    inline void blend_pixel(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int index,color c)
+    {
+        blend_pixel(depth_buffer,depth,index,c.b,c.g,c.r,c.a);
+    }
+    /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
+    /// top using the colors alpha.
+    inline void blend_pixel(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x,int y,color c)
+    {
+        blend_pixel(depth_buffer,depth,x+y*width(),c);
     }
     void blend_pixel_safe(stk::memory_plain<uint16_t>& depth_buffer,uint16_t depth,int x,int y,color c)
     {

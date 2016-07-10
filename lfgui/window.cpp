@@ -85,9 +85,9 @@ window::window(int x,int y,int width,int height,const std::string& title,bool cl
 void window::prepare_images()
 {
     {
-        image img("gui_window.png");
-        image img_upper=img.cropped(0,0,img.width(),42);
-        image img_lower=img.cropped(0,42,img.width(),90-42);
+        static image img("gui_window.png");
+        static image img_upper=img.cropped(0,0,img.width(),42);
+        static image img_lower=img.cropped(0,42,img.width(),90-42);
 
         image img_titlebar(width(),25);
         img_titlebar.clear();
@@ -103,9 +103,9 @@ void window::prepare_images()
         img_normal.draw_image(0,25,img_content);
     }
     {
-        image img("gui_window_highlighted.png");
-        image img_upper=img.cropped(0,0,img.width(),42);
-        image img_lower=img.cropped(0,42,img.width(),90-42);
+        static image img("gui_window_highlighted.png");
+        static image img_upper=img.cropped(0,0,img.width(),42);
+        static image img_lower=img.cropped(0,42,img.width(),90-42);
 
         image img_titlebar(width(),25);
         img_titlebar.clear();

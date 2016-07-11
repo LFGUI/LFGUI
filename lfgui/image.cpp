@@ -299,22 +299,23 @@ void image::draw_rect(int x,int y,int width,int height,color color_foreground)
     int i;
     uint8_t* d=data();
     int c=count();
-    for(y=y_start;y<y_end;y++)
-        for(x=x_start;x<x_end;x++)
+    if(color_foreground.a==255)
+    {
+        for(y=y_start;y<y_end;y++)
         {
-            i=y*w+x;
-            if(color_foreground.a==255)
+            i=y*w+x_start;
+            memset(d+i,color_foreground.b,x_end-x_start);
+            memset(d+i+c,color_foreground.g,x_end-x_start);
+            memset(d+i+c*2,color_foreground.r,x_end-x_start);
+            memset(d+i+c*3,255,x_end-x_start);
+        }
+    }
+    else
+    {
+        for(y=y_start;y<y_end;y++)
+            for(x=x_start;x<x_end;x++)
             {
-                d[i]=color_foreground.b;
-                i+=c;
-                d[i]=color_foreground.g;
-                i+=c;
-                d[i]=color_foreground.r;
-                i+=c;
-                d[i]=255;
-            }
-            else
-            {
+                i=y*w+x;
                 d[i]=(d[i]*(255-color_foreground.a)+color_foreground.b*color_foreground.a)/255;
                 i+=c;
                 d[i]=(d[i]*(255-color_foreground.a)+color_foreground.g*color_foreground.a)/255;
@@ -324,7 +325,7 @@ void image::draw_rect(int x,int y,int width,int height,color color_foreground)
                 auto a=d[i]+color_foreground.a;
                 d[i]=a>255?255:a;
             }
-        }
+    }
 }
 
 // based on http://alienryderflex.com/polygon_fill/
@@ -389,6 +390,7 @@ void image::draw_polygon(const std::vector<point>& vec,color c)
 
 void image::draw_image(int start_x,int start_y,const image& img)
 {
+STK_PROFILER
     int end_x=start_x+img.width();
     int end_y=start_y+img.height();
     if(end_x>width())

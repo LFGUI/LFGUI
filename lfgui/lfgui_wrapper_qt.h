@@ -71,16 +71,17 @@ public:
         stk::timer _("redraw GUI");
         lfgui::widget::redraw(img,offset_x,offset_y);
         }
-
-        auto count=qimage.width()*qimage.height();
+        int count=qimage.width()*qimage.height();
+        int count2=count*2;
+        int count3=count*3;
         uint8_t* data=qimage.bits();
-        auto p=img.data();
+        uint8_t* p=img.data();
         for(int i=0;i<count;i++,data+=4)
         {
             data[0]=p[i];
             data[1]=p[i+count];
-            data[2]=p[i+count*2];
-            data[3]=p[i+count*3];
+            data[2]=p[i+count2];
+            data[3]=p[i+count3];
         }
         repaint();
     }

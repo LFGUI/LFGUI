@@ -26,11 +26,6 @@ lineedit::lineedit(int x,int y,int _width,int _height,const std::string& text,co
 
     on_paint([this](lfgui::event_paint e)
     {
-        if(has_focus())
-            e.img.draw_image(e.offset_x,e.offset_y,img_background_focused);
-        else
-            e.img.draw_image(e.offset_x,e.offset_y,img_background);
-
         int space_for_n_characters=0;   // calculate how many characters we can display
         int available_space=width()-8;
         int needed_space=0;
@@ -52,64 +47,65 @@ lineedit::lineedit(int x,int y,int _width,int _height,const std::string& text,co
             space_for_n_characters=_text.size();
             e.img.draw_text(e.offset_x+4,e.offset_y+3,_text,_text_color,_text_size);
 
-            if(!draw_cursor)
-                return;
+            if(draw_cursor)
+            {
+                int cursor_position=0;
+                if(cursor_position>0)
+                    cursor_position=e.img.text_length(_text,_text_size,cursor_position);
 
-            int i=0;
-            if(cursor_position>0)
-                i=e.img.text_length(_text,_text_size,cursor_position);
-
-            i+=3;
-            e.img.draw_line(e.offset_x+i,e.offset_y+3,e.offset_x+i,e.offset_y+_text_size+3,_text_color);
+                cursor_position+=3;
+                e.img.draw_line(e.offset_x+cursor_position,e.offset_y+3,e.offset_x+cursor_position,e.offset_y+_text_size+3,_text_color);
+            }
         }
         else
         {
+            std::string displayed_text;
+            int cursor_position;
+
             if((int)cursor_position<space_for_n_characters/2)    // display first n characters
             {
-                std::string displayed_text=_text.substr(0,space_for_n_characters);
-                e.img.draw_text(e.offset_x+4,e.offset_y+4,displayed_text,_text_color,_text_size);
-
-                if(!draw_cursor)
-                    return;
-
-                int i=0;
-                if(cursor_position>0)
-                    i=e.img.text_length(displayed_text,_text_size,cursor_position);
-
-                i+=3;
-                e.img.draw_line(e.offset_x+i,e.offset_y+3,e.offset_x+i,e.offset_y+_text_size+3,_text_color);
+                displayed_text=_text.substr(0,space_for_n_characters);
+                if(draw_cursor)
+                {
+                    cursor_position=0;
+                    if(cursor_position>0)
+                        cursor_position=e.img.text_length(displayed_text,_text_size,cursor_position);
+                    cursor_position+=3;
+                }
             }
             else if(cursor_position>=_text.size()-space_for_n_characters/2)    // display last n characters
             {
-                std::string displayed_text=_text.substr(_text.size()-space_for_n_characters,space_for_n_characters);
-                e.img.draw_text(e.offset_x+4,e.offset_y+4,displayed_text,_text_color,_text_size);
+                displayed_text=_text.substr(_text.size()-space_for_n_characters,space_for_n_characters);
 
-                if(!draw_cursor)
-                    return;
-
-                int i=0;
-                if(cursor_position>0)
-                    i=e.img.text_length(displayed_text,_text_size,cursor_position-(_text.size()-space_for_n_characters));
-
-                i+=3;
-                e.img.draw_line(e.offset_x+i,e.offset_y+3,e.offset_x+i,e.offset_y+_text_size+3,_text_color);
+                if(draw_cursor)
+                {
+                    cursor_position=0;
+                    if(cursor_position>0)
+                        cursor_position=e.img.text_length(displayed_text,_text_size,cursor_position-(_text.size()-space_for_n_characters));
+                    cursor_position+=3;
+                }
             }
             else                                                            // center on the cursor
             {
-                std::string displayed_text=_text.substr(cursor_position-space_for_n_characters/2,space_for_n_characters);
-                e.img.draw_text(e.offset_x+4,e.offset_y+4,displayed_text,_text_color,_text_size);
+                displayed_text=_text.substr(cursor_position-space_for_n_characters/2,space_for_n_characters);
 
-                if(!draw_cursor)
-                    return;
-
-                int i=0;
-                if(cursor_position>0)
-                    i=e.img.text_length(displayed_text,_text_size,space_for_n_characters/2);
-
-                i+=3;
-                e.img.draw_line(e.offset_x+i,e.offset_y+3,e.offset_x+i,e.offset_y+_text_size+3,_text_color);
+                if(draw_cursor)
+                {
+                    cursor_position=0;
+                    if(cursor_position>0)
+                        cursor_position=e.img.text_length(displayed_text,_text_size,space_for_n_characters/2);
+                    cursor_position+=3;
+                }
             }
+
+            e.img.draw_line(e.offset_x+cursor_position,e.offset_y+3,e.offset_x+cursor_position,e.offset_y+_text_size+3,_text_color);
+            e.img.draw_text(e.offset_x+4,e.offset_y+4,displayed_text,_text_color,_text_size);
         }
+
+        if(has_focus())
+            e.img.draw_image(e.offset_x,e.offset_y,img_background_focused);
+        else
+            e.img.draw_image(e.offset_x,e.offset_y,img_background);
     });
     on_key_press([this](lfgui::event_key ek)
     {

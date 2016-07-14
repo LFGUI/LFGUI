@@ -46,8 +46,8 @@ void setup_sample_gui(lfgui::widget* gui)
         auto mover=gui->add_child(new lfgui::widget(20,210,200,70));
         mover->on_paint=[&](lfgui::event_paint e)
         {
-            e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),{222,222,255,192});
             e.img.draw_text(e.offset_x+10,e.offset_y+3,"I move on left and right\nmouse clicks and\nmouse wheel movement",{64,0,0});
+            e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),{222,222,255,192});
         };
         mover->on_mouse_press([mover](lfgui::event_mouse e)
         {
@@ -67,8 +67,8 @@ void setup_sample_gui(lfgui::widget* gui)
             auto movable2=window->add_child_to_content_widget(new lfgui::widget(15,5,150,20));
             movable2->on_paint([](lfgui::event_paint e)
             {
-                e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),{64,64,64});
                 e.img.draw_text(e.offset_x+10,e.offset_y+3,"I can be dragged",{255,0,255});
+                e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),{64,64,64});
             });
             movable2->on_mouse_drag([movable2](lfgui::event_mouse e){movable2->translate(e.movement);});
         }
@@ -133,8 +133,8 @@ void setup_sample_gui(lfgui::widget* gui)
         auto movable=gui->add_child(new lfgui::widget(30,320,520,190));
         movable->on_paint([&](lfgui::event_paint e)
         {
-            e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),color_background);
             e.img.draw_text(e.offset_x+10,e.offset_y+3,"I can be dragged vertically",{255,255,255});
+            e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),color_background);
         });
         movable->on_mouse_drag([movable](lfgui::event_mouse e){movable->translate(0,e.movement.y);});
 
@@ -168,8 +168,8 @@ void setup_sample_gui(lfgui::widget* gui)
         static lfgui::image painted_image(300,170);
         paint_area->on_paint([&](lfgui::event_paint e)
         {
-            e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),{255,255,255});
             e.img.draw_image(e.offset_x,e.offset_y,painted_image);
+            e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),{255,255,255});
         });
         paint_area->on_mouse_drag([&](lfgui::event_mouse e)
         {
@@ -192,7 +192,6 @@ void setup_sample_gui(lfgui::widget* gui)
         paint_area->on_paint([paint_area,slider_cos,slider_sin,slider_speed](lfgui::event_paint e)
         {
             static float degree=0;
-            e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),{0,0,0});
             int h=e.widget.height()/2;
             float factor_cos=slider_cos->value();
             float factor_sin=slider_sin->value();
@@ -217,6 +216,12 @@ void setup_sample_gui(lfgui::widget* gui)
             }
             // this should be time based instead of "counting redraws" but that's enough for a simple example
             degree+=slider_speed->value();
+
+            //e.img.draw_rect(e.offset_x,e.offset_y,e.widget.width(),e.widget.height(),{0,0,0});
+            e.img.draw_rect(e.offset_x+20,e.offset_y,e.widget.width()-20,e.widget.height()-20,{128,0,0});
+            e.img.draw_rect(e.offset_x,e.offset_y+20,e.widget.width()-20,e.widget.height()-20,{0,128,0});
+            e.img.draw_rect(e.offset_x+20,e.offset_y+20,e.widget.width()-20,e.widget.height()-20,{0,0,128});
+            e.img.draw_rect(e.offset_x+10,e.offset_y+10,e.widget.width()-20,e.widget.height()-20,{128,128,0});
         });
         paint_area->redraw_every_n_seconds=1/25.0f; // try drawing with 25 FPS
     }

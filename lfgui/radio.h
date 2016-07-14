@@ -35,8 +35,8 @@ public:
         on_paint.functions.clear(); // remove the draw function from the label
         on_paint([this](lfgui::event_paint e)
         {
-            e.img.draw_image(e.offset_x,e.offset_y,checked_?img_checked:img_unchecked);
             e.img.draw_text(e.offset_x+this->height()+5,e.offset_y+this->height()/2-_text_size/2,_text,_text_color,_text_size);
+            e.img.draw_image(e.offset_x,e.offset_y,checked_?img_checked:img_unchecked);
         });
 
         on_mouse_click([this]

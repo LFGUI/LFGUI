@@ -177,16 +177,17 @@ void widget::redraw(image& img,int offset_x,int offset_y)
         on_resize.call(size());
     size_old=size();
 
-    // draw this
-    if(on_paint)
-        on_paint.call(event_paint(img,offset_x,offset_y,*this));
-
     // draw children
-    for(std::unique_ptr<widget>& e:children)
+    for(auto iter=children.rbegin();iter!=children.rend();iter++)
     {
+        std::unique_ptr<widget>& e=*iter;
         point p=e->geometry.calc_pos(width(),height())+point(offset_x,offset_y);
         e->redraw(img,p.x,p.y);
     }
+
+    // draw this
+    if(on_paint)
+        on_paint.call(event_paint(img,offset_x,offset_y,*this));
 
     dirty=false;
     if(redraw_every_n_seconds)

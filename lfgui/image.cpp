@@ -290,6 +290,14 @@ void image::draw_line(int x0,int y0,int x1,int y1,color c,float w,float fading_s
 
 void image::draw_rect(int x,int y,int width,int height,color color_foreground)
 {
+    if(color_foreground.a==0)
+        return;
+
+    uint8_t cr=color_foreground.r;
+    uint8_t cg=color_foreground.g;
+    uint8_t cb=color_foreground.b;
+    uint8_t ca=color_foreground.a;
+
     lfgui::rect r=rect();
     int x_start=std::max(x,r.left());
     int y_start=std::max(y,r.top());
@@ -299,7 +307,7 @@ void image::draw_rect(int x,int y,int width,int height,color color_foreground)
     int i;
     uint8_t* d=data();
     int c=count();
-    if(color_foreground.a==255)
+    /*if(color_foreground.a==255)
     {
         for(y=y_start;y<y_end;y++)
         {
@@ -310,12 +318,17 @@ void image::draw_rect(int x,int y,int width,int height,color color_foreground)
             memset(d+i+c*3,255,x_end-x_start);
         }
     }
-    else
+    else*/
     {
         for(y=y_start;y<y_end;y++)
             for(x=x_start;x<x_end;x++)
             {
                 i=y*w+x;
+                if(d[i+c*3])
+                    continue;
+
+                blend_pixel(i,c,cb,cg,cr,ca);
+                    /*
                 d[i]=(d[i]*(255-color_foreground.a)+color_foreground.b*color_foreground.a)/255;
                 i+=c;
                 d[i]=(d[i]*(255-color_foreground.a)+color_foreground.g*color_foreground.a)/255;
@@ -323,7 +336,7 @@ void image::draw_rect(int x,int y,int width,int height,color color_foreground)
                 d[i]=(d[i]*(255-color_foreground.a)+color_foreground.r*color_foreground.a)/255;
                 i+=c;
                 auto a=d[i]+color_foreground.a;
-                d[i]=a>255?255:a;
+                d[i]=a>255?255:a;*/
             }
     }
 }

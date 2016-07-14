@@ -112,11 +112,14 @@ public:
     {
         //if(x<0||y<0||x>=width()||y>=height()) // useful for debugging
         //    throw std::logic_error("");
-        if(a==0)
+        if(a==0)        // don't draw if this color is completely transparent
             return;
 
         uint8_t* d=data();
         d+=index;
+        if(d[channel_size*3]!=0)  // don't draw if there is already a solid color in the target
+            return;
+
         if(a==255)
         {
             *d=b;
@@ -126,17 +129,18 @@ public:
             *d=r;
             d+=channel_size;
             *d=255;
-            return;
         }
-
-        *d=((*d)*(255-a)+b*a)/255;
-        d+=channel_size;
-        *d=((*d)*(255-a)+g*a)/255;
-        d+=channel_size;
-        *d=((*d)*(255-a)+r*a)/255;
-        d+=channel_size;
-        auto alpha=(*d)+a;
-        *d=alpha>255?255:alpha;
+        else
+        {
+            *d=((*d)*(255-a)+b*a)/255;
+            d+=channel_size;
+            *d=((*d)*(255-a)+g*a)/255;
+            d+=channel_size;
+            *d=((*d)*(255-a)+r*a)/255;
+            d+=channel_size;
+            auto alpha=(*d)+a;
+            *d=alpha>255?255:alpha;
+        }
     }
     /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
     /// top using the colors alpha.

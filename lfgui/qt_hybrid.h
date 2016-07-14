@@ -8,7 +8,7 @@
 #include <QPainter>
 
 #include "signal.h"
-#include "general.h"
+#include "geometry.h"
 
 namespace lfgui
 {

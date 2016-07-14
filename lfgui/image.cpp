@@ -390,7 +390,6 @@ void image::draw_polygon(const std::vector<point>& vec,color c)
 
 void image::draw_image(int start_x,int start_y,const image& img)
 {
-STK_PROFILER
     int end_x=start_x+img.width();
     int end_y=start_y+img.height();
     if(end_x>width())

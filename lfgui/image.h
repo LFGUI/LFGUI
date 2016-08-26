@@ -129,11 +129,11 @@ public:
             return;
         }
 
-        *d=((*d)*(255-a)+b*a)/255;
+        *d=(int((*d)*(255-a)+b*a)*(257))>>16;
         d+=channel_size;
-        *d=((*d)*(255-a)+g*a)/255;
+        *d=(int((*d)*(255-a)+g*a)*(257))>>16;
         d+=channel_size;
-        *d=((*d)*(255-a)+r*a)/255;
+        *d=(int((*d)*(255-a)+r*a)*(257))>>16;
         d+=channel_size;
         auto alpha=(*d)+a;
         *d=alpha>255?255:alpha;

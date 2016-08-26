@@ -6,7 +6,7 @@ namespace lfgui
 {
 
 slider::slider(int x,int y,int width,int height,float min_value,float max_value,float value,bool vertical,float handle_thickness)
-        : widget(x,y,width,height),value_min_(min_value),value_max_(max_value),img_handle(&img_handle_normal),vertical_(vertical),handle_thickness_(handle_thickness)
+        : widget(x,y,width,height),value_min_(min_value),value_max_(max_value),vertical_(vertical),handle_thickness_(handle_thickness),img_handle(&img_handle_normal)
 {
     // the drawing is currently a bit weird. The height is used weirdly.
     int not_handle_size;

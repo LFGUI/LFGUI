@@ -76,12 +76,38 @@ public:
         int count3=count*3;
         uint8_t* data=qimage.bits();
         uint8_t* p=img.data();
-        for(int i=0;i<count;i++,data+=4)
+        {
+        int i=0;
+#ifdef __SSE2__
+        for(;i<count/64*64;i+=16,data+=64)
+        {
+            __m128i ib=_mm_loadu_si128((__m128i*)(p+i));
+            __m128i ig=_mm_loadu_si128((__m128i*)(p+i+count));
+            __m128i ir=_mm_loadu_si128((__m128i*)(p+i+count2));
+            __m128i ia=_mm_loadu_si128((__m128i*)(p+i+count3));
+
+            __m128i b0r0b7r7=_mm_unpacklo_epi8(ib,ir);
+            __m128i g0a0g7a7=_mm_unpacklo_epi8(ig,ia);
+            __m128i o1=_mm_unpacklo_epi8(b0r0b7r7,g0a0g7a7);
+            __m128i o2=_mm_unpackhi_epi8(b0r0b7r7,g0a0g7a7);
+            __m128i b8r8bFrF=_mm_unpackhi_epi8(ib,ir);
+            __m128i g8a8gFaF=_mm_unpackhi_epi8(ig,ia);
+            __m128i o3=_mm_unpacklo_epi8(b8r8bFrF,g8a8gFaF);
+            __m128i o4=_mm_unpackhi_epi8(b8r8bFrF,g8a8gFaF);
+
+            _mm_storeu_si128((__m128i*)(data),o1);
+            _mm_storeu_si128((__m128i*)(data+16),o2);
+            _mm_storeu_si128((__m128i*)(data+32),o3);
+            _mm_storeu_si128((__m128i*)(data+48),o4);
+        }
+#endif
+        for(;i<count;i++,data+=4)
         {
             data[0]=p[i];
             data[1]=p[i+count];
             data[2]=p[i+count2];
             data[3]=p[i+count3];
+        }
         }
         repaint();
     }

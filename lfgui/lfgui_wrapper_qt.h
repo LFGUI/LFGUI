@@ -64,12 +64,12 @@ public:
     int width()const{return lfgui::widget::width();}
     int height()const{return lfgui::widget::height();}
 
-    void redraw(image&,int offset_x,int offset_y) override
+    void redraw(image&,int,int) override
     {
         img.clear();
         {
         stk::timer _("redraw GUI");
-        lfgui::widget::redraw(img,offset_x,offset_y);
+        lfgui::widget::redraw(img,0,0);
         }
         int count=qimage.width()*qimage.height();
         int count2=count*2;
@@ -109,6 +109,7 @@ public:
             data[3]=p[i+count3];
         }
         }
+
         repaint();
     }
 

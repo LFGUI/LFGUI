@@ -48,13 +48,14 @@ class gui : public lfgui::gui,public QWidget
 {
 public:
     QImage qimage;
+    QTimer *timer;  ///< a Qt timer used to to stuff like making a blinking cursor
 
     gui(int width=1,int height=1) : lfgui::gui(width,height),qimage(width,height,QImage::Format_ARGB32)
     {
         lfgui::image::load=lfgui::wrapper_qt::load_image;
         setMouseTracking(true);
         setFocusPolicy(Qt::StrongFocus);
-        QTimer *timer=new QTimer(this);
+        timer=new QTimer(this);
         connect(timer,&QTimer::timeout,[this]{redraw(img,0,0);});
         timer->start(1000/25);  // draw with up to 25 FPS
         on_resize([this](point p){img=image(p.x,p.y);});
@@ -67,10 +68,9 @@ public:
     void redraw(image&,int,int) override
     {
         img.clear();
-        {
-        stk::timer _("redraw GUI");
+
         lfgui::widget::redraw(img,0,0);
-        }
+
         int count=qimage.width()*qimage.height();
         int count2=count*2;
         int count3=count*3;

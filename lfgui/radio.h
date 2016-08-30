@@ -105,8 +105,8 @@ public:
 private:
     void prepare_images()
     {
-        img_unchecked=image("gui_torus.png").scaled(height(),height()).multiplied(text_color());
-        img_checked=image("gui_torus_dot.png").scaled(height(),height()).multiplied(text_color());
+        img_unchecked=image(ressource_path+"gui_torus.png").scaled(height(),height()).multiplied(text_color());
+        img_checked=image(ressource_path+"gui_torus_dot.png").scaled(height(),height()).multiplied(text_color());
     }
 };
 

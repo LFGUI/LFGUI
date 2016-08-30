@@ -69,6 +69,13 @@ struct point_general
     point_general<T> operator+(int v)const{return point_general<T>(x+v,y+v);}
     point_general<T> operator-(int v)const{return point_general<T>(x-v,y-v);}
     point_general<T> operator-()const{return point_general<T>(-x,-y);}
+
+    T distance(const point_general<T>& o)
+    {
+        T dx=x-o.x;
+        T dy=y-o.y;
+        return sqrt(dx*dx+dy*dy);
+    }
 };
 
 using point=point_general<int>;

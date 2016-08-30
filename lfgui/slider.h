@@ -23,12 +23,12 @@ class slider : public widget
     bool vertical_=false;
     float handle_thickness_=0;
 public:
-    image img_background=image("gui_slider_background.png");
+    image img_background=image(ressource_path+"gui_slider_background.png");
     image* img_handle=0;
     image* img_handle_old=0;
-    image img_handle_normal=image("gui_ball.png");
-    image img_handle_hover=image("gui_ball_dent_half.png");
-    image img_handle_pressed=image("gui_ball_dent.png");
+    image img_handle_normal=image(ressource_path+"gui_ball.png");
+    image img_handle_hover=image(ressource_path+"gui_ball_dent_half.png");
+    image img_handle_pressed=image(ressource_path+"gui_ball_dent.png");
     widget* handle;
     signal<float> on_value_change;
 

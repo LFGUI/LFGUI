@@ -658,15 +658,30 @@ void image::draw_image_solid(int start_x,int start_y,const image& img)
 
     int target_x=start_x;
     int target_y=start_y;
+    auto source=img.data();
+    auto target=data();
+    int source_count=img.width()*img.height();
+    int target_count=width()*height();
     for(int y=0;y<end_y;y++)
     {
         /*for(int x=0;x<end_x;x++)
         {
             if(0<=target_x&&0<=target_y)
-                set_pixel(target_x,target_y,img.get_pixel(x,y));
-            target_x++;
+            {
+                int source_i=x+y*img.width();
+                int target_i=target_x+target_y*width();
+                target[target_i]=source[source_i];
+                target[target_i+target_count]=source[source_i+source_count];
+                target[target_i+target_count*2]=source[source_i+source_count*2];
+                target[target_i+target_count*3]=source[source_i+source_count*3];
         }
-        target_x=start_x;*/
+            target_x++;
+        }*/
+        memcpy(target+target_x+target_y*width(),source+y*img.width(),img.width());
+        memcpy(target+target_x+target_y*width()+target_count,source+y*img.width()+source_count,img.width());
+        memcpy(target+target_x+target_y*width()+target_count*2,source+y*img.width()+source_count*2,img.width());
+        memcpy(target+target_x+target_y*width()+target_count*3,source+y*img.width()+source_count*3,img.width());
+        //target_x=start_x;
         int i=target_x+target_y*width();
         int j=y*img.width();
         memcpy(data()+i,img.data()+j,1);

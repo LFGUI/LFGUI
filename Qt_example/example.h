@@ -13,10 +13,11 @@ class Example : public QMainWindow
 {
     Q_OBJECT
     lfgui::wrapper_qt::gui* gui=0;
-    lfgui::image slider_handle;
 public:
-    Example(QWidget *parent = 0) : QMainWindow(parent),gui(new lfgui::wrapper_qt::gui),slider_handle("gui_slider_background.png")
+    Example(QWidget *parent = 0) : QMainWindow(parent)
     {
+        lfgui::ressource_path="../lfgui_data/";
+        gui=new lfgui::wrapper_qt::gui;
         resize(800,600);
         setStyleSheet("background-color:#ccc;");
         setCentralWidget(gui);

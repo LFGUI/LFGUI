@@ -85,7 +85,7 @@ window::window(int x,int y,int width,int height,const std::string& title,bool cl
 void window::prepare_images()
 {
     {
-        static image img("gui_window.png");
+        static image img(ressource_path+"gui_window.png");
         static image img_upper=img.cropped(0,0,img.width(),42);
         static image img_lower=img.cropped(0,42,img.width(),90-42);
 
@@ -103,7 +103,7 @@ void window::prepare_images()
         img_normal.draw_image(0,25,img_content);
     }
     {
-        static image img("gui_window_highlighted.png");
+        static image img(ressource_path+"gui_window_highlighted.png");
         static image img_upper=img.cropped(0,0,img.width(),42);
         static image img_lower=img.cropped(0,42,img.width(),90-42);
 

@@ -9,6 +9,8 @@
 namespace lfgui
 {
 
+std::string ressource_path;
+
 uint32_t utf8_to_unicode(const char*& data,size_t len)
 {
     if((data[0]&0x80)==0)     // looks like 0xxx xxxx -> no UTF-8
@@ -82,7 +84,7 @@ font::bitmap font::get_glyph(unsigned int character,int font_size)
 
 font::bitmap& font::get_glyph_cached(unsigned int character,size_t font_size)
 {
-    if(glyph_cache.size()<font_size)
+    if(glyph_cache.size()<=font_size)
         glyph_cache.resize(font_size+1);
 
     if(character<glyph_cache[font_size].size())

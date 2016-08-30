@@ -11,6 +11,9 @@ struct stbtt_fontinfo;
 namespace lfgui
 {
 
+/// Set this path if the needed ressources (images&fonts) are not in the execution path. For example "data/". The "/" at the end is required.
+extern std::string ressource_path;
+
 // based on https://en.wikipedia.org/wiki/UTF-8
 extern uint32_t utf8_to_unicode(const char*& data,size_t len);
 
@@ -145,7 +148,7 @@ public:
     /// \brief Returns the default font "FreeSans.ttf". Can also be used to set a different default.
     static font& default_font()
     {
-        static font f("FreeSans.ttf");
+        static font f(ressource_path+"FreeSans.ttf");
         return f;
     }
 };

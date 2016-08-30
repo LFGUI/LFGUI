@@ -12,13 +12,13 @@ lineedit::lineedit(int x,int y,int _width,int _height,const std::string& text,co
     int border_width=8;
 
     {
-        image img("gui_torus_filled.png");
+        image img(ressource_path+"gui_torus_filled.png");
         img_background=image(width(),height());
         img_background.clear();
         img_background.draw_image_corners_stretched(border_width,img);
     }
     {
-        image img("gui_torus_filled_highlighted.png");
+        image img(ressource_path+"gui_torus_filled_highlighted.png");
         img_background_focused=image(width(),height());
         img_background_focused.clear();
         img_background_focused.draw_image_corners_stretched(border_width,img);

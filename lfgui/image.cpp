@@ -456,166 +456,203 @@ void image::draw_polygon(const std::vector<point>& vec,color c)
     }
 }
 
-void image::draw_image(int start_x,int start_y,const image& img)
+void image::draw_image(int x,int y,const image& img,lfgui::rect area)
 {
-    int end_x=start_x+img.width();
-    int end_y=start_y+img.height();
-    if(end_x>width())
-        end_x=width();
-    if(end_y>height())
-        end_y=height();
-    end_x-=start_x;
-    end_y-=start_y;
-
-    int target_x=start_x;
-    int target_y=start_y;
-    int index;
-    int img_index;
-    uint8_t* img_data=img.data();
-    int count=width()*height();
-    int img_count=img.width()*img.height();
-    for(int y=0;y<end_y;y++)
+    if(x>=width()||y>=height())
+        return;
+    int img_offset_x=area.x;
+    int img_offset_y=area.y;
+    area.x=x;
+    area.y=y;
+    int start_x=x;
+    int start_y=y;
+    int end_x=area.right();
+    int end_y=area.bottom();
+    end_x=end_x<width()?end_x:width()-1;
+    end_y=end_y<height()?end_y:height()-1;
+    if(start_x<0)
     {
-        index=target_y*width()+start_x;
-        img_index=y*img.width();
-        int x_offset=0;
-        if(0>target_x)
+        img_offset_x-=start_x;
+        start_x=0;
+    }
+    if(start_y<0)
+    {
+        img_offset_y-=start_y;
+        start_y=0;
+    }
+    if(end_x<0||end_y<0)
+        return;
+    uint8_t* d=data();
+    uint8_t* img_d=img.data();
+    int count1=width()*height();
+    int count2=width()*height()*2;
+    int count3=width()*height()*3;
+    int img_count1=img.width()*img.height();
+    int img_count2=img.width()*img.height()*2;
+    int img_count3=img.width()*img.height()*3;
+    int target_y=start_y;
+    int img_y=img_offset_y;
+    for(;target_y<end_y;target_y++,img_y++)
         {
-            x_offset=-target_x;
-            target_x+=x_offset;
-            index+=x_offset;
-            img_index+=x_offset;
-        }
-        if(0<=target_y)
-        {
-            int x=x_offset;
+        int target_x=start_x;
+        int img_x=img_offset_x;
+
+        int index=target_x+target_y*width();
+        int index_end=end_x+target_y*width();
+        int img_index=img_x+(img_y)*img.width();
+
 #ifdef __SSE2__
             __m128i v0=_mm_set1_epi32(0);
+            __m128i vmax=_mm_set1_epi8(255);
             __m128i v255=_mm_set1_epi16(255);
-            __m128i v257=_mm_set1_epi16(257);
-            for(;x<((end_x-x_offset)/16*16);x+=16)
+            __m128i v32897=_mm_set1_epi16(32897);
+        for(;index<index_end/16*16;index+=16,img_index+=16)
+        //for(;x<((real_end_x)/16*16);x+=16)
             {
-                uint8_t* d=data();
-                int offset1=0;
-                int offset2=0;
+            __m128i input2_a=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count3));
+                __m128i input2_b;
 
-                __m128i input2_a=_mm_loadu_si128((const __m128i*)(img_data+img_index+img_count*3));
+                if(!_mm_movemask_epi8(input2_a))    // all alpha 0?
+                    continue;
+                if(!_mm_movemask_epi8(_mm_andnot_si128(input2_a,vmax)))    // all alpha 1?
+                {
+                input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index           ));
+                _mm_storeu_si128((__m128i*)(d+index        ),input2_b);
+                input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count1));
+                _mm_storeu_si128((__m128i*)(d+index+count1),input2_b);
+                input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count2));
+                _mm_storeu_si128((__m128i*)(d+index+count2),input2_b);
+                _mm_storeu_si128((__m128i*)(d+index+count3),input2_a);
+                    continue;
+                }
+
                 __m128i input2_a_1=_mm_unpacklo_epi8(input2_a,v0);
                 __m128i input2_a_2=_mm_unpackhi_epi8(input2_a,v0);
                 __m128i input2_a_1_neg=_mm_sub_epi8(v255,input2_a_1);
                 __m128i input2_a_2_neg=_mm_sub_epi8(v255,input2_a_2);
 
                 __m128i input1_b;
-                __m128i input2_b;
-                __m128i input1_b_1;
-                __m128i input1_b_2;
-                __m128i input2_b_1;
-                __m128i input2_b_2;
+                __m128i input1_1;
+                __m128i input1_2;
+                __m128i input2_1;
+                __m128i input2_2;
 
-                input1_b=_mm_loadu_si128((const __m128i*)(d+index+offset1));
-                input2_b=_mm_loadu_si128((const __m128i*)(img_data+img_index+offset2));
+            input1_b=_mm_loadu_si128((const __m128i*)(d+index));
+            input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index));
 
-                input1_b_1=_mm_unpacklo_epi8(input1_b,v0);
-                input1_b_2=_mm_unpackhi_epi8(input1_b,v0);
+                input1_1=_mm_unpacklo_epi8(input1_b,v0);
+                input1_2=_mm_unpackhi_epi8(input1_b,v0);
 
-                input2_b_1=_mm_unpacklo_epi8(input2_b,v0);
-                input2_b_2=_mm_unpackhi_epi8(input2_b,v0);
+                input2_1=_mm_unpacklo_epi8(input2_b,v0);
+                input2_2=_mm_unpackhi_epi8(input2_b,v0);
 
-                input1_b_1=_mm_mullo_epi16(input1_b_1,input2_a_1_neg);
-                input1_b_2=_mm_mullo_epi16(input1_b_2,input2_a_2_neg);
+                input1_1=_mm_mullo_epi16(input1_1,input2_a_1_neg);
+                input1_2=_mm_mullo_epi16(input1_2,input2_a_2_neg);
 
-                input2_b_1=_mm_mullo_epi16(input2_b_1,input2_a_1);
-                input2_b_2=_mm_mullo_epi16(input2_b_2,input2_a_2);
+                input2_1=_mm_mullo_epi16(input2_1,input2_a_1);
+                input2_2=_mm_mullo_epi16(input2_2,input2_a_2);
 
-                input1_b_1=_mm_adds_epu16(input1_b_1,input2_b_1);
-                input1_b_2=_mm_adds_epu16(input1_b_2,input2_b_2);
+                input1_1=_mm_adds_epu16(input1_1,input2_1);
+                input1_2=_mm_adds_epu16(input1_2,input2_2);
 
-                input1_b_1=_mm_mulhi_epu16(input1_b_1,v257);
-                input1_b_2=_mm_mulhi_epu16(input1_b_2,v257);
+                //input1_1=_mm_mulhi_epu16(input1_1,v257);
+                //input1_2=_mm_mulhi_epu16(input1_2,v257);
+                input1_1=_mm_mulhi_epu16(input1_1,v32897);
+                input1_2=_mm_mulhi_epu16(input1_2,v32897);
+                input1_1=_mm_srli_epi16(input1_1,7);
+                input1_2=_mm_srli_epi16(input1_2,7);
 
-                input1_b=_mm_packus_epi16(input1_b_1,input1_b_2);
-                _mm_storeu_si128((__m128i*)(d+index+offset1),input1_b);
+                input1_b=_mm_packus_epi16(input1_1,input1_2);
 
-                offset1+=count;
-                offset2+=img_count;
+            _mm_storeu_si128((__m128i*)(d+index),input1_b);
 
-                input1_b=_mm_loadu_si128((const __m128i*)(d+index+offset1));
-                input2_b=_mm_loadu_si128((const __m128i*)(img_data+img_index+offset2));
+            input1_b=_mm_loadu_si128((const __m128i*)(d+index+count1));
+            input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count1));
 
-                input1_b_1=_mm_unpacklo_epi8(input1_b,v0);
-                input1_b_2=_mm_unpackhi_epi8(input1_b,v0);
+                input1_1=_mm_unpacklo_epi8(input1_b,v0);
+                input1_2=_mm_unpackhi_epi8(input1_b,v0);
 
-                input2_b_1=_mm_unpacklo_epi8(input2_b,v0);
-                input2_b_2=_mm_unpackhi_epi8(input2_b,v0);
+                input2_1=_mm_unpacklo_epi8(input2_b,v0);
+                input2_2=_mm_unpackhi_epi8(input2_b,v0);
 
-                input1_b_1=_mm_mullo_epi16(input1_b_1,input2_a_1_neg);
-                input1_b_2=_mm_mullo_epi16(input1_b_2,input2_a_2_neg);
+                input1_1=_mm_mullo_epi16(input1_1,input2_a_1_neg);
+                input1_2=_mm_mullo_epi16(input1_2,input2_a_2_neg);
 
-                input2_b_1=_mm_mullo_epi16(input2_b_1,input2_a_1);
-                input2_b_2=_mm_mullo_epi16(input2_b_2,input2_a_2);
+                input2_1=_mm_mullo_epi16(input2_1,input2_a_1);
+                input2_2=_mm_mullo_epi16(input2_2,input2_a_2);
 
-                input1_b_1=_mm_adds_epu16(input1_b_1,input2_b_1);
-                input1_b_2=_mm_adds_epu16(input1_b_2,input2_b_2);
+                input1_1=_mm_adds_epu16(input1_1,input2_1);
+                input1_2=_mm_adds_epu16(input1_2,input2_2);
 
-                input1_b_1=_mm_mulhi_epu16(input1_b_1,v257);
-                input1_b_2=_mm_mulhi_epu16(input1_b_2,v257);
+                //input1_1=_mm_mulhi_epu16(input1_1,v257);
+                //input1_2=_mm_mulhi_epu16(input1_2,v257);
+                input1_1=_mm_mulhi_epu16(input1_1,v32897);
+                input1_2=_mm_mulhi_epu16(input1_2,v32897);
+                input1_1=_mm_srli_epi16(input1_1,7);
+                input1_2=_mm_srli_epi16(input1_2,7);
 
-                input1_b=_mm_packus_epi16(input1_b_1,input1_b_2);
-                _mm_storeu_si128((__m128i*)(d+index+offset1),input1_b);
+                input1_b=_mm_packus_epi16(input1_1,input1_2);
+            _mm_storeu_si128((__m128i*)(d+index+count1),input1_b);
 
-                offset1+=count;
-                offset2+=img_count;
+            input1_b=_mm_loadu_si128((const __m128i*)(d+index+count2));
+            input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count2));
 
-                input1_b=_mm_loadu_si128((const __m128i*)(d+index+offset1));
-                input2_b=_mm_loadu_si128((const __m128i*)(img_data+img_index+offset2));
+                input1_1=_mm_unpacklo_epi8(input1_b,v0);
+                input1_2=_mm_unpackhi_epi8(input1_b,v0);
 
-                input1_b_1=_mm_unpacklo_epi8(input1_b,v0);
-                input1_b_2=_mm_unpackhi_epi8(input1_b,v0);
+                input2_1=_mm_unpacklo_epi8(input2_b,v0);
+                input2_2=_mm_unpackhi_epi8(input2_b,v0);
 
-                input2_b_1=_mm_unpacklo_epi8(input2_b,v0);
-                input2_b_2=_mm_unpackhi_epi8(input2_b,v0);
+                input1_1=_mm_mullo_epi16(input1_1,input2_a_1_neg);
+                input1_2=_mm_mullo_epi16(input1_2,input2_a_2_neg);
 
-                input1_b_1=_mm_mullo_epi16(input1_b_1,input2_a_1_neg);
-                input1_b_2=_mm_mullo_epi16(input1_b_2,input2_a_2_neg);
+                input2_1=_mm_mullo_epi16(input2_1,input2_a_1);
+                input2_2=_mm_mullo_epi16(input2_2,input2_a_2);
 
-                input2_b_1=_mm_mullo_epi16(input2_b_1,input2_a_1);
-                input2_b_2=_mm_mullo_epi16(input2_b_2,input2_a_2);
+                input1_1=_mm_adds_epu16(input1_1,input2_1);
+                input1_2=_mm_adds_epu16(input1_2,input2_2);
 
-                input1_b_1=_mm_adds_epu16(input1_b_1,input2_b_1);
-                input1_b_2=_mm_adds_epu16(input1_b_2,input2_b_2);
+                //input1_1=_mm_mulhi_epu16(input1_1,v257);
+                //input1_2=_mm_mulhi_epu16(input1_2,v257);
+                input1_1=_mm_mulhi_epu16(input1_1,v32897);
+                input1_2=_mm_mulhi_epu16(input1_2,v32897);
+                input1_1=_mm_srli_epi16(input1_1,7);
+                input1_2=_mm_srli_epi16(input1_2,7);
 
-                input1_b_1=_mm_mulhi_epu16(input1_b_1,v257);
-                input1_b_2=_mm_mulhi_epu16(input1_b_2,v257);
+                input1_b=_mm_packus_epi16(input1_1,input1_2);
+            _mm_storeu_si128((__m128i*)(d+index+count2),input1_b);
 
-                input1_b=_mm_packus_epi16(input1_b_1,input1_b_2);
-                _mm_storeu_si128((__m128i*)(d+index+offset1),input1_b);
-
-                __m128i input1_a=_mm_loadu_si128((const __m128i*)(d+index+count*3));
+            __m128i input1_a=_mm_loadu_si128((const __m128i*)(d+index+count3));
                 __m128i input1_a_1=_mm_unpacklo_epi8(input1_a,v0);
                 __m128i input1_a_2=_mm_unpackhi_epi8(input1_a,v0);
 
                 input1_a_1=_mm_adds_epi16(input1_a_1,input2_a_1);
                 input1_a_2=_mm_adds_epi16(input1_a_2,input2_a_2);
 
-                offset1+=count;
                 input1_a=_mm_packus_epi16(input1_a_1,input1_a_2);
-                _mm_storeu_si128((__m128i*)(d+index+offset1),input1_a);
-
-                target_x+=16;
-                index+=16;
-                img_index+=16;
+            _mm_storeu_si128((__m128i*)(d+index+count3),input1_a);
             }
 #endif
-            for(;x<end_x;x++)
+        for(;index<index_end;index++,img_index++)
             {
-                blend_pixel(index,count,img_data[img_index],img_data[img_index+img_count],img_data[img_index+img_count*2],img_data[img_index+img_count*3]);
-                target_x++;
-                index++;
-                img_index++;
+            int a=img_d[img_index+img_count3];
+            if(a==0)
+                continue;
+            if(a==255)
+            {
+                d[index]=img_d[img_index];
+                d[index+count1]=img_d[img_index+img_count1];
+                d[index+count2]=img_d[img_index+img_count2];
+                d[index+count3]=255;
+                continue;
             }
+
+            d[index       ]=(int(d[index       ]*(255-a)+img_d[img_index]*a)*(257))>>16;
+            d[index+count1]=(int(d[index+count1]*(255-a)+img_d[img_index+img_count1]*a)*(257))>>16;
+            d[index+count2]=(int(d[index+count2]*(255-a)+img_d[img_index+img_count2]*a)*(257))>>16;
+            auto alpha=d[index+count3]+a;
+            d[index+count3]=alpha>255?255:alpha;
         }
-        target_x=start_x;
-        target_y++;
     }
 }
 

@@ -215,7 +215,7 @@ public:
     }
 
     /// \brief Draws another image onto this one.
-    void draw_image(int x,int y,const image& img);
+    void draw_image(int x,int y,const image& img,lfgui::rect area=lfgui::rect());
     /// \brief Draws another image onto this one.
     void draw_image(int x,int y,const image& img,float opacity);
     /// \brief Draws another image onto this one.

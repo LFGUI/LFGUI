@@ -232,7 +232,10 @@ public:
     void draw_image_corners_stretched(int border_width,const image& img);
 
     /// \brief Fills the image with transparent black.
-    void clear();
+    void clear(uint8_t value=0)
+    {
+        memset(data(),value,count()*4);
+    }
 
     /// \brief Returns a rect with the size of this image.
     lfgui::rect rect()const{return lfgui::rect(0,0,width(),height());}

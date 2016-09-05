@@ -761,11 +761,6 @@ void image::fill(color c)
     memset(d,c.a,size);
 }
 
-void image::clear()
-{
-    memset(data(),0,count()*4);
-}
-
 image::~image(){}
 
 image& image::multiply(color c)

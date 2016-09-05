@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <memory>
 #include <functional>
+#include <cstring>
 
 #include "general.h"
 #include "font.h"

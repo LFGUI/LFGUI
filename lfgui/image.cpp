@@ -460,6 +460,10 @@ void image::draw_image(int x,int y,const image& img,lfgui::rect area)
 {
     if(x>=width()||y>=height())
         return;
+    if(area.width==0)
+        area.width=img.width()-area.left();
+    if(area.height==0)
+        area.height=img.height()-area.top();
     int img_offset_x=area.x;
     int img_offset_y=area.y;
     area.x=x;
@@ -468,8 +472,12 @@ void image::draw_image(int x,int y,const image& img,lfgui::rect area)
     int start_y=y;
     int end_x=area.right();
     int end_y=area.bottom();
-    end_x=end_x<width()?end_x:width()-1;
-    end_y=end_y<height()?end_y:height()-1;
+
+    if(end_x>=width())
+        end_x=width();
+    if(end_y>=height())
+        end_y=height();
+
     if(start_x<0)
     {
         img_offset_x-=start_x;
@@ -492,14 +500,16 @@ void image::draw_image(int x,int y,const image& img,lfgui::rect area)
     int img_count3=img.width()*img.height()*3;
     int target_y=start_y;
     int img_y=img_offset_y;
+
     for(;target_y<end_y;target_y++,img_y++)
         {
         int target_x=start_x;
         int img_x=img_offset_x;
 
-        int index=target_x+target_y*width();
-        int index_end=end_x+target_y*width();
-        int img_index=img_x+(img_y)*img.width();
+        uint8_t* d=data()+target_x+target_y*width();
+        int index=0;
+        int index_end=end_x-start_x;
+        int img_index=img_x+img_y*img.width();
 
 #ifdef __SSE2__
             __m128i v0=_mm_set1_epi32(0);
@@ -507,14 +517,14 @@ void image::draw_image(int x,int y,const image& img,lfgui::rect area)
             __m128i v255=_mm_set1_epi16(255);
             __m128i v32897=_mm_set1_epi16(32897);
         for(;index<index_end/16*16;index+=16,img_index+=16)
-        //for(;x<((real_end_x)/16*16);x+=16)
             {
             __m128i input2_a=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count3));
                 __m128i input2_b;
 
-                if(!_mm_movemask_epi8(input2_a))    // all alpha 0?
-                    continue;
-                if(!_mm_movemask_epi8(_mm_andnot_si128(input2_a,vmax)))    // all alpha 1?
+            // bugged
+            //if(!_mm_movemask_epi8(input2_a))    // all alpha 0?
+            //    continue;
+            /*if(!_mm_movemask_epi8(_mm_andnot_si128(input2_a,vmax)))    // all alpha 1?
                 {
                 input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index           ));
                 _mm_storeu_si128((__m128i*)(d+index        ),input2_b);
@@ -524,7 +534,7 @@ void image::draw_image(int x,int y,const image& img,lfgui::rect area)
                 _mm_storeu_si128((__m128i*)(d+index+count2),input2_b);
                 _mm_storeu_si128((__m128i*)(d+index+count3),input2_a);
                     continue;
-                }
+            }*/
 
                 __m128i input2_a_1=_mm_unpacklo_epi8(input2_a,v0);
                 __m128i input2_a_2=_mm_unpackhi_epi8(input2_a,v0);
@@ -647,10 +657,10 @@ void image::draw_image(int x,int y,const image& img,lfgui::rect area)
                 continue;
             }
 
-            d[index       ]=(int(d[index       ]*(255-a)+img_d[img_index]*a)*(257))>>16;
-            d[index+count1]=(int(d[index+count1]*(255-a)+img_d[img_index+img_count1]*a)*(257))>>16;
-            d[index+count2]=(int(d[index+count2]*(255-a)+img_d[img_index+img_count2]*a)*(257))>>16;
-            auto alpha=d[index+count3]+a;
+            d[index       ]=(int(d[index       ]*(255-a)+img_d[img_index]*a)*(32897))>>23;
+            d[index+count1]=(int(d[index+count1]*(255-a)+img_d[img_index+img_count1]*a)*(32897))>>23;
+            d[index+count2]=(int(d[index+count2]*(255-a)+img_d[img_index+img_count2]*a)*(32897))>>23;
+            int alpha=(int)d[index+count3]+a;
             d[index+count3]=alpha>255?255:alpha;
         }
     }

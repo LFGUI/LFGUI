@@ -81,13 +81,16 @@ public:
         SubscribeToEvent(Urho3D::E_TEXTINPUT,URHO3D_HANDLER(gui,e_textinput));
         SubscribeToEvent(Urho3D::E_UPDATE,URHO3D_HANDLER(gui,e_update));
         SubscribeToEvent(Urho3D::E_SCREENMODE,URHO3D_HANDLER(gui,e_resize));
+
+        on_resize([this](point p){img=image(p.x,p.y);});
+        img=image(render_size.x_,render_size.y_);
     }
 
     static gui* instance(){return _instance();}
     int width()const{return lfgui::widget::width();}
     int height()const{return lfgui::widget::height();}
 
-    void redraw() override
+    void redraw(image&,int,int) override
     {
         URHO3D_PROFILE(lfgui_redraw);
 
@@ -96,7 +99,8 @@ public:
 
         if(visible())
         {
-            lfgui::widget::redraw();
+            img.clear();
+            lfgui::widget::redraw(img,0,0);
 
             if(_texture->GetWidth()!=width()||_texture->GetHeight()!=height())
                 _texture->SetSize(width(),height(),Urho3D::Graphics::GetRGBAFormat(),Urho3D::TEXTURE_STATIC);
@@ -134,7 +138,7 @@ public:
 
     void e_update(Urho3D::StringHash eventType,Urho3D::VariantMap& eventData)
     {
-        redraw();
+        redraw(img,0,0);
 
         if(!GetSubsystem<Urho3D::UI>()->GetCursor())
             return;
@@ -301,7 +305,7 @@ lfgui::key urho3d_key_to_qt(int key)
     if(key==Urho3D::KEY_RIGHT)          return lfgui::key::Key_Right;
     if(key==Urho3D::KEY_LEFT)           return lfgui::key::Key_Left;
     if(key==Urho3D::KEY_END)            return lfgui::key::Key_End;
-    if(key==Urho3D::KEY_ESC)            return lfgui::key::Key_Escape;
+    if(key==Urho3D::KEY_ESCAPE)         return lfgui::key::Key_Escape;
     if(key==Urho3D::KEY_LALT)           return lfgui::key::Key_Alt;
     if(key==Urho3D::KEY_RALT)           return lfgui::key::Key_Alt;
     if(key==Urho3D::KEY_LSHIFT)         return lfgui::key::Key_Shift;

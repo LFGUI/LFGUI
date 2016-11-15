@@ -99,6 +99,7 @@ public:
         engineParameters_["WindowHeight"]=720;
         engineParameters_["WindowResizable"]=true;
         engineParameters_["Multisample"]=8;
+        engineParameters_["VSync"]=true;
     }
 
     virtual void Start()
@@ -356,7 +357,7 @@ public:
                 cursor->SetVisible(false);
             }
         }
-        else if(key==KEY_ESC)
+        else if(key==KEY_ESCAPE)
             engine_->Exit();
         else if(key==KEY_G)
         {
@@ -395,8 +396,8 @@ public:
         else if (key == KEY_F3)
         {
             DebugHud* debugHud=GetSubsystem<DebugHud>();
-            if (debugHud->GetMode()!=DEBUGHUD_SHOW_ALL_MEMORY)
-                debugHud->SetMode(DEBUGHUD_SHOW_ALL_MEMORY);
+            if (debugHud->GetMode()!=DEBUGHUD_SHOW_ALL)
+                debugHud->SetMode(DEBUGHUD_SHOW_ALL);
             else
                 debugHud->SetMode(DEBUGHUD_SHOW_NONE);
         }

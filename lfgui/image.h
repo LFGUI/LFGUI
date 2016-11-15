@@ -175,7 +175,7 @@ public:
     /// \brief The alignment specifies if the given coordinate should be left, centered, or right of the text. Multiple lines of text are not aligned correctly.
     void draw_text(int x,int y,const std::string& text,const color& color,int font_size=15,alignment a=alignment::left,font& f=font::default_font());
 
-    void draw_character(int& x,int y,unsigned int character,const color& color,int font_size=15,font& f=font::default_font());
+    void draw_character(int x,int y,unsigned int character,const color& color,int font_size=15,font& f=font::default_font());
     void draw_line(int x1,int y1,int x2,int y2,color _color);
     /// \brief Draws a line with the given thickness. The drawn color gets more transparent when further away from the
     /// center of the line. This can be adjusted with the fading parameter where 1 is no fading and 0 fading starting in the center.
@@ -196,6 +196,13 @@ public:
     void draw_rect(rect rectangle,color color)
     {
         draw_rect(rectangle.x,rectangle.y,rectangle.width,rectangle.height,color);
+    }
+    void draw_rect_lines(int x,int y,int width,int height,color color,float thickness=1,float fading_start=0.7)
+    {
+        draw_line(x      ,y       ,x+width,y       ,color,thickness,fading_start);  // top
+        draw_line(x      ,y       ,x      ,y+height,color,thickness,fading_start);  // left
+        draw_line(x+width,y       ,x+width,y+height,color,thickness,fading_start);  //  right
+        draw_line(x      ,y+height,x+width,y+height,color,thickness,fading_start);  // bottom
     }
     /// \brief Draws a filled polygon.
     void draw_polygon(const std::vector<point>& vec,color color);

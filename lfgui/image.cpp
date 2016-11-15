@@ -1,5 +1,6 @@
 #include "image.h"
-#include "../external/cimg/CImg.h"
+#include "cimg/CImg.h"
+#include "stb_truetype.h"
 
 using namespace std;
 
@@ -396,6 +397,39 @@ void image::draw_rect(int x,int y,int width,int height,color color_foreground)
     }
 }
 
+
+inline void print(__m128i v)
+{
+    static char hex[]="0123456789ABCDEF";
+    uint32_t vec[4];
+    _mm_storeu_si128((__m128i*)vec,v);
+    unsigned char* c=(unsigned char*)vec;
+    std::cout<<"0x";
+    std::cout<<hex[(c[0])>>4]<<hex[(c[0])&0x0F];
+    std::cout<<hex[(c[1])>>4]<<hex[(c[1])&0x0F];
+    std::cout<<hex[(c[2])>>4]<<hex[(c[2])&0x0F];
+    std::cout<<hex[(c[3])>>4]<<hex[(c[3])&0x0F];
+    c+=4;
+    std::cout<<",0x";
+    std::cout<<hex[(c[0])>>4]<<hex[(c[0])&0x0F];
+    std::cout<<hex[(c[1])>>4]<<hex[(c[1])&0x0F];
+    std::cout<<hex[(c[2])>>4]<<hex[(c[2])&0x0F];
+    std::cout<<hex[(c[3])>>4]<<hex[(c[3])&0x0F];
+    c+=4;
+    std::cout<<",0x";
+    std::cout<<hex[(c[0])>>4]<<hex[(c[0])&0x0F];
+    std::cout<<hex[(c[1])>>4]<<hex[(c[1])&0x0F];
+    std::cout<<hex[(c[2])>>4]<<hex[(c[2])&0x0F];
+    std::cout<<hex[(c[3])>>4]<<hex[(c[3])&0x0F];
+    c+=4;
+    std::cout<<",0x";
+    std::cout<<hex[(c[0])>>4]<<hex[(c[0])&0x0F];
+    std::cout<<hex[(c[1])>>4]<<hex[(c[1])&0x0F];
+    std::cout<<hex[(c[2])>>4]<<hex[(c[2])&0x0F];
+    std::cout<<hex[(c[3])>>4]<<hex[(c[3])&0x0F];
+    std::cout<<" "<<vec[0]<<','<<vec[1]<<','<<vec[2]<<','<<vec[3]<<std::endl;
+}
+
 // based on http://alienryderflex.com/polygon_fill/
 void image::draw_polygon(const std::vector<point>& vec,color c)
 {
@@ -502,7 +536,7 @@ void image::draw_image(int x,int y,const image& img,lfgui::rect area)
     int img_y=img_offset_y;
 
     for(;target_y<end_y;target_y++,img_y++)
-        {
+    {
         int target_x=start_x;
         int img_x=img_offset_x;
 
@@ -512,139 +546,139 @@ void image::draw_image(int x,int y,const image& img,lfgui::rect area)
         int img_index=img_x+img_y*img.width();
 
 #ifdef __SSE2__
-            __m128i v0=_mm_set1_epi32(0);
-            __m128i vmax=_mm_set1_epi8(255);
-            __m128i v255=_mm_set1_epi16(255);
-            __m128i v32897=_mm_set1_epi16(32897);
+        __m128i v0=_mm_set1_epi32(0);
+        __m128i vmax=_mm_set1_epi8(255);
+        __m128i v255=_mm_set1_epi16(255);
+        __m128i v32897=_mm_set1_epi16(32897);
         for(;index<index_end/16*16;index+=16,img_index+=16)
-            {
+        {
             __m128i input2_a=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count3));
-                __m128i input2_b;
+            __m128i input2_b;
 
             // bugged
             //if(!_mm_movemask_epi8(input2_a))    // all alpha 0?
             //    continue;
             /*if(!_mm_movemask_epi8(_mm_andnot_si128(input2_a,vmax)))    // all alpha 1?
-                {
+            {
                 input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index           ));
-                _mm_storeu_si128((__m128i*)(d+index        ),input2_b);
+                _mm_storeu_si128((__m128i*)(d+index       ),input2_b);
                 input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count1));
                 _mm_storeu_si128((__m128i*)(d+index+count1),input2_b);
                 input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count2));
                 _mm_storeu_si128((__m128i*)(d+index+count2),input2_b);
                 _mm_storeu_si128((__m128i*)(d+index+count3),input2_a);
-                    continue;
+                continue;
             }*/
 
-                __m128i input2_a_1=_mm_unpacklo_epi8(input2_a,v0);
-                __m128i input2_a_2=_mm_unpackhi_epi8(input2_a,v0);
-                __m128i input2_a_1_neg=_mm_sub_epi8(v255,input2_a_1);
-                __m128i input2_a_2_neg=_mm_sub_epi8(v255,input2_a_2);
+            __m128i input2_a_1=_mm_unpacklo_epi8(input2_a,v0);
+            __m128i input2_a_2=_mm_unpackhi_epi8(input2_a,v0);
+            __m128i input2_a_1_neg=_mm_sub_epi8(v255,input2_a_1);
+            __m128i input2_a_2_neg=_mm_sub_epi8(v255,input2_a_2);
 
-                __m128i input1_b;
-                __m128i input1_1;
-                __m128i input1_2;
-                __m128i input2_1;
-                __m128i input2_2;
+            __m128i input1_b;
+            __m128i input1_1;
+            __m128i input1_2;
+            __m128i input2_1;
+            __m128i input2_2;
 
             input1_b=_mm_loadu_si128((const __m128i*)(d+index));
             input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index));
 
-                input1_1=_mm_unpacklo_epi8(input1_b,v0);
-                input1_2=_mm_unpackhi_epi8(input1_b,v0);
+            input1_1=_mm_unpacklo_epi8(input1_b,v0);
+            input1_2=_mm_unpackhi_epi8(input1_b,v0);
 
-                input2_1=_mm_unpacklo_epi8(input2_b,v0);
-                input2_2=_mm_unpackhi_epi8(input2_b,v0);
+            input2_1=_mm_unpacklo_epi8(input2_b,v0);
+            input2_2=_mm_unpackhi_epi8(input2_b,v0);
 
-                input1_1=_mm_mullo_epi16(input1_1,input2_a_1_neg);
-                input1_2=_mm_mullo_epi16(input1_2,input2_a_2_neg);
+            input1_1=_mm_mullo_epi16(input1_1,input2_a_1_neg);
+            input1_2=_mm_mullo_epi16(input1_2,input2_a_2_neg);
 
-                input2_1=_mm_mullo_epi16(input2_1,input2_a_1);
-                input2_2=_mm_mullo_epi16(input2_2,input2_a_2);
+            input2_1=_mm_mullo_epi16(input2_1,input2_a_1);
+            input2_2=_mm_mullo_epi16(input2_2,input2_a_2);
 
-                input1_1=_mm_adds_epu16(input1_1,input2_1);
-                input1_2=_mm_adds_epu16(input1_2,input2_2);
+            input1_1=_mm_adds_epu16(input1_1,input2_1);
+            input1_2=_mm_adds_epu16(input1_2,input2_2);
 
-                //input1_1=_mm_mulhi_epu16(input1_1,v257);
-                //input1_2=_mm_mulhi_epu16(input1_2,v257);
-                input1_1=_mm_mulhi_epu16(input1_1,v32897);
-                input1_2=_mm_mulhi_epu16(input1_2,v32897);
-                input1_1=_mm_srli_epi16(input1_1,7);
-                input1_2=_mm_srli_epi16(input1_2,7);
+            //input1_1=_mm_mulhi_epu16(input1_1,v257);
+            //input1_2=_mm_mulhi_epu16(input1_2,v257);
+            input1_1=_mm_mulhi_epu16(input1_1,v32897);
+            input1_2=_mm_mulhi_epu16(input1_2,v32897);
+            input1_1=_mm_srli_epi16(input1_1,7);
+            input1_2=_mm_srli_epi16(input1_2,7);
 
-                input1_b=_mm_packus_epi16(input1_1,input1_2);
+            input1_b=_mm_packus_epi16(input1_1,input1_2);
 
             _mm_storeu_si128((__m128i*)(d+index),input1_b);
 
             input1_b=_mm_loadu_si128((const __m128i*)(d+index+count1));
             input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count1));
 
-                input1_1=_mm_unpacklo_epi8(input1_b,v0);
-                input1_2=_mm_unpackhi_epi8(input1_b,v0);
+            input1_1=_mm_unpacklo_epi8(input1_b,v0);
+            input1_2=_mm_unpackhi_epi8(input1_b,v0);
 
-                input2_1=_mm_unpacklo_epi8(input2_b,v0);
-                input2_2=_mm_unpackhi_epi8(input2_b,v0);
+            input2_1=_mm_unpacklo_epi8(input2_b,v0);
+            input2_2=_mm_unpackhi_epi8(input2_b,v0);
 
-                input1_1=_mm_mullo_epi16(input1_1,input2_a_1_neg);
-                input1_2=_mm_mullo_epi16(input1_2,input2_a_2_neg);
+            input1_1=_mm_mullo_epi16(input1_1,input2_a_1_neg);
+            input1_2=_mm_mullo_epi16(input1_2,input2_a_2_neg);
 
-                input2_1=_mm_mullo_epi16(input2_1,input2_a_1);
-                input2_2=_mm_mullo_epi16(input2_2,input2_a_2);
+            input2_1=_mm_mullo_epi16(input2_1,input2_a_1);
+            input2_2=_mm_mullo_epi16(input2_2,input2_a_2);
 
-                input1_1=_mm_adds_epu16(input1_1,input2_1);
-                input1_2=_mm_adds_epu16(input1_2,input2_2);
+            input1_1=_mm_adds_epu16(input1_1,input2_1);
+            input1_2=_mm_adds_epu16(input1_2,input2_2);
 
-                //input1_1=_mm_mulhi_epu16(input1_1,v257);
-                //input1_2=_mm_mulhi_epu16(input1_2,v257);
-                input1_1=_mm_mulhi_epu16(input1_1,v32897);
-                input1_2=_mm_mulhi_epu16(input1_2,v32897);
-                input1_1=_mm_srli_epi16(input1_1,7);
-                input1_2=_mm_srli_epi16(input1_2,7);
+            //input1_1=_mm_mulhi_epu16(input1_1,v257);
+            //input1_2=_mm_mulhi_epu16(input1_2,v257);
+            input1_1=_mm_mulhi_epu16(input1_1,v32897);
+            input1_2=_mm_mulhi_epu16(input1_2,v32897);
+            input1_1=_mm_srli_epi16(input1_1,7);
+            input1_2=_mm_srli_epi16(input1_2,7);
 
-                input1_b=_mm_packus_epi16(input1_1,input1_2);
+            input1_b=_mm_packus_epi16(input1_1,input1_2);
             _mm_storeu_si128((__m128i*)(d+index+count1),input1_b);
 
             input1_b=_mm_loadu_si128((const __m128i*)(d+index+count2));
             input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count2));
 
-                input1_1=_mm_unpacklo_epi8(input1_b,v0);
-                input1_2=_mm_unpackhi_epi8(input1_b,v0);
+            input1_1=_mm_unpacklo_epi8(input1_b,v0);
+            input1_2=_mm_unpackhi_epi8(input1_b,v0);
 
-                input2_1=_mm_unpacklo_epi8(input2_b,v0);
-                input2_2=_mm_unpackhi_epi8(input2_b,v0);
+            input2_1=_mm_unpacklo_epi8(input2_b,v0);
+            input2_2=_mm_unpackhi_epi8(input2_b,v0);
 
-                input1_1=_mm_mullo_epi16(input1_1,input2_a_1_neg);
-                input1_2=_mm_mullo_epi16(input1_2,input2_a_2_neg);
+            input1_1=_mm_mullo_epi16(input1_1,input2_a_1_neg);
+            input1_2=_mm_mullo_epi16(input1_2,input2_a_2_neg);
 
-                input2_1=_mm_mullo_epi16(input2_1,input2_a_1);
-                input2_2=_mm_mullo_epi16(input2_2,input2_a_2);
+            input2_1=_mm_mullo_epi16(input2_1,input2_a_1);
+            input2_2=_mm_mullo_epi16(input2_2,input2_a_2);
 
-                input1_1=_mm_adds_epu16(input1_1,input2_1);
-                input1_2=_mm_adds_epu16(input1_2,input2_2);
+            input1_1=_mm_adds_epu16(input1_1,input2_1);
+            input1_2=_mm_adds_epu16(input1_2,input2_2);
 
-                //input1_1=_mm_mulhi_epu16(input1_1,v257);
-                //input1_2=_mm_mulhi_epu16(input1_2,v257);
-                input1_1=_mm_mulhi_epu16(input1_1,v32897);
-                input1_2=_mm_mulhi_epu16(input1_2,v32897);
-                input1_1=_mm_srli_epi16(input1_1,7);
-                input1_2=_mm_srli_epi16(input1_2,7);
+            //input1_1=_mm_mulhi_epu16(input1_1,v257);
+            //input1_2=_mm_mulhi_epu16(input1_2,v257);
+            input1_1=_mm_mulhi_epu16(input1_1,v32897);
+            input1_2=_mm_mulhi_epu16(input1_2,v32897);
+            input1_1=_mm_srli_epi16(input1_1,7);
+            input1_2=_mm_srli_epi16(input1_2,7);
 
-                input1_b=_mm_packus_epi16(input1_1,input1_2);
+            input1_b=_mm_packus_epi16(input1_1,input1_2);
             _mm_storeu_si128((__m128i*)(d+index+count2),input1_b);
 
             __m128i input1_a=_mm_loadu_si128((const __m128i*)(d+index+count3));
-                __m128i input1_a_1=_mm_unpacklo_epi8(input1_a,v0);
-                __m128i input1_a_2=_mm_unpackhi_epi8(input1_a,v0);
+            __m128i input1_a_1=_mm_unpacklo_epi8(input1_a,v0);
+            __m128i input1_a_2=_mm_unpackhi_epi8(input1_a,v0);
 
-                input1_a_1=_mm_adds_epi16(input1_a_1,input2_a_1);
-                input1_a_2=_mm_adds_epi16(input1_a_2,input2_a_2);
+            input1_a_1=_mm_adds_epi16(input1_a_1,input2_a_1);
+            input1_a_2=_mm_adds_epi16(input1_a_2,input2_a_2);
 
-                input1_a=_mm_packus_epi16(input1_a_1,input1_a_2);
+            input1_a=_mm_packus_epi16(input1_a_1,input1_a_2);
             _mm_storeu_si128((__m128i*)(d+index+count3),input1_a);
-            }
+        }
 #endif
         for(;index<index_end;index++,img_index++)
-            {
+        {
             int a=img_d[img_index+img_count3];
             if(a==0)
                 continue;
@@ -721,7 +755,7 @@ void image::draw_image_solid(int start_x,int start_y,const image& img)
                 target[target_i+target_count]=source[source_i+source_count];
                 target[target_i+target_count*2]=source[source_i+source_count*2];
                 target[target_i+target_count*3]=source[source_i+source_count*3];
-        }
+            }
             target_x++;
         }*/
         memcpy(target+target_x+target_y*width(),source+y*img.width(),img.width());
@@ -825,8 +859,9 @@ void image::draw_text(int x,int y,const std::string& text,const color& color,int
         x-=w/2;
     else if(a==alignment::right)
         x-=w;
-    const char* end=text.data()+text.size();
-    for(const char* data=text.data();data<end;data++)
+
+    char* end=(char*)text.data()+text.size();
+    for(char* data=(char*)text.data();data<end;data++)
     {
         if(*data=='\n')
         {
@@ -834,29 +869,25 @@ void image::draw_text(int x,int y,const std::string& text,const color& color,int
             y+=font_size;
         }
         else
-            draw_character(x,y,lfgui::utf8_to_unicode(data,end-data),color,font_size);
+        {
+            if((unsigned char)*data<0x20)
+                continue;
+            uint32_t codepage=lfgui::utf8_to_unicode(data,end-data);
+            if(codepage==65279) // ignore a potential UTF-8 Byte Order Mask https://en.wikipedia.org/wiki/Byte_order_mark
+                continue;
+            draw_character(x,y,codepage,color,font_size);
+            x+=f.character_width(codepage,font_size);
+        }
     }
 }
 
-void image::draw_character(int& x,int y,unsigned int character,const color& color,int font_size,font& f)
+void image::draw_character(int x,int y,unsigned int character,const color& color,int font_size,font& f)
 {
-    if(character==' ')
-    {
-        x+=font_size/3;
-        return;
-    }
-    if(character=='\t')
-    {
-        x+=font_size/3*4;
-        return;
-    }
-    if(character<0x20)
-        return;
+    y+=f.ascend(font_size);
     const font::bitmap& b=f.get_glyph_cached(character,font_size);
     for(int y2=0;y2<b.height();y2++)
-        for(int x2=0;x2<b.width();x2++) // just adding 13 seems weird. Maybe there has to be some other calculation.
-            blend_pixel_safe(x+x2+b.x0,y+y2+b.y0+13,color.alpha_multiplied(b.data[x2+y2*b.width()]));
-    x+=b.width()+1;
+        for(int x2=0;x2<b.width();x2++)
+            blend_pixel_safe(x+x2+b.x0,y+y2+b.y0,color.alpha_multiplied(b.data[x2+y2*b.width()]));
 }
 
 void image::draw_path(const std::vector<point>& vec,color _color,bool connect_last_point_with_first)

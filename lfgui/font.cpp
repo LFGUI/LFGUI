@@ -1,17 +1,16 @@
-#include "../external/stb_truetype.h"
+#define STB_TRUETYPE_IMPLEMENTATION
+#include "stb_truetype.h"
 
 #include "font.h"
 
-#define STB_TRUETYPE_IMPLEMENTATION
-#include "../external/stb_truetype.h"
-#undef STB_TRUETYPE_IMPLEMENTATION
+#include <iostream>
 
 namespace lfgui
 {
 
 std::string ressource_path;
 
-uint32_t utf8_to_unicode(const char*& data,size_t len)
+uint32_t utf8_to_unicode(char*& data,size_t len)
 {
     if((data[0]&0x80)==0)     // looks like 0xxx xxxx -> no UTF-8
         return data[0];
@@ -61,14 +60,21 @@ font::font(const std::string& filename)
         throw std::logic_error("LFGUI Error: Can't load font file \""+filename+"\".");
 
     size=file.tellg();
-    ttf_buffer.resize(size);
+    ttf_buffer.reset(new memory_wrapper(size));
     file.seekg(0,std::ios::beg);
-    file.read((char*)ttf_buffer.data(),size);
+    file.read((char*)ttf_buffer.get()->get(),size);
     file.close();
 
     stbtt_font.reset(new stbtt_fontinfo);
-    stbtt_InitFont(stbtt_font.get(),ttf_buffer.data(),stbtt_GetFontOffsetForIndex(ttf_buffer.data(),0));
+    stbtt_InitFont(stbtt_font.get(),ttf_buffer.get()->get(),stbtt_GetFontOffsetForIndex(ttf_buffer.get()->get(),0));
+
+    stbtt_GetFontVMetrics(stbtt_font.get(),&ascend_,&descend_,&line_gap_);
 }
+
+int font::ascend(int font_size)const{return ascend_*stbtt_ScaleForPixelHeight(stbtt_font.get(),font_size);}
+int font::descend(int font_size)const{return descend_*stbtt_ScaleForPixelHeight(stbtt_font.get(),font_size);}
+int font::line_gap(int font_size)const{return line_gap_*stbtt_ScaleForPixelHeight(stbtt_font.get(),font_size);}
+int font::line_height(int font_size)const{return (line_gap_+ascend_-descend_)*stbtt_ScaleForPixelHeight(stbtt_font.get(),font_size);;}
 
 font::bitmap font::get_glyph(unsigned int character,int font_size)
 {
@@ -102,29 +108,30 @@ create_glyph:
 int font::text_length(const std::string& text,int font_size)
 {
     int w=0;
-    const char* end=text.data()+text.size();
-    for(const char* data=text.data();data<end;data++)
-    {
-        if(*data==' ')
-            w+=font_size/3;
-        else
-            w+=get_glyph_cached(utf8_to_unicode(data,end-data),font_size).width()+1;
-    }
+    char* end=(char*)text.data()+text.size();
+    for(char* data=(char*)text.data();data<end;data++)
+        w+=character_width(utf8_to_unicode(data,end-data),font_size);
     return w;
 }
 
 int font::text_length(const std::string& text,int font_size,size_t start_character,size_t end_character)
 {
     int w=0;
-    const char* end=text.data()+end_character;
-    for(const char* data=text.data()+start_character;data<end;data++)
-    {
-        if(*data==' ')
-            w+=font_size/3;
-        else
-            w+=get_glyph_cached(utf8_to_unicode(data,end-data),font_size).width()+1;    // an additional pixel space between each character
-    }
+    char* end=(char*)text.data()+end_character;
+    for(char* data=(char*)text.data()+start_character;data<end;data++)
+        w+=character_width(utf8_to_unicode(data,end-data),font_size);
     return w;
+}
+
+int font::character_width(uint32_t codepoint,int font_size)
+{
+    int w1;
+    int w2;
+    stbtt_GetCodepointHMetrics(stbtt_font.get(),codepoint,&w1,&w2);
+    float scale=stbtt_ScaleForPixelHeight(stbtt_font.get(),font_size);
+    w1*=scale;
+    w2*=scale;
+    return w1;
 }
 
 font::~font(){}

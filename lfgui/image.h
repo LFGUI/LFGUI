@@ -9,27 +9,22 @@
 #include <memory>
 #include <functional>
 #include <cstring>
+#include <assert.h>
 
 #include "general.h"
 #include "font.h"
 
-namespace cimg_library
-{
-template<typename T>
-class CImg;
-}
-
 namespace lfgui
 {
 
-/// \brief Contains a cimg and offers various drawing and manipulation functions. The cIMG library trores its pixel
-/// data in seperate channels. The pixel data start with all the blue channel value of all pixels, then all green, all
+/// \brief Pffers various drawing and manipulation functions. The pixel data start with all the blue channel value of all pixels, then all green, all
 /// red and all alpha values.
 class image
 {
 public:
-    typedef cimg_library::CImg<unsigned char> cimg;
-    std::unique_ptr<cimg> cimage;
+    memory_wrapper image_data;
+    int width_=0;
+    int height_=0;
 
     /// \brief Tries to load an image from the given filename.
     image(std::string filename);

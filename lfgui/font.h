@@ -13,23 +13,57 @@ namespace lfgui
 
 struct memory_wrapper
 {
-    uint8_t* ptr;
+    uint8_t* ptr_=0;
+    int size_=0;
 
-    memory_wrapper(size_t size)
+    memory_wrapper(size_t size=0):size_(size)
     {
-        ptr=(uint8_t*)malloc(size);
+        if(size)
+            ptr_=(uint8_t*)malloc(size);
     }
 
     ~memory_wrapper()
     {
-        free(ptr);
+        if(ptr_)
+            free(ptr_);
     }
 
-    uint8_t* get(){return ptr;}
+    uint8_t* get()const{return ptr_;}
+    int size()const{return size_;}
 
-    memory_wrapper(memory_wrapper&&)=delete;
+    void reset(size_t size)
+    {
+        if(ptr_)
+            free(ptr_);
+        if(size)
+            ptr_=(uint8_t*)malloc(size);
+        size_=size;
+    }
+
+    memory_wrapper(memory_wrapper&& o)
+    {
+        ptr_=o.ptr_;
+        size_=o.size_;
+        o.ptr_=0;
+        o.size_=0;
+    }
+    memory_wrapper& operator=(memory_wrapper&& o)
+    {
+        ptr_=o.ptr_;
+        size_=o.size_;
+        o.ptr_=0;
+        o.size_=0;
+        return *this;
+    }
+
+/*    uint8_t& operator[](int i)
+    {
+        if(i<0||i>size_)
+            __builtin_trap();
+        return ptr_[i];
+    }*/
+
     memory_wrapper(const memory_wrapper&)=delete;
-    bool operator=(memory_wrapper&&)=delete;
     bool operator=(const memory_wrapper&)=delete;
 };
 

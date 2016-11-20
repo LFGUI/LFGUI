@@ -201,8 +201,8 @@ void setup_sample_gui(lfgui::widget* gui)
             float sin_new;
             float cos_old;
             float cos_new;
-            sin_old=sinf(degree*3.14f/180.0f)*factor_sin;
-            cos_old=cosf(degree*3.14f/180.0f)*factor_cos;
+            sin_old=sinf((degree-stepsize)*3.14f/180.0f)*factor_sin;
+            cos_old=cosf((degree-stepsize)*3.14f/180.0f)*factor_cos;
             for(int x=0;x<e.widget.width();x+=stepsize)
             {
                 sin_new=sinf((degree+x)*3.14f/180.0f)*factor_sin;
@@ -231,13 +231,12 @@ void setup_sample_gui(lfgui::widget* gui)
         gui->add_child(new lfgui::button(50,500,150,30,"top right corner",lfgui::color({50,0,0})))->set_pos(0,0,1,0)->set_offset(-1,0);
         gui->add_child(new lfgui::button(50,500,150,30,"bottom left corner",lfgui::color({50,0,0})))->set_pos(0,0,0,1)->set_offset(0,-1);
         gui->add_child(new lfgui::button(50,500,150,30,"bottom right corner",lfgui::color({50,0,0})))->set_pos(0,0,1,1)->set_offset(-1,-1);
-/*
-        gui->add_child(new lfgui::button(50,500,150,30,"top center",lfgui::color({0,50,0})))->set_pos(0,0,0.5,0)->set_offset(-0.5,0);
-        gui->add_child(new lfgui::button(50,500,150,30,"right center",lfgui::color({0,50,0})))->set_pos(0,0,1,0.5)->set_offset(-1,-0.5);
-        gui->add_child(new lfgui::button(50,500,150,30,"bottom center",lfgui::color({0,50,0})))->set_pos(0,0,0.5,1)->set_offset(-0.5,-1);
-        gui->add_child(new lfgui::button(50,500,150,30,"left center",lfgui::color({0,50,0})))->set_pos(0,0,0,0.5)->set_offset(0,-0.5);
 
-        gui->add_child(new lfgui::button(50,500,150,30,"center",lfgui::color({0,0,50})))->set_pos(0,0,0.5,0.5)->set_offset(-0.5,-0.5);
-        */
+//        gui->add_child(new lfgui::button(50,500,150,30,"top center",lfgui::color({0,50,0})))->set_pos(0,0,0.5,0)->set_offset(-0.5,0);
+//        gui->add_child(new lfgui::button(50,500,150,30,"right center",lfgui::color({0,50,0})))->set_pos(0,0,1,0.5)->set_offset(-1,-0.5);
+//        gui->add_child(new lfgui::button(50,500,150,30,"bottom center",lfgui::color({0,50,0})))->set_pos(0,0,0.5,1)->set_offset(-0.5,-1);
+//        gui->add_child(new lfgui::button(50,500,150,30,"left center",lfgui::color({0,50,0})))->set_pos(0,0,0,0.5)->set_offset(0,-0.5);
+
+//        gui->add_child(new lfgui::button(50,500,150,30,"center",lfgui::color({0,0,50})))->set_pos(0,0,0.5,0.5)->set_offset(-0.5,-0.5);
     }
 }

@@ -7,9 +7,9 @@ TEMPLATE = app
 
 CONFIG += C++11
 
-INCLUDEPATH +=  ../external/
+QMAKE_CXXFLAGS += -O2# -mavx
 
-DEFINES += NOTRACKMOUSEEVENT "cimg_display=0"
+INCLUDEPATH +=  ../external/
 
 DESTDIR = $${PWD}
 
@@ -38,7 +38,6 @@ HEADERS  += \
         ../lfgui/lineedit.h \
         ../lfgui/window.h \
         ../external/stk_timer.h \
-        ../external/cimg/CImg.h \
         ../external/stb_truetype.h \
         ../common_sample_code.h \
         example.h

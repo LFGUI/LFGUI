@@ -25,7 +25,9 @@ slider::slider(int x,int y,int width,int height,float min_value,float max_value,
     image temp(not_handle_size,handle_size_);
     temp.clear();
     temp.draw_image(0,0,img_background.cropped(0,0,handle_size_/2,handle_size_));
-    temp.draw_image(handle_size_/2+1,0,img_background.cropped(handle_size_/2,0,0,handle_size_).resize_linear(not_handle_size-handle_size_-(handle_size_%2?0:1),handle_size_+1));
+    // TODO: something here is fishy. This top line should yield a correct result but there's a weird offset and a too small size.
+    //temp.draw_image(handle_size_/2,0,img_background.cropped(handle_size_/2,0,1,handle_size_).resize_linear(not_handle_size-handle_size_/*-(handle_size_%2?0:1)*/,handle_size_+1));
+    temp.draw_image(handle_size_/2,-1,img_background.cropped(handle_size_/2,0,1,handle_size_).resize_linear(not_handle_size-handle_size_-(handle_size_%2?0:1)+1,handle_size_+1));
     temp.draw_image(not_handle_size-handle_size_/2,0,img_background.cropped(handle_size_/2,0,handle_size_/2,handle_size_));
     img_handle_normal.resize_linear(handle_size_,handle_size_);
     img_handle_hover.resize_linear(handle_size_,handle_size_);

@@ -17,7 +17,7 @@ namespace lfgui
 /// \brief A window with a titlebar and a close button.
 class window : public widget
 {
-    int border_width=14;
+    int border_width=12;
     color _title_color=color({0,0,0});
 public:
     image img_normal;

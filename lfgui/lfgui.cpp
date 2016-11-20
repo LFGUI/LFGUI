@@ -1,5 +1,4 @@
 #include "lfgui.h"
-//#include "../external/cimg/CImg.h"
 
 using namespace std;
 

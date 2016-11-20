@@ -1,5 +1,4 @@
 #include "image.h"
-#include "cimg/CImg.h"
 #include "stb_truetype.h"
 
 using namespace std;
@@ -12,30 +11,282 @@ image::image(std::string filename)
     *this=load(filename);
 }
 
-image::image(int width,int height)
+image::image(int width,int height):width_(width),height_(height)
 {
-    cimage.reset(new cimg(std::max(0,width),std::max(0,height),1,4));
+    image_data.reset(width*height*4);
 }
 
 image::image(const image& o)
 {
-    cimage.reset(new cimg(*o.cimage));
+    image_data.reset(o.width()*o.height()*4);
+    width_=o.width_;
+    height_=o.height_;
+    memcpy(image_data.get(),o.image_data.get(),o.width()*o.height()*4);
 }
 
 image& image::operator=(const image& o)
 {
-    cimage.reset(new cimg(*o.cimage));
+    image_data.reset(o.width()*o.height()*4);
+    width_=o.width_;
+    height_=o.height_;
+    memcpy(image_data.get(),o.image_data.get(),o.width()*o.height()*4);
     return *this;
 }
 
-int image::width()const{return cimage->width();}
-int image::height()const{return cimage->height();}
-uint8_t* image::data() const {return cimage->_data;}
+int image::width()const{return width_;}
+int image::height()const{return height_;}
+uint8_t* image::data() const {return image_data.get();}
 
-image& image::resize_nearest(int w,int h){cimage->resize(std::max(0,w),std::max(0,h),1,4,1);return *this;}
-image& image::resize_linear(int w,int h){cimage->resize(std::max(0,w),std::max(0,h),1,4,3);return *this;}
-image& image::resize_cubic(int w,int h){cimage->resize(std::max(0,w),std::max(0,h),1,4,5);return *this;}
-image& image::crop(int x,int y,int w,int h){cimage->crop(x,y,x+w,y+h);return *this;}
+// TODO
+//image& image::resize_cubic(int w,int h){cimage->resize(std::max(0,w),std::max(0,h),1,4,5);return *this;}
+
+image& image::resize_nearest(int w,int h)
+{
+    memory_wrapper mw(w*h*4);
+    if(w<1||h<1||width()<1||height()<1)
+    {
+//std::cerr<<w<<":"<<h<<" "<<width()<<":"<<height()<<std::endl;
+        __builtin_trap();
+        image_data=std::move(mw);
+        width_=w;
+        height_=h;
+        return *this;
+    }
+
+    float fw=width()/float(w);
+    float fh=height()/float(h);
+
+    uint8_t* data_new=mw.get();
+    uint8_t* data_old=image_data.get();
+    int count1_old=width()*height();
+    int count2_old=width()*height()*2;
+    int count3_old=width()*height()*3;
+    int count1_new=w*h;
+    int count2_new=w*h*2;
+    int count3_new=w*h*3;
+
+    for(int y=0;y<h;y++)
+    {
+        int yw_new=y*w;
+        int yw_old=int(y*fh)*width();
+
+        for(int x=0;x<w;x++)
+        {
+            int offset_old=yw_old+x*fw;
+            int offset_new=yw_new+x;
+            data_new[offset_new]=data_old[offset_old];
+            data_new[offset_new+count1_new]=data_old[offset_old+count1_old];
+            data_new[offset_new+count2_new]=data_old[offset_old+count2_old];
+            data_new[offset_new+count3_new]=data_old[offset_old+count3_old];
+        }
+    }
+
+    image_data=std::move(mw);
+    width_=w;
+    height_=h;
+    return *this;
+}
+
+image& image::resize_linear(int w,int h)
+{
+    memory_wrapper mw(w*h*4);
+    if(w<1||h<1||width()<1||height()<1)
+    {
+//std::cerr<<w<<":"<<h<<" "<<width()<<":"<<height()<<std::endl;
+        __builtin_trap();
+        image_data=std::move(mw);
+        width_=w;
+        height_=h;
+        return *this;
+    }
+
+    float fw=width()/float(w);
+    float fh=height()/float(h);
+
+    uint8_t* data_new=mw.get();
+    uint8_t* data_old=image_data.get();
+    int count1_old=width()*height();
+    int count2_old=width()*height()*2;
+    int count3_old=width()*height()*3;
+    int count1_new=w*h;
+    int count2_new=w*h*2;
+    int count3_new=w*h*3;
+    int width_old=width();
+    int height_old=height();
+    bool width_is_1=(width_old==1);
+    bool height_is_1=(height_old==1);
+
+    for(int y=0;y<h;y++)
+    {
+        int yw_new=y*w;
+        float y_old_f=y*fh-0.5f;
+        y_old_f=y_old_f>0?y_old_f:0;
+        int y_old=y_old_f;
+        float factor_interpolate_y=y_old_f-y_old;
+        float factor_interpolate_y_neg=1.0f-factor_interpolate_y;
+        y_old=y_old>=height_old?height_old-1:y_old;
+        int yw_old=y_old*width_old;
+
+        for(int x=0;x<w;x++)
+        {
+            float x_old_f=x*fw-0.5f;
+            x_old_f=x_old_f>0?x_old_f:0;
+            int x_old=x_old_f;
+            float factor_interpolate_x=x_old_f-x_old;
+            float factor_interpolate_x_neg=1.0f-factor_interpolate_x;
+
+            x_old=x_old>=width_old?width_old-1:x_old;
+            int offset_old=yw_old+x_old;
+            int offset_new=yw_new+x;
+
+            if(!height_is_1&&!width_is_1)
+            {
+                int c00=data_old[offset_old];
+                int c10=data_old[offset_old+1];
+                int c01=data_old[offset_old+width_old];
+                int c11=data_old[offset_old+width_old+1];
+                c00=c00*factor_interpolate_x_neg+c10*factor_interpolate_x;
+                c01=c01*factor_interpolate_x_neg+c11*factor_interpolate_x;
+                c00=c00*factor_interpolate_y_neg+c01*factor_interpolate_y;
+                data_new[offset_new]=c00;
+
+                c00=data_old[offset_old+count1_old];
+                c10=data_old[offset_old+1+count1_old];
+                c01=data_old[offset_old+width_old+count1_old];
+                c11=data_old[offset_old+width_old+1+count1_old];
+                c00=c00*factor_interpolate_x_neg+c10*factor_interpolate_x;
+                c01=c01*factor_interpolate_x_neg+c11*factor_interpolate_x;
+                c00=c00*factor_interpolate_y_neg+c01*factor_interpolate_y;
+                data_new[offset_new+count1_new]=c00;
+
+                c00=data_old[offset_old+count2_old];
+                c10=data_old[offset_old+1+count2_old];
+                c01=data_old[offset_old+width_old+count2_old];
+                c11=data_old[offset_old+width_old+1+count2_old];
+                c00=c00*factor_interpolate_x_neg+c10*factor_interpolate_x;
+                c01=c01*factor_interpolate_x_neg+c11*factor_interpolate_x;
+                c00=c00*factor_interpolate_y_neg+c01*factor_interpolate_y;
+                data_new[offset_new+count2_new]=c00;
+
+                c00=data_old[offset_old+count3_old];
+                c10=data_old[offset_old+1+count3_old];
+                c01=data_old[offset_old+width_old+count3_old];
+                c11=data_old[offset_old+width_old+1+count3_old];
+                c00=c00*factor_interpolate_x_neg+c10*factor_interpolate_x;
+                c01=c01*factor_interpolate_x_neg+c11*factor_interpolate_x;
+                c00=c00*factor_interpolate_y_neg+c01*factor_interpolate_y;
+                data_new[offset_new+count3_new]=c00;
+            }
+            else if(height_is_1&&!width_is_1)
+            {
+                int c00=data_old[offset_old];
+                int c10=data_old[offset_old+1];
+                c00=c00*factor_interpolate_x_neg+c10*factor_interpolate_x;
+                data_new[offset_new]=c00;
+
+                c00=data_old[offset_old+count1_old];
+                c10=data_old[offset_old+1+count1_old];
+                c00=c00*factor_interpolate_x_neg+c10*factor_interpolate_x;
+                data_new[offset_new+count1_new]=c00;
+
+                c00=data_old[offset_old+count2_old];
+                c10=data_old[offset_old+1+count2_old];
+                c00=c00*factor_interpolate_x_neg+c10*factor_interpolate_x;
+                data_new[offset_new+count2_new]=c00;
+
+                c00=data_old[offset_old+count3_old];
+                c10=data_old[offset_old+1+count3_old];
+                c00=c00*factor_interpolate_x_neg+c10*factor_interpolate_x;
+                data_new[offset_new+count3_new]=c00;
+            }
+            else if(!height_is_1&&width_is_1)
+            {
+                int c00=data_old[offset_old];
+                int c01=data_old[offset_old+width_old];
+                c00=c00*factor_interpolate_y_neg+c01*factor_interpolate_y;
+                data_new[offset_new]=c00;
+
+                c00=data_old[offset_old+count1_old];
+                c01=data_old[offset_old+width_old+count1_old];
+                c00=c00*factor_interpolate_y_neg+c01*factor_interpolate_y;
+                data_new[offset_new+count1_new]=c00;
+
+                c00=data_old[offset_old+count2_old];
+                c01=data_old[offset_old+width_old+count2_old];
+                c00=c00*factor_interpolate_y_neg+c01*factor_interpolate_y;
+                data_new[offset_new+count2_new]=c00;
+
+                c00=data_old[offset_old+count3_old];
+                c01=data_old[offset_old+width_old+count3_old];
+                c00=c00*factor_interpolate_y_neg+c01*factor_interpolate_y;
+                data_new[offset_new+count3_new]=c00;
+            }
+            else
+            {
+                int c00=data_old[offset_old];
+                data_new[offset_new]=c00;
+
+                c00=data_old[offset_old+count1_old];
+                data_new[offset_new+count1_new]=c00;
+
+                c00=data_old[offset_old+count2_old];
+                data_new[offset_new+count2_new]=c00;
+
+                c00=data_old[offset_old+count3_old];
+                data_new[offset_new+count3_new]=c00;
+            }
+        }
+    }
+
+    image_data=std::move(mw);
+    width_=w;
+    height_=h;
+    return *this;
+}
+
+image& image::crop(int x,int y,int w,int h)
+{
+    if(w<1||h<1)
+    {
+        std::cerr<<"crop "<<w<<"x"<<h<<std::endl;
+        throw std::logic_error("lfgui::image::crop ERROR: bad values");
+        image_data=std::move(memory_wrapper(0));
+        width_=0;
+        height_=0;
+        return *this;
+    }
+    /*if(w<1)
+        w=1;
+    if(h<1)
+        h=1;*/
+    memory_wrapper mw(w*h*4);
+    uint8_t* data_in=image_data.get();
+    uint8_t* data_out=mw.get();
+    int width_old=width();
+    int count1_old=width()*height();
+    int count2_old=width()*height()*2;
+    int count3_old=width()*height()*3;
+    int count1_new=w*h;
+    int count2_new=w*h*2;
+    int count3_new=w*h*3;
+
+    for(int y2=0;y2<h;y2++)
+    {
+        int yw=y2*w;
+        for(int x2=0;x2<w;x2++)
+        {
+            data_out[yw+x2]=data_in[x+x2+(y+y2)*width_old];
+            data_out[yw+x2+count1_new]=data_in[x+x2+(y+y2)*width_old+count1_old];
+            data_out[yw+x2+count2_new]=data_in[x+x2+(y+y2)*width_old+count2_old];
+            data_out[yw+x2+count3_new]=data_in[x+x2+(y+y2)*width_old+count3_old];
+        }
+        //memcpy(mw.get()+y*w,image_data.get()+x+y*w,w);
+    }
+    image_data=std::move(mw);
+    width_=w;
+    height_=h;
+    return *this;
+}
 
 // based on https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
 namespace
@@ -772,23 +1023,27 @@ void image::draw_image_solid(int start_x,int start_y,const image& img)
 
 void image::draw_image_corners_stretched(int border_width,const image& img)
 {
-    int w=img.width();
-    int h=img.height();
+    int img_w=img.width();
+    int img_h=img.height();
+//std::cerr<<"border_width "<<border_width<<" "<<width()<<"x"<<height()<<" w "<<img_w<<" h "<<img_h<<std::endl;
+    if(width()<border_width*2||height()<border_width*2)
+        throw std::logic_error("lfgui::image::draw_image_corners_stretched ERROR: border_width is too large for this image");
 
     // draw corners
-    draw_image(0,0,img.cropped(0,0,w/2,h/2).scale(border_width,border_width));                                               // top left
-    draw_image(width()-border_width,0,img.cropped(w/2,0,w/2,h/2).scale(border_width,border_width));                          // top right
-    draw_image(0,height()-border_width,img.cropped(0,h/2,w/2,h/2).scale(border_width,border_width));                         // bottom left
-    draw_image(width()-border_width,height()-border_width,img.cropped(w/2,h/2,w/2,h/2).scale(border_width,border_width));    // bottom right
+    draw_image(0,0,img.cropped(0,0,img_w/2,img_h/2).scale(border_width,border_width));                                                      // top left
+
+    draw_image(width()-border_width,0,img.cropped(img_w/2,0,img_w/2,img_h/2).scale(border_width,border_width));                             // top right
+    draw_image(0,height()-border_width,img.cropped(0,img_h/2,img_w/2,img_h/2).scale(border_width,border_width));                            // bottom left
+    draw_image(width()-border_width,height()-border_width,img.cropped(img_w/2,img_h/2,img_w/2,img_h/2).scale(border_width,border_width));   // bottom right
 
     // draw borders
-    draw_image(border_width,0,img.cropped(w/2,0,0,h/2).scale(width()-border_width*2,border_width));                          // top
-    draw_image(border_width,height()-border_width,img.cropped(w/2,h/2,0,h/2).scale(width()-border_width*2,border_width));    // bottom
-    draw_image(0,border_width,img.cropped(0,h/2,w/2,0).scale(border_width,height()-border_width*2));                         // left
-    draw_image(width()-border_width,border_width,img.cropped(w/2,h/2,w/2,0).scale(border_width,height()-border_width*2));    // right
+    draw_image(border_width,0,img.cropped(img_w/2,0,1,img_h/2).scale(width()-border_width*2,border_width));                                 // top
+    draw_image(border_width,height()-border_width,img.cropped(img_w/2,img_h/2,1,img_h/2).scale(width()-border_width*2,border_width));       // bottom
+    draw_image(0,border_width,img.cropped(0,img_h/2,img_w/2,1).scale(border_width,height()-border_width*2));                                // left
+    draw_image(width()-border_width,border_width,img.cropped(img_w/2,img_h/2,img_w/2,1).scale(border_width,height()-border_width*2));       // right
 
     // draw center
-    draw_image(border_width,border_width,img.cropped(w/2,h/2,0,0).scale(width()-border_width*2,height()-border_width*2));
+    draw_image(border_width,border_width,img.cropped(img_w/2,img_h/2,1,1).scale(width()-border_width*2,height()-border_width*2));
 }
 
 void image::fill(color c)

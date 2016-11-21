@@ -39,7 +39,12 @@ public:
     /// \brief Returns the pixel count which is width()*height().
     int count()const{return width()*height();}
     /// \brief Returns a pointer to the pixel data.
-    uint8_t* data()const;
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
+    uint8_t* data() const {return image_data.get();}
+#else
+    uint32_t* data() const {return (uint32_t*)image_data.get();}
+#endif
+
 
     /// \brief Scales this image. Uses "nearest" scaling.
     image& resize_nearest(int w,int h);
@@ -93,13 +98,19 @@ public:
 
     void set_pixel(int x,int y,color c)
     {
-        int count=width()*height();
         int i=x+y*width();
-        auto d=data();
+
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
+        uint8_t* d=data();
+        int count=width()*height();
         d[i]=c.b;
         d[i+count]=c.g;
         d[i+count*2]=c.r;
         d[i+count*3]=c.a;
+#else
+        uint32_t* d=data();
+        d[i]=c.value;
+#endif
     }
 
     /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
@@ -111,6 +122,7 @@ public:
         if(a==0)
             return;
 
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
         uint8_t* d=data();
         d+=index;
         if(a==255)
@@ -133,12 +145,29 @@ public:
         d+=channel_size;
         auto alpha=(*d)+a;
         *d=alpha>255?255:alpha;
+#else
+        color* d=((color*)data())+index;
+        if(a==255)
+        {
+            *d=lfgui::color(r,g,b,255);
+            return;
+        }
+        auto alpha=d->a+a;
+        *d=lfgui::color(((d->r*int(255-a)+r*a)*(257))>>16,
+                        ((d->g*int(255-a)+g*a)*(257))>>16,
+                        ((d->b*int(255-a)+b*a)*(257))>>16,
+                        alpha>255?255:alpha);
+#endif
     }
     /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
     /// top using the colors alpha.
     inline void blend_pixel(int index,color c)
     {
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
         blend_pixel(index,width()*height(),c.b,c.g,c.r,c.a);
+#else
+        blend_pixel(index,0,c.b,c.g,c.r,c.a);
+#endif
     }
     /// \brief Blends the pixel at position x,y with the given color. Blending means that the given color is drawn on
     /// top using the colors alpha.
@@ -155,16 +184,26 @@ public:
 
     color get_pixel(int x,int y) const
     {
-        int count=width()*height();
         int i=x+y*width();
-        auto d=data();
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
+        uint8_t* d=data();
+        int count=width()*height();
         return color(*(d+i+count*2),*(d+i+count),*(d+i),*(d+i+count*3));
+#else
+        color* d=(color*)data();
+        return d[i];
+#endif
     }
     /// \brief Returns the pixel at the position given by an offset. offset=x+y*width()
     color get_pixel(int offset) const
     {
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
         int count=width()*height();
         return color(*(data()+offset+count*2),*(data()+offset+count),*(data()+offset),*(data()+offset+count*3));
+#else
+        color* d=(color*)data();
+        return d[offset];
+#endif
     }
 
     /// \brief The alignment specifies if the given coordinate should be left, centered, or right of the text. Multiple lines of text are not aligned correctly.
@@ -234,7 +273,7 @@ public:
     /// \brief Fills this image with the given image, it is stretched to act as a border with "stretched filling".
     void draw_image_corners_stretched(int border_width,const image& img);
 
-    /// \brief Fills the image with transparent black.
+    /// \brief Fills the image with the given value.
     void clear(uint8_t value=0)
     {
         memset(data(),value,count()*4);

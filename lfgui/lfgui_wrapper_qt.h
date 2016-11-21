@@ -30,15 +30,20 @@ inline lfgui::image load_image(std::string path)
     qimage.convertToFormat(QImage::Format_ARGB32);
     image img(qimage.width(),qimage.height());
 
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
     auto count=qimage.width()*qimage.height();
     uint8_t* data=qimage.bits();
+    uint8_t* d=img.data();
     for(int i=0;i<count;i++,data+=4)
     {
-        img.data()[i]=data[0];
-        img.data()[i+count]=data[1];
-        img.data()[i+count*2]=data[2];
-        img.data()[i+count*3]=data[3];
+        d[i]=data[0];
+        d[i+count]=data[1];
+        d[i+count*2]=data[2];
+        d[i+count*3]=data[3];
     }
+#else
+    memcpy(img.data(),qimage.bits(),qimage.width()*qimage.height()*4);
+#endif
 
     return img;
 }
@@ -67,14 +72,16 @@ public:
 
     void redraw(image&,int,int) override
     {
+//stk::timer _("REDRAW");
         img.clear();
 
         lfgui::widget::redraw(img,0,0);
 
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
+        uint8_t* data=qimage.bits();
         int count=qimage.width()*qimage.height();
         int count2=count*2;
         int count3=count*3;
-        uint8_t* data=qimage.bits();
         uint8_t* p=img.data();
         {
             int i=0;
@@ -109,6 +116,9 @@ public:
                 data[3]=p[i+count3];
             }
         }
+#else
+        memcpy(qimage.bits(),img.data(),qimage.width()*qimage.height()*4);
+#endif
 
         repaint();
     }

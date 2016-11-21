@@ -48,6 +48,16 @@ struct color
     {
         return color(r,g,b,a*f/255);
     }
+
+    color operator*(float f)
+    {
+        return color(r*f,g*f,b*f,a*f);
+    }
+
+    color operator+(const color& o)
+    {
+        return color(r+o.r,g+o.g,b+o.b,a+o.a);
+    }
 };
 
 }   // namespace lfgui

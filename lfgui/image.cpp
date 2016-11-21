@@ -35,7 +35,6 @@ image& image::operator=(const image& o)
 
 int image::width()const{return width_;}
 int image::height()const{return height_;}
-uint8_t* image::data() const {return image_data.get();}
 
 // TODO
 //image& image::resize_cubic(int w,int h){cimage->resize(std::max(0,w),std::max(0,h),1,4,5);return *this;}
@@ -56,6 +55,7 @@ image& image::resize_nearest(int w,int h)
     float fw=width()/float(w);
     float fh=height()/float(h);
 
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
     uint8_t* data_new=mw.get();
     uint8_t* data_old=image_data.get();
     int count1_old=width()*height();
@@ -80,6 +80,22 @@ image& image::resize_nearest(int w,int h)
             data_new[offset_new+count3_new]=data_old[offset_old+count3_old];
         }
     }
+#else
+    color* data_new=(color*)mw.get();
+    color* data_old=(color*)image_data.get();
+    for(int y=0;y<h;y++)
+    {
+        int yw_new=y*w;
+        int yw_old=int(y*fh)*width();
+
+        for(int x=0;x<w;x++)
+        {
+            int offset_old=yw_old+x*fw;
+            int offset_new=yw_new+x;
+            data_new[offset_new]=data_old[offset_old];
+        }
+    }
+#endif
 
     image_data=std::move(mw);
     width_=w;
@@ -89,6 +105,7 @@ image& image::resize_nearest(int w,int h)
 
 image& image::resize_linear(int w,int h)
 {
+//return resize_nearest(w,h);
     memory_wrapper mw(w*h*4);
     if(w<1||h<1||width()<1||height()<1)
     {
@@ -103,6 +120,7 @@ image& image::resize_linear(int w,int h)
     float fw=width()/float(w);
     float fh=height()/float(h);
 
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
     uint8_t* data_new=mw.get();
     uint8_t* data_old=image_data.get();
     int count1_old=width()*height();
@@ -237,6 +255,70 @@ image& image::resize_linear(int w,int h)
             }
         }
     }
+#else
+    color* data_new=(color*)mw.get();
+    color* data_old=(color*)image_data.get();
+    int width_old=width();
+    int height_old=height();
+    bool width_is_1=(width_old==1);
+    bool height_is_1=(height_old==1);
+
+    for(int y=0;y<h;y++)
+    {
+        int yw_new=y*w;
+        float y_old_f=y*fh-0.5f;
+        y_old_f=y_old_f>0?y_old_f:0;
+        int y_old=y_old_f;
+        float factor_interpolate_y=y_old_f-y_old;
+        float factor_interpolate_y_neg=1.0f-factor_interpolate_y;
+        y_old=y_old>=height_old?height_old-1:y_old;
+        int yw_old=y_old*width_old;
+
+        for(int x=0;x<w;x++)
+        {
+            float x_old_f=x*fw-0.5f;
+            x_old_f=x_old_f>0?x_old_f:0;
+            int x_old=x_old_f;
+            float factor_interpolate_x=x_old_f-x_old;
+            float factor_interpolate_x_neg=1.0f-factor_interpolate_x;
+
+            x_old=x_old>=width_old?width_old-1:x_old;
+            int offset_old=yw_old+x_old;
+            int offset_new=yw_new+x;
+
+            if(!height_is_1&&!width_is_1)
+            {
+                color c00=data_old[offset_old];
+                color c10=data_old[offset_old+1];
+                color c01=data_old[offset_old+width_old];
+                color c11=data_old[offset_old+width_old+1];
+                c00=c00*factor_interpolate_x_neg+c10*factor_interpolate_x;
+                c01=c01*factor_interpolate_x_neg+c11*factor_interpolate_x;
+                c00=c00*factor_interpolate_y_neg+c01*factor_interpolate_y;
+                data_new[offset_new]=c00;
+            }
+            else if(height_is_1&&!width_is_1)
+            {
+                color c00=data_old[offset_old];
+                color c10=data_old[offset_old+1];
+                c00=c00*factor_interpolate_x_neg+c10*factor_interpolate_x;
+                data_new[offset_new]=c00;
+            }
+            else if(!height_is_1&&width_is_1)
+            {
+                color c00=data_old[offset_old];
+                color c01=data_old[offset_old+width_old];
+                c00=c00*factor_interpolate_y_neg+c01*factor_interpolate_y;
+                data_new[offset_new]=c00;
+            }
+            else
+            {
+                color c00=data_old[offset_old];
+                data_new[offset_new]=c00;
+            }
+        }
+    }
+#endif
 
     image_data=std::move(mw);
     width_=w;
@@ -260,6 +342,8 @@ image& image::crop(int x,int y,int w,int h)
     if(h<1)
         h=1;*/
     memory_wrapper mw(w*h*4);
+
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
     uint8_t* data_in=image_data.get();
     uint8_t* data_out=mw.get();
     int width_old=width();
@@ -282,6 +366,20 @@ image& image::crop(int x,int y,int w,int h)
         }
         //memcpy(mw.get()+y*w,image_data.get()+x+y*w,w);
     }
+#else
+    color* data_in=(color*)image_data.get();
+    color* data_out=(color*)mw.get();
+    int width_old=width();
+
+    for(int y2=0;y2<h;y2++)
+    {
+        int yw=y2*w;
+        for(int x2=0;x2<w;x2++)
+            data_out[yw+x2]=data_in[x+x2+(y+y2)*width_old];
+        //memcpy(mw.get()+y*w,image_data.get()+x+y*w,w);
+    }
+#endif
+
     image_data=std::move(mw);
     width_=w;
     height_=h;
@@ -549,6 +647,8 @@ void image::draw_rect(int x,int y,int width,int height,color color_foreground)
     int y_end=std::min(y+height,r.bottom());
     int w=this->width();
     int i;
+
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
     uint8_t* d=data();
     int c=count();
     if(color_foreground.a==255)
@@ -646,6 +746,35 @@ void image::draw_rect(int x,int y,int width,int height,color color_foreground)
             }
         }
     }
+#else
+    color* d=(color*)data();
+    if(color_foreground.a==255)
+    {
+        for(y=y_start;y<y_end;y++)
+        {
+            i=y*w+x_start;
+            for(int j=0;j<x_end-x_start;j++)
+                d[i+j]=color_foreground;
+        }
+    }
+    else
+    {
+        for(y=y_start;y<y_end;y++)
+        {
+            x=x_start;
+            // TODO: add SSE2
+            for(;x<x_end;x++)
+            {
+                i=y*w+x;
+                d[i].r=(d[i].r*(255-color_foreground.a)+color_foreground.r*color_foreground.a)*257>>16;
+                d[i].g=(d[i].g*(255-color_foreground.a)+color_foreground.g*color_foreground.a)*257>>16;
+                d[i].b=(d[i].b*(255-color_foreground.a)+color_foreground.b*color_foreground.a)*257>>16;
+                auto a=d[i].a+color_foreground.a;
+                d[i].a=a>255?255:a;
+            }
+        }
+    }
+#endif
 }
 
 
@@ -775,6 +904,8 @@ void image::draw_image(int x,int y,const image& img,lfgui::rect area)
     }
     if(end_x<0||end_y<0)
         return;
+
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
     uint8_t* d=data();
     uint8_t* img_d=img.data();
     int count1=width()*height();
@@ -949,10 +1080,48 @@ void image::draw_image(int x,int y,const image& img,lfgui::rect area)
             d[index+count3]=alpha>255?255:alpha;
         }
     }
+#else
+    color* img_d=(color*)img.data();
+    int target_y=start_y;
+    int img_y=img_offset_y;
+    for(;target_y<end_y;target_y++,img_y++)
+    {
+        int target_x=start_x;
+        int img_x=img_offset_x;
+
+        color* d=((color*)data())+target_x+target_y*width();
+        int index=0;
+        int index_end=end_x-start_x;
+        int img_index=img_x+img_y*img.width();
+
+        // TODO: add SSE2
+
+        for(;index<index_end;index++,img_index++)
+        {
+            color& c_source=img_d[img_index];
+            color& c_target=d[index];
+            if(c_source.a==0)
+                continue;
+            if(c_source.a==255)
+            {
+                c_target=c_source;
+                continue;
+            }
+
+            c_target.r=(int(c_target.r*(255-c_source.a)+c_source.r*c_source.a)*(32897))>>23;
+            c_target.g=(int(c_target.g*(255-c_source.a)+c_source.g*c_source.a)*(32897))>>23;
+            c_target.b=(int(c_target.b*(255-c_source.a)+c_source.b*c_source.a)*(32897))>>23;
+            int alpha=(int)c_target.a+c_source.a;
+            c_target.a=alpha>255?255:alpha;
+        }
+    }
+#endif
 }
 
 void image::draw_image(int start_x,int start_y,const image& img,float opacity)
 {
+draw_image_solid(start_x,start_y,img);
+return;
     int end_x=start_x+img.width();
     int end_y=start_y+img.height();
     if(end_x>width())
@@ -990,8 +1159,10 @@ void image::draw_image_solid(int start_x,int start_y,const image& img)
 
     int target_x=start_x;
     int target_y=start_y;
-    auto source=img.data();
-    auto target=data();
+
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
+    uint8_t* source=img.data();
+    uint8_t* target=data();
     int source_count=img.width()*img.height();
     int target_count=width()*height();
     for(int y=0;y<end_y;y++)
@@ -1014,11 +1185,20 @@ void image::draw_image_solid(int start_x,int start_y,const image& img)
         memcpy(target+target_x+target_y*width()+target_count*2,source+y*img.width()+source_count*2,img.width());
         memcpy(target+target_x+target_y*width()+target_count*3,source+y*img.width()+source_count*3,img.width());
         //target_x=start_x;
-        int i=target_x+target_y*width();
+        /*int i=target_x+target_y*width();
         int j=y*img.width();
-        memcpy(data()+i,img.data()+j,1);
+        memcpy(data()+i,img.data()+j,1);*/
         target_y++;
     }
+#else
+    uint32_t* source=img.data();
+    uint32_t* target=data();
+    for(int y=0;y<end_y;y++)
+    {
+        memcpy(target+target_x+target_y*width(),source+y*img.width(),img.width()*4);
+        target_y++;
+    }
+#endif
 }
 
 void image::draw_image_corners_stretched(int border_width,const image& img)
@@ -1049,8 +1229,8 @@ void image::draw_image_corners_stretched(int border_width,const image& img)
 void image::fill(color c)
 {
     int size=count();
-    auto d=data();
-
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
+    uint8_t* d=data();
     memset(d,c.b,size);
     d+=size;
     memset(d,c.g,size);
@@ -1058,6 +1238,12 @@ void image::fill(color c)
     memset(d,c.r,size);
     d+=size;
     memset(d,c.a,size);
+#else
+    uint32_t* d=data();
+    uint32_t* d_end=d+size;
+    for(;d<=d_end;d++)
+        *d=c.value;
+#endif
 }
 
 image::~image(){}
@@ -1065,7 +1251,8 @@ image::~image(){}
 image& image::multiply(color c)
 {
     int size=count();
-    auto d=data();
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
+    uint8_t* d=data();
     for(int i=0;i<size;i++)
     {
         *d=(*d)*c.b/255;
@@ -1082,11 +1269,22 @@ image& image::multiply(color c)
         d++;
     }
     return *this;
+#else
+    color* d=(color*)data();
+    color* d_end=d+size;
+    for(;d<d_end;d++)
+    {
+        d->r=d->r*c.r/255;
+        d->g=d->g*c.g/255;
+        d->b=d->b*c.b/255;
+    }
+#endif
 }
 
 image& image::add(color c)
 {
     int size=count();
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
     auto d=data();
     for(int i=0;i<size;i++)
     {
@@ -1104,6 +1302,16 @@ image& image::add(color c)
         d++;
     }
     return *this;
+#else
+    color* d=(color*)data();
+    color* d_end=d+size;
+    for(;d<d_end;d++)
+    {
+        d->r=std::min(255,d->r+c.r);
+        d->g=std::min(255,d->g+c.g);
+        d->b=std::min(255,d->b+c.b);
+    }
+#endif
 }
 
 void image::draw_text(int x,int y,const std::string& text,const color& color,int font_size,alignment a,font& f)
@@ -1172,6 +1380,8 @@ image image::rotated90() const
     const int w=width();
     const int h=height();
     const int count=w*h;
+
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
     uint8_t* source=data();
     uint8_t* target=ret.data();
 
@@ -1185,7 +1395,18 @@ image image::rotated90() const
             target[j+count*2]=source[i+count*2];
             target[j+count*3]=source[i+count*3];
         }
+#else
+    uint32_t* source=data();
+    uint32_t* target=ret.data();
 
+    for(int y=0;y<h;y++)
+        for(int x=0;x<w;x++)
+        {
+            int i=x+y*w;
+            int j=y+x*h;
+            target[j]=source[i];
+        }
+#endif
     return ret;
 }
 
@@ -1194,10 +1415,11 @@ image& image::rotate180()
     const int w=width();
     const int h=height();
     const int count=w*h;
+
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
     uint8_t* source=data();
     const int end=count*4-1;
     uint8_t temp[4];
-
     for(int y=0;y<h;y++)
         for(int x=0;x<w;x++)
         {
@@ -1215,7 +1437,19 @@ image& image::rotate180()
             source[end-(i+count*2)]=temp[1];
             source[end-(i+count*3)]=temp[0];
         }
-
+#else
+    uint32_t* source=data();
+    const int end=count-1;
+    uint32_t temp;
+    for(int y=0;y<h;y++)
+        for(int x=0;x<w;x++)
+        {
+            int i=x+y*w;
+            temp=source[i];
+            source[i]=source[end-i];
+            source[end-i]=temp;
+        }
+#endif
     return *this;
 }
 
@@ -1226,10 +1460,11 @@ image image::rotated270() const
     const int w=width();
     const int h=height();
     const int count=w*h;
+
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
     uint8_t* source=data();
     uint8_t* target=ret.data();
     const int end=count*4-1;
-
     for(int y=0;y<h;y++)
         for(int x=0;x<w;x++)
         {
@@ -1240,7 +1475,18 @@ image image::rotated270() const
             target[end-(j+count)]=source[i+count*2];
             target[end-j]=source[i+count*3];
         }
-
+#else
+    uint32_t* source=data();
+    uint32_t* target=ret.data();
+    const int end=count-1;
+    for(int y=0;y<h;y++)
+        for(int x=0;x<w;x++)
+        {
+            int i=x+y*w;
+            int j=y+x*h;
+            target[end-j]=source[i];
+        }
+#endif
     return ret;
 }
 

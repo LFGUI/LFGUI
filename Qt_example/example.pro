@@ -13,6 +13,8 @@ INCLUDEPATH +=  ../external/
 
 DESTDIR = $${PWD}
 
+#DEFINES += LFGUI_SEPARATE_COLOR_CHANNELS
+
 SOURCES += main.cpp\
         ../lfgui/lfgui.cpp \
         ../lfgui/image.cpp \

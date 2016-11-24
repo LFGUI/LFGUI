@@ -306,7 +306,7 @@ void gui::set_focus(widget* w)
 
 std::function<lfgui::image(std::string)> lfgui::image::load=[](std::string)
 {
-    throw std::logic_error("LFGUI Error: Image loading not supported. No wrapper set this std::function.");return lfgui::image();
+    throw lfgui::exception("LFGUI Error: Image loading not supported. No wrapper set this std::function.");return lfgui::image();
 };
 
 lfgui::gui* lfgui::gui::instance=0;

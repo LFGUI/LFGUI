@@ -1,5 +1,6 @@
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "stb_truetype.h"
+#undef STB_TRUETYPE_IMPLEMENTATION
 
 #include "font.h"
 
@@ -57,7 +58,7 @@ font::font(const std::string& filename)
 
     std::ifstream file(filename,std::ios::in|std::ios::binary|std::ios::ate);
     if(!file.is_open())
-        throw std::logic_error("LFGUI Error: Can't load font file \""+filename+"\".");
+        throw lfgui::exception("LFGUI Error: Can't load font file \""+filename+"\".");
 
     size=file.tellg();
     ttf_buffer.reset(new memory_wrapper(size));

@@ -17,8 +17,13 @@
 namespace lfgui
 {
 
-/// \brief Pffers various drawing and manipulation functions. The pixel data start with all the blue channel value of all pixels, then all green, all
-/// red and all alpha values.
+/// \brief Contains and offers various image drawing and manipulation functions.
+/// The pixel data can be in two different formats:
+/// Default (when LFGUI_SEPARATE_COLOR_CHANNELS is not defined):
+/// Pixel oriented: The pixel are stored as a whole as BGRA in one contiguous stream (BGRABGRABGRA...).
+/// When LFGUI_SEPARATE_COLOR_CHANNELS is defined:
+/// The pixel data starts with all the blue channel values of all pixels, then all green, all red and all alpha values
+/// (BBB...GGG...RRR...AAA...).
 class image
 {
 public:
@@ -118,7 +123,7 @@ public:
     inline void blend_pixel(int index,int channel_size,uint8_t b,uint8_t g,uint8_t r,uint8_t a)
     {
         //if(x<0||y<0||x>=width()||y>=height()) // useful for debugging
-        //    throw std::logic_error("");
+        //    throw lfgui::exception("");
         if(a==0)
             return;
 

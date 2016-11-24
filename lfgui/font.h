@@ -3,8 +3,11 @@
 
 #include <vector>
 #include <fstream>
+#include <iostream>
 #include <memory>
 #include <exception>
+#include <functional>
+#include <intrin.h>
 
 struct stbtt_fontinfo;
 
@@ -72,6 +75,34 @@ extern std::string ressource_path;
 
 // based on https://en.wikipedia.org/wiki/UTF-8
 extern uint32_t utf8_to_unicode(char*& data,size_t len);
+
+struct exception : public std::exception
+{
+    std::string text;
+    static std::function<void(const std::string&)>& custom_handler()
+    {
+        static std::function<void(const std::string&)> ch;
+        return ch;
+    }
+
+    exception(std::string text)
+    {
+        std::cerr<<"EXCEPTION: "<<text<<std::endl;
+
+        if(custom_handler())
+            custom_handler()(text);
+        else
+        {
+            __debugbreak();
+            exit(-1);
+        }
+    }
+
+    virtual const char* what() const noexcept
+    {
+        return text.c_str();
+    }
+};
 
 /// \brief Wrapper class for stb_truetype.h.
 class font

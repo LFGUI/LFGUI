@@ -68,4 +68,36 @@ inline std::ostream& operator<<(std::ostream& os,const lfgui::color& c)
     return os;
 }
 
+inline void print(__m128i v)
+{
+    static char hex[]="0123456789ABCDEF";
+    uint32_t vec[4];
+    _mm_storeu_si128((__m128i*)vec,v);
+    unsigned char* c=(unsigned char*)vec;
+    std::cout<<"0x";
+    std::cout<<hex[(c[0])>>4]<<hex[(c[0])&0x0F];
+    std::cout<<hex[(c[1])>>4]<<hex[(c[1])&0x0F];
+    std::cout<<hex[(c[2])>>4]<<hex[(c[2])&0x0F];
+    std::cout<<hex[(c[3])>>4]<<hex[(c[3])&0x0F];
+    c+=4;
+    std::cout<<",0x";
+    std::cout<<hex[(c[0])>>4]<<hex[(c[0])&0x0F];
+    std::cout<<hex[(c[1])>>4]<<hex[(c[1])&0x0F];
+    std::cout<<hex[(c[2])>>4]<<hex[(c[2])&0x0F];
+    std::cout<<hex[(c[3])>>4]<<hex[(c[3])&0x0F];
+    c+=4;
+    std::cout<<",0x";
+    std::cout<<hex[(c[0])>>4]<<hex[(c[0])&0x0F];
+    std::cout<<hex[(c[1])>>4]<<hex[(c[1])&0x0F];
+    std::cout<<hex[(c[2])>>4]<<hex[(c[2])&0x0F];
+    std::cout<<hex[(c[3])>>4]<<hex[(c[3])&0x0F];
+    c+=4;
+    std::cout<<",0x";
+    std::cout<<hex[(c[0])>>4]<<hex[(c[0])&0x0F];
+    std::cout<<hex[(c[1])>>4]<<hex[(c[1])&0x0F];
+    std::cout<<hex[(c[2])>>4]<<hex[(c[2])&0x0F];
+    std::cout<<hex[(c[3])>>4]<<hex[(c[3])&0x0F];
+    std::cout<<" "<<vec[0]<<','<<vec[1]<<','<<vec[2]<<','<<vec[3]<<std::endl;
+}
+
 #endif  // LFGUI_GENERAL_H

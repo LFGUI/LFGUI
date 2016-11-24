@@ -45,7 +45,7 @@ public:
         on_accept.call();
         on_close.call();
         if(!parent)
-            throw std::logic_error("LFGUI Error: close() called without having a parent.");
+            throw lfgui::exception("LFGUI Error: close() called without having a parent.");
         parent->remove_child(this);
     }
 
@@ -55,7 +55,7 @@ public:
         on_reject.call();
         on_close.call();
         if(!parent)
-            throw std::logic_error("LFGUI Error: close() called without having a parent.");
+            throw lfgui::exception("LFGUI Error: close() called without having a parent.");
         parent->remove_child(this);
     }
 

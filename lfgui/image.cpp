@@ -1,5 +1,5 @@
 #include "image.h"
-#include "stb_truetype.h"
+#include "../external/stb_truetype.h"
 
 using namespace std;
 
@@ -14,6 +14,11 @@ image::image(std::string filename)
 image::image(int width,int height):width_(width),height_(height)
 {
     image_data.reset(width*height*4);
+}
+
+image::image(void* data,int width,int height):width_(width),height_(height)
+{
+    image_data.reset(data,width*height*4);
 }
 
 image::image(const image& o)

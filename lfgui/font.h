@@ -18,6 +18,7 @@ struct memory_wrapper
 {
     uint8_t* ptr_=0;
     int size_=0;
+    bool foreign_data=false;
 
     memory_wrapper(size_t size=0):size_(size)
     {
@@ -25,9 +26,13 @@ struct memory_wrapper
             ptr_=(uint8_t*)malloc(size);
     }
 
+    memory_wrapper(void* data,size_t size):size_(size),ptr_((uint8_t*)data),foreign_data(true)
+    {
+    }
+
     ~memory_wrapper()
     {
-        if(ptr_)
+        if(ptr_&&!foreign_data)
             free(ptr_);
     }
 
@@ -36,10 +41,21 @@ struct memory_wrapper
 
     void reset(size_t size)
     {
-        if(ptr_)
+        if(ptr_&&!foreign_data)
             free(ptr_);
+        foreign_data=false;
         if(size)
             ptr_=(uint8_t*)malloc(size);
+        size_=size;
+    }
+
+    void reset(void* data,size_t size)
+    {
+std::cout<<"resetting to"<<(size_t)data<<std::endl;
+        if(ptr_&&!foreign_data)
+            free(ptr_);
+        foreign_data=true;
+        ptr_=(uint8_t*)data;
         size_=size;
     }
 
@@ -47,6 +63,7 @@ struct memory_wrapper
     {
         ptr_=o.ptr_;
         size_=o.size_;
+        foreign_data=o.foreign_data;
         o.ptr_=0;
         o.size_=0;
     }
@@ -54,6 +71,7 @@ struct memory_wrapper
     {
         ptr_=o.ptr_;
         size_=o.size_;
+        foreign_data=o.foreign_data;
         o.ptr_=0;
         o.size_=0;
         return *this;

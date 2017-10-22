@@ -63,8 +63,8 @@ public:
         timer=new QTimer(this);
         connect(timer,&QTimer::timeout,[this]{redraw(img,0,0);});
         timer->start(1000/25);  // draw with up to 25 FPS
-        on_resize([this](point p){img=image(p.x,p.y);});
-        img=image(width,height);
+        on_resize([this](point p){img=image(qimage.bits(),p.x,p.y);});
+        img=image(qimage.bits(),width,height);
     }
 
     int width()const{return lfgui::widget::width();}
@@ -73,6 +73,12 @@ public:
     void redraw(image&,int,int) override
     {
 //stk::timer _("REDRAW");
+img.image_data.reset(qimage.bits(),qimage.byteCount());
+img=image(qimage.bits(),QWidget::width(),QWidget::height());
+std::cout<<std::hex<<(size_t)qimage.bits()<<' '<<(size_t)img.data()<<' '
+<<img.width()<<'x'<<img.width()<<' '
+<<qimage.width()<<'x'<<qimage.width()
+<<std::endl;
         img.clear();
 
         lfgui::widget::redraw(img,0,0);
@@ -117,7 +123,8 @@ public:
             }
         }
 #else
-        memcpy(qimage.bits(),img.data(),qimage.width()*qimage.height()*4);
+        //memcpy(qimage.bits(),img.data(),qimage.width()*qimage.height()*4);
+//std::cout<<std::hex<<(size_t)qimage.bits()<<' '<<(size_t)img.data()<<std::endl;
 #endif
 
         repaint();
@@ -129,6 +136,7 @@ public:
         QWidget::resizeEvent(e);
         qimage=QImage(QWidget::width(),QWidget::height(),QImage::Format_ARGB32);
         lfgui::widget::resize(QWidget::width(),QWidget::height());
+        //img=image(qimage.bits(),QWidget::width(),QWidget::height());
         //redraw();
     }
 

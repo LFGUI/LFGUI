@@ -357,7 +357,7 @@ public:
                 cursor->SetVisible(false);
             }
         }
-        else if(key==KEY_ESCAPE)
+        else if(key==KEY_ESC)
             engine_->Exit();
         else if(key==KEY_G)
         {

@@ -35,6 +35,8 @@ public:
     image(std::string filename);
     /// \brief Constructs an image with the given width and height.
     image(int width=0,int height=0);
+    /// \brief Use an existing memory area for the image data.
+    image(void* data,int width,int height);
     image(const image& o);
     image& operator=(const image& o);
     ~image();

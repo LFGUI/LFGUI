@@ -32,17 +32,23 @@ public:
     int height_=0;
 
     /// \brief Tries to load an image from the given filename.
-    image(std::string filename);
+    explicit image(const std::string& filename);
     /// \brief Constructs an image with the given width and height.
-    image(int width=0,int height=0);
     /// \brief Use an existing memory area for the image data.
     image(void* data,int width,int height);
-    image(const image& o);
-    image& operator=(const image& o);
+    explicit image(int width=0,int height=0);
+    //image(const image& o);
+    //image& operator=(const image& o);
+    image(const image& o)=delete;
+    image& operator=(const image& o)=delete;
+    image copy() const;
+    image(image&& o);
+    image& operator=(image&& o);
     ~image();
 
-    int width()const;
-    int height()const;
+    int width()const{return width_;}
+    int height()const{return height_;}
+    point size()const{return point(width(),height());}
     /// \brief Returns the pixel count which is width()*height().
     int count()const{return width()*height();}
     /// \brief Returns a pointer to the pixel data.
@@ -63,13 +69,15 @@ public:
     image& scale(int w,int h){return resize_linear(w,h);}
 
     /// \brief Returns a scaled version of this image. Uses "nearest" scaling.
-    image resized_nearest(int w,int h)const{image ret(*this);ret.resize_nearest(w,h);return ret;}
+    image resized_nearest(int w,int h)const{image ret=copy();ret.resize_nearest(w,h);return ret;}
     /// \brief Returns a scaled version of this image. Uses linear scaling.
-    image resized_linear(int w,int h)const{image ret(*this);ret.resize_linear(w,h);return ret;}
+    image resized_linear(int w,int h)const{image ret=copy();ret.resize_linear(w,h);return ret;}
     /// \brief Returns a scaled version of this image. Uses cubic scaling.
-    image resized_cubic(int w,int h)const{image ret(*this);ret.resize_cubic(w,h);return ret;}
+    image resized_cubic(int w,int h)const{image ret=copy();ret.resize_cubic(w,h);return ret;}
     /// \brief Returns a scaled version of this image. Same as resize_linear().
     image scaled(int w,int h)const{return resized_linear(w,h);}
+    /// \brief Returns a scaled version of this image. Same as resize_linear().
+    image scaled(lfgui::point p)const{return scaled(p.x,p.y);}
 
     /// \brief Rotates the image by 90 degrees clockwise.
     image& rotate90(){*this=rotated90();return *this;}
@@ -80,28 +88,28 @@ public:
     /// \brief Returns a by 180 degrees clockwise rotated image.
     image rotated90() const;
     /// \brief Returns a by 180 degrees clockwise rotated image.
-    image rotated180() const {auto ret=*this;ret.rotate180();return ret;}
+    image rotated180() const {image ret=copy();ret.rotate180();return ret;}
     /// \brief Returns a by 180 degrees clockwise rotated image.
     image rotated270() const;
 
     /// \brief Crops the image to the given size.
     image& crop(int x,int y,int w,int h);
     /// \brief Returns a cropped version of this image.
-    image cropped(int x,int y,int w,int h)const{image ret(*this);ret.crop(x,y,w,h);return ret;}
+    image cropped(int x,int y,int w,int h)const{image ret=copy();ret.crop(x,y,w,h);return ret;}
 
     /// \brief Multiplies the color of every pixel with the given color. Can be used to colorize the image. Alpha is
     /// not affected.
     image& multiply(color c);
     /// \brief Returns an image with the color of every pixel multiplied with the given color. Can be used to get a
     /// colorized image. The alpha is not changed.
-    image multiplied(color c)const{image ret(*this);ret.multiply(c);return ret;}
+    image multiplied(color c)const{image ret=copy();ret.multiply(c);return ret;}
 
     /// \brief Multiplies the color of every pixel with the given color. Can be used to colorize the image. Alpha is
     /// not affected.
     image& add(color c);
     /// \brief Returns an image with the color of every pixel multiplied with the given color. Can be used to get a
     /// colorized image. The alpha is not changed.
-    image added(color c)const{image ret(*this);ret.add(c);return ret;}
+    image added(color c)const{image ret=copy();ret.add(c);return ret;}
 
     void set_pixel(int x,int y,color c)
     {
@@ -271,6 +279,8 @@ public:
     void draw_image(point p,const image& img){draw_image(p.x,p.y,img);}
     /// \brief Draws another image onto this one.
     void draw_image(point p,const image& img,float opacity){draw_image(p.x,p.y,img,opacity);}
+
+    void draw_image_multiplied(int x,int y,const image& img,lfgui::rect area=lfgui::rect());
 
     /// \brief Draws another image onto this one.
     void draw_image_solid(int x,int y,const image& img);

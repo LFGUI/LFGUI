@@ -106,7 +106,7 @@ public:
                 _texture->SetSize(width(),height(),Urho3D::Graphics::GetRGBAFormat(),Urho3D::TEXTURE_STATIC);
             if(_image->GetWidth()!=width()||_image->GetHeight()!=height())
                 _image->SetSize(width(),height(),4);
-#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
+
             int count=w*h;
             int countx2=count*2;
             int countx3=count*3;
@@ -126,9 +126,6 @@ public:
                 data_target++;
                 data_source++;
             }
-#else
-            memcpy(_image->GetData(),this->img.data(),w*h*4);
-#endif
         }
         else
             _image->ClearInt(0);
@@ -308,7 +305,7 @@ lfgui::key urho3d_key_to_qt(int key)
     if(key==Urho3D::KEY_RIGHT)          return lfgui::key::Key_Right;
     if(key==Urho3D::KEY_LEFT)           return lfgui::key::Key_Left;
     if(key==Urho3D::KEY_END)            return lfgui::key::Key_End;
-    if(key==Urho3D::KEY_ESC)            return lfgui::key::Key_Escape;
+    if(key==Urho3D::KEY_ESCAPE)         return lfgui::key::Key_Escape;
     if(key==Urho3D::KEY_LALT)           return lfgui::key::Key_Alt;
     if(key==Urho3D::KEY_RALT)           return lfgui::key::Key_Alt;
     if(key==Urho3D::KEY_LSHIFT)         return lfgui::key::Key_Shift;

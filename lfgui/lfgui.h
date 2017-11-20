@@ -12,7 +12,7 @@
 #include "image.h"
 #include "key.h"
 #include "signal.h"
-#include "../external/stk_timer.h"
+#include "../stk_timer.h"
 
 #undef min  // sometimes Visual Studio has these terrible macros which break a lot
 #undef max
@@ -159,6 +159,10 @@ public:
     {
         geometry.pos_absolute=point(x,y);
     }
+    widget(const widget&)=delete;
+    widget& operator=(const widget&)=delete;
+    widget(widget&&)=delete;
+    widget& operator=(widget&&)=delete;
     virtual ~widget();
 
     /// \brief Inserts a mouse press event with local coordinates. Normally only called from the parent widget (or the
@@ -387,9 +391,10 @@ class gui : public widget
     widget* _focus_widget=0;                ///< \brief The widget that has keyboard focus.
     static gui* instance;                   ///< \brief Used by the load functions.
 public:
-    point mouse_old_pos=0;  // for mouse movement
+    point mouse_old_pos=point(0,0);  // for mouse movement
     uint32_t button_state_last=0;
     uint32_t event_button_last=0;
+    uint32_t max_fps=30;
     image img;  ///< \brief The image being drawn onto.
 
     gui(int width,int height) : widget(width,height)

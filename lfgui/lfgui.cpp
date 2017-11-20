@@ -171,6 +171,7 @@ void widget::redraw(image& img,int offset_x,int offset_y)
 {
     if(!visible())
         return;
+    STK_STACKTRACE
 
     if(size()!=size_old&&on_resize)
         on_resize.call(size());
@@ -197,7 +198,7 @@ widget* widget::_add_child(std::unique_ptr<widget>&& w)
     if(_gui)
         gui::instance=_gui;
     children.emplace_back(std::move(w));
-    auto& ret=children.back();
+    std::unique_ptr<widget>& ret=children.back();
     ret->parent=this;
     ret->_gui=_gui;
     dirty=true;
@@ -216,6 +217,7 @@ bool widget::has_focus()const
 
 widget::~widget()
 {
+    STK_STACKTRACE
     if(_gui->_held_widget==this)
         _gui->_held_widget=0;
     if(_gui->_focus_widget==this)

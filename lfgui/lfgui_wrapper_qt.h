@@ -7,8 +7,18 @@
 #include <QMouseEvent>
 #include <QMessageBox>
 #include <QTimer>
+#include <QOpenGLFunctions>
+#include <QCoreApplication>
+
+#ifdef Q_OS_WIN
+#include "gl/GLU.h"
+#else
+#include <glu.h>
+#endif
 
 #include "lfgui.h"
+#include "../stk_debugging.h"
+#include "../stk_timer.h"
 
 namespace lfgui
 {
@@ -18,12 +28,13 @@ namespace wrapper_qt
 /// \brief This load_image function uses the QImage(QString) function. That means that it can also used the ressource
 /// packing functionality of Qt (packing the ressources into the program, like the .exe, and adressing them with
 /// ":/example.png").
-inline lfgui::image load_image(std::string path)
+inline lfgui::image load_image(const std::string& path)
 {
     QImage qimage(QString::fromStdString(path));
     if(qimage.isNull())
     {
-        QMessageBox::critical(0,"LFGUI Error","LFGUI Error: The image \""+QString::fromStdString(path)+"\" could not be loaded.");
+        //QMessageBox::critical(0,"LFGUI Error","LFGUI Error: The image \""+QString::fromStdString(path)+"\" could not be loaded.");
+        std::cerr<<("LFGUI Error: The image \""+QString::fromStdString(path)+"\" could not be loaded.").toStdString()<<std::endl;
         return lfgui::image(1,1);
     }
 
@@ -53,7 +64,8 @@ class gui : public lfgui::gui,public QWidget
 {
 public:
     QImage qimage;
-    QTimer *timer;  ///< a Qt timer used to to stuff like making a blinking cursor
+    QTimer *timer;  ///< a Qt timer used to do stuff like making a blinking cursor
+    stk::timer fps_timer;
 
     gui(int width=1,int height=1) : lfgui::gui(width,height),qimage(width,height,QImage::Format_ARGB32)
     {
@@ -61,10 +73,30 @@ public:
         setMouseTracking(true);
         setFocusPolicy(Qt::StrongFocus);
         timer=new QTimer(this);
-        connect(timer,&QTimer::timeout,[this]{redraw(img,0,0);});
-        timer->start(1000/25);  // draw with up to 25 FPS
-        on_resize([this](point p){img=image(qimage.bits(),p.x,p.y);});
-        img=image(qimage.bits(),width,height);
+        fps_timer.reset();
+        connect(timer,&QTimer::timeout,[this]{check_redraw();});
+        timer->start(1000.0/(max_fps*4.0));
+        on_resize([this](point p){img=std::move(image(p.x,p.y));});
+        img=std::move(image(width,height));
+    }
+
+    void check_redraw()
+    {
+        if(fps_timer.until_now()>1.0/max_fps)
+        {
+            redraw(img,0,0);
+            fps_timer.reset();
+        }
+    }
+
+    void set_max_fps(int max_fps)
+    {
+std::cout<<"set_max_fps "<<max_fps<<std::endl;
+        if(max_fps<1)
+            return;
+        this->max_fps=max_fps;
+        //timer->setInterval(1000.0/(max_fps*4.0));
+        timer->setInterval(1);
     }
 
     int width()const{return lfgui::widget::width();}
@@ -73,16 +105,13 @@ public:
     void redraw(image&,int,int) override
     {
 //stk::timer _("REDRAW");
-img.image_data.reset(qimage.bits(),qimage.byteCount());
-img=image(qimage.bits(),QWidget::width(),QWidget::height());
-std::cout<<std::hex<<(size_t)qimage.bits()<<' '<<(size_t)img.data()<<' '
-<<img.width()<<'x'<<img.width()<<' '
-<<qimage.width()<<'x'<<qimage.width()
-<<std::endl;
+        STK_PROFILER_POINT("GUI redraw");
         img.clear();
-
         lfgui::widget::redraw(img,0,0);
 
+{
+//stk::timer _("REDRAW");
+//STK_PROFILER_POINT("Qt redraw")
 #ifdef LFGUI_SEPARATE_COLOR_CHANNELS
         uint8_t* data=qimage.bits();
         int count=qimage.width()*qimage.height();
@@ -123,11 +152,14 @@ std::cout<<std::hex<<(size_t)qimage.bits()<<' '<<(size_t)img.data()<<' '
             }
         }
 #else
-        //memcpy(qimage.bits(),img.data(),qimage.width()*qimage.height()*4);
-//std::cout<<std::hex<<(size_t)qimage.bits()<<' '<<(size_t)img.data()<<std::endl;
+        memcpy(qimage.bits(),img.data(),qimage.width()*qimage.height()*4);
 #endif
-
-        repaint();
+}
+{
+        STK_PROFILER_POINT("Qt repaint")
+        //repaint();
+        update();
+}
     }
 
     void resizeEvent(QResizeEvent* e) override
@@ -136,34 +168,44 @@ std::cout<<std::hex<<(size_t)qimage.bits()<<' '<<(size_t)img.data()<<' '
         QWidget::resizeEvent(e);
         qimage=QImage(QWidget::width(),QWidget::height(),QImage::Format_ARGB32);
         lfgui::widget::resize(QWidget::width(),QWidget::height());
-        //img=image(qimage.bits(),QWidget::width(),QWidget::height());
-        //redraw();
     }
 
     void paintEvent(QPaintEvent* e) override
     {
+    //stk::timer _("Qt paintEvent");
         QWidget::paintEvent(e);
 
-        QPainter p(this);
-        p.drawImage(0,0,qimage);
+        QPainter painter(this);
+        painter.drawImage(0,0,qimage);
+        /*painter.beginNativePainting();
+        glEnable(GL_SCISSOR_TEST);
+        glScissor(0, 0, 64, 64);
+        glClearColor(1, 0, 0, 1);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glDisable(GL_SCISSOR_TEST);
+        painter.endNativePainting();*/
     }
 
     void mousePressEvent(QMouseEvent* e) override
     {
         insert_event_mouse_press(e->x(),e->y(),e->button(),e->buttons());
-        //redraw();
     }
 
     void mouseReleaseEvent(QMouseEvent* e) override
     {
         insert_event_mouse_release(e->x(),e->y(),e->button(),e->buttons());
-        //redraw();
     }
 
     void mouseMoveEvent(QMouseEvent* e) override
     {
+        QWidget::mouseMoveEvent(e);
         insert_event_mouse_move(e->x(),e->y());
-        //redraw();
+        check_redraw();
+//std::cout<<timer->remainingTime()<<std::endl;
+//        QCoreApplication::processEvents();
+//        if(timer->remainingTime()==0)
+//            redraw(img,0,0);
+//update();
     }
 
     // Some input can't be handled with these functions and has to be handled differently: https://www.kdab.com/qt-input-method-depth/ http://doc.qt.io/qt-5/qinputmethod.html

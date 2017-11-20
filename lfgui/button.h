@@ -71,30 +71,30 @@ private:
     // A rendered image of a 3D ball is used to draw a rectangular button with three states, rounded corners and borders.
     void prepare_images()
     {
-        img_normal=image(ressource_path+"gui_ball.png");
-        img_hover=image(ressource_path+"gui_ball_dent_half.png");
-        img_pressed=image(ressource_path+"gui_ball_dent.png");
+        img_normal =image(ressource_path::get().append("gui_ball.png"));
+        img_hover  =image(ressource_path::get().append("gui_ball_dent_half.png"));
+        img_pressed=image(ressource_path::get().append("gui_ball_dent.png"));
         image temp(width(),height());
 
         // image for the button in normal state
         {
             temp.clear();
             temp.draw_image_corners_stretched(border_width,img_normal);
-            img_normal=temp;
+            img_normal=temp.copy();
         }
 
         // image for hovered button
         {
             temp.clear();
             temp.draw_image_corners_stretched(border_width,img_hover);
-            img_hover=temp;
+            img_hover=temp.copy();
         }
 
         // image for pressed button
         {
             temp.clear();
             temp.draw_image_corners_stretched(border_width,img_pressed);
-            img_pressed=temp;
+            img_pressed=std::move(temp);
         }
     }
 };

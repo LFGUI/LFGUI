@@ -257,7 +257,7 @@ public:
 
             std::string str;
             for(size_t i=0;i<profiler::instance().open_points.size()-1;i++)
-                str=str+"  ";
+                str=str+"    ";
             str=str+profiler::instance().open_points.back()->name;
             profiler::instance().find_or_create_time(str)+=t.until_now();
             profiler::instance().open_points.resize(profiler::instance().open_points.size()-1);
@@ -290,11 +290,34 @@ public:
         sub_point_times.emplace_back(name,0);
         return sub_point_times.back().second;
     }
+
+    static std::string to_string()
+    {
+        std::string ret;
+        ret.append("Profiler: \n");
+        for(auto e:instance().sub_point_times)
+        {
+            if(e.second<=0.0)
+                continue;
+            ret.append(std::to_string(e.second));
+            ret.append(" \t");
+            ret.append(e.first);
+            ret.append("\n");
+        }
+        return ret;
+    }
+
+    static void clear()
+    {
+        instance().sub_point_times.clear();
+    }
 };
 
 //#define STK_PROFILER stk::profiler_point STK_PROFILER_POINT(std::string(__FILE__)+":"+std::to_string(__LINE__)+" "+__PRETTY_FUNCTION__);
-#define STK_PROFILER stk::profiler::measure_point STK_PROFILER_POINT(std::string(__FILE__)+":"+std::to_string(__LINE__)+" "+__FUNCTION__);
+#define STK_PROFILER stk::profiler::measure_point __STK_PROFILER_POINT__(std::string(__FILE__)+":"+std::to_string(__LINE__)+" "+__FUNCTION__);
 //#define STK_PROFILER stk::profiler_point STK_PROFILER_POINT(std::string(__FILE__)+":"+std::to_string(__LINE__));
+
+#define STK_PROFILER_POINT(X) stk::profiler::measure_point __STK_PROFILER_POINT__(X);
 
 }       // namespace STK
 

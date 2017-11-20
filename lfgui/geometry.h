@@ -2,9 +2,38 @@
 #define LFGUI_GEOMETRY_H
 
 #include <algorithm>
+#include <cmath>
 
 namespace lfgui
 {
+
+struct exception : public std::exception
+{
+    std::string text;
+    static std::function<void(const std::string&)>& custom_handler()
+    {
+        static std::function<void(const std::string&)> ch;
+        return ch;
+    }
+
+    exception(std::string text)
+    {
+        std::cerr<<"EXCEPTION: "<<text<<std::endl;
+
+        if(custom_handler())
+            custom_handler()(text);
+        else
+        {
+            __debugbreak();
+            exit(-1);
+        }
+    }
+
+    virtual const char* what() const noexcept
+    {
+        return text.c_str();
+    }
+};
 
 /// \brief Represent a coordinate with its two x and y integers. Sometimes also a size.
 template<typename T>
@@ -13,7 +42,16 @@ struct point_general
     T x;
     T y;
 
-    point_general(T x=0,T y=0) : x(x),y(y){}
+    explicit point_general(T x=0,T y=0) : x(x),y(y){}
+    point_general(std::initializer_list<T> l)
+    {
+        if(l.size()!=2)
+            throw lfgui::exception("point_general(std::initializer_list<T> l) not used with two elements");
+        auto it=l.begin();
+        x=*it;
+        it++;
+        y=*it;
+    }
 
     bool operator<(const point_general<T>& o)const
     {
@@ -64,10 +102,14 @@ struct point_general
     point_general<T> operator*(const point_general<T>& o)const{return point_general<T>(x*o.x,y*o.y);}
     point_general<T> operator/(const point_general<T>& o)const{return point_general<T>(x/o.x,y/o.y);}
 
-    point_general<T> operator/(int div)const{return point_general<T>(x/div,y/div);}
-    point_general<T> operator*(int v)const{return point_general<T>(x*v,y*v);}
-    point_general<T> operator+(int v)const{return point_general<T>(x+v,y+v);}
-    point_general<T> operator-(int v)const{return point_general<T>(x-v,y-v);}
+    point_general<T> operator/(int   v)const{return point_general<T>(x/v,y/v);}
+    point_general<T> operator*(int   v)const{return point_general<T>(x*v,y*v);}
+    point_general<T> operator+(int   v)const{return point_general<T>(x+v,y+v);}
+    point_general<T> operator-(int   v)const{return point_general<T>(x-v,y-v);}
+    point_general<T> operator/(float v)const{return point_general<T>(x/v,y/v);}
+    point_general<T> operator*(float v)const{return point_general<T>(x*v,y*v);}
+    point_general<T> operator+(float v)const{return point_general<T>(x+v,y+v);}
+    point_general<T> operator-(float v)const{return point_general<T>(x-v,y-v);}
     point_general<T> operator-()const{return point_general<T>(-x,-y);}
 
     T distance(const point_general<T>& o)
@@ -75,6 +117,18 @@ struct point_general
         T dx=x-o.x;
         T dy=y-o.y;
         return sqrt(dx*dx+dy*dy);
+    }
+    T distance_squared(const point_general<T>& o)
+    {
+        T dx=x-o.x;
+        T dy=y-o.y;
+        return dx*dx+dy*dy;
+    }
+    T distance_squared(T x_,T y_)
+    {
+        T dx=x-x_;
+        T dy=y-y_;
+        return dx*dx+dy*dy;
     }
 };
 

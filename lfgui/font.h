@@ -9,6 +9,9 @@
 #include <functional>
 #include <intrin.h>
 
+#include "../stk_misc.h"
+#include "../stk_debugging.h"
+
 struct stbtt_fontinfo;
 
 namespace lfgui
@@ -26,7 +29,7 @@ struct memory_wrapper
             ptr_=(uint8_t*)malloc(size);
     }
 
-    memory_wrapper(void* data,size_t size):size_(size),ptr_((uint8_t*)data),foreign_data(true)
+    memory_wrapper(void* data,size_t size):ptr_((uint8_t*)data),size_(size),foreign_data(true)
     {
     }
 
@@ -89,38 +92,16 @@ std::cout<<"resetting to"<<(size_t)data<<std::endl;
 };
 
 /// Set this path if the needed ressources (images&fonts) are not in the execution path. For example "data/". The "/" at the end is required.
-extern std::string ressource_path;
+class ressource_path
+{
+    static std::string& ressource_path_(){static std::string path;return path;}
+public:
+    static void set(const std::string& path){ressource_path_()=path;}
+    static std::string get(){return ressource_path_();}
+};
 
 // based on https://en.wikipedia.org/wiki/UTF-8
 extern uint32_t utf8_to_unicode(char*& data,size_t len);
-
-struct exception : public std::exception
-{
-    std::string text;
-    static std::function<void(const std::string&)>& custom_handler()
-    {
-        static std::function<void(const std::string&)> ch;
-        return ch;
-    }
-
-    exception(std::string text)
-    {
-        std::cerr<<"EXCEPTION: "<<text<<std::endl;
-
-        if(custom_handler())
-            custom_handler()(text);
-        else
-        {
-            __debugbreak();
-            exit(-1);
-        }
-    }
-
-    virtual const char* what() const noexcept
-    {
-        return text.c_str();
-    }
-};
 
 /// \brief Wrapper class for stb_truetype.h.
 class font
@@ -249,6 +230,9 @@ public:
     /// \brief Loads a TrueType font from a file.
     font(const std::string& filename);
 
+    /// \brief Loads a TrueType font from memory.
+    font(const char* data,size_t size);
+
     ~font();
 
     /// \brief Returns a single drawn character.
@@ -269,8 +253,18 @@ public:
     /// \brief Returns the default font "FreeSans.ttf". Can also be used to set a different default.
     static font& default_font()
     {
-        static font f(ressource_path+"FreeSans.ttf");
-        return f;
+        if(!_default_font())
+            _default_font()=std::unique_ptr<font>(new font(ressource_path::get()+"FreeSans.ttf"));
+        return *_default_font();
+    }
+    static void set_default_font(font f)
+    {
+        _default_font()=std::unique_ptr<font>(new font(f));
+    }
+    static std::unique_ptr<font>& _default_font()
+    {
+        static std::unique_ptr<font> default_font;
+        return default_font;
     }
 };
 

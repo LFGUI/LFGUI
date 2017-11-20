@@ -1,26 +1,32 @@
+#include <cmath>
+
 #include "image.h"
-#include "../external/stb_truetype.h"
+#include "../stb_truetype.h"
 
 using namespace std;
 
 namespace lfgui
 {
 
-image::image(std::string filename)
+image::image(const std::string& filename)
 {
+    STK_STACKTRACE
     *this=load(filename);
 }
 
 image::image(int width,int height):width_(width),height_(height)
 {
+    STK_STACKTRACE
     image_data.reset(width*height*4);
 }
 
 image::image(void* data,int width,int height):width_(width),height_(height)
 {
+    STK_STACKTRACE
     image_data.reset(data,width*height*4);
 }
 
+/*
 image::image(const image& o)
 {
     image_data.reset(o.width()*o.height()*4);
@@ -37,9 +43,33 @@ image& image::operator=(const image& o)
     memcpy(image_data.get(),o.image_data.get(),o.width()*o.height()*4);
     return *this;
 }
+*/
+image image::copy() const
+{
+    STK_STACKTRACE
+    image ret(width_,height_);
+    memcpy(ret.image_data.get(),image_data.get(),width()*height()*4);
+    return ret;
+}
 
-int image::width()const{return width_;}
-int image::height()const{return height_;}
+image::image(image&& o)
+{
+    image_data=std::move(o.image_data);
+    width_=o.width_;
+    height_=o.height_;
+    o.width_=0;
+    o.height_=0;
+}
+
+image& image::operator=(image&& o)
+{
+    image_data=std::move(o.image_data);
+    width_=o.width_;
+    height_=o.height_;
+    o.width_=0;
+    o.height_=0;
+    return *this;
+}
 
 // TODO
 //image& image::resize_cubic(int w,int h){cimage->resize(std::max(0,w),std::max(0,h),1,4,5);return *this;}
@@ -542,7 +572,7 @@ inline float distance_point_line(int point_x,int point_y,int line_x0,int line_y0
 
     int dx=point_x-xx;
     int dy=point_y-yy;
-    return sqrt(dx*dx+dy*dy);
+    return std::sqrt(dx*dx+dy*dy);
 }
 
 void image::draw_line(int x0,int y0,int x1,int y1,color c,float w,float fading_start)
@@ -782,7 +812,6 @@ void image::draw_rect(int x,int y,int width,int height,color color_foreground)
 #endif
 }
 
-
 inline void print(__m128i v)
 {
     static char hex[]="0123456789ABCDEF";
@@ -942,10 +971,11 @@ void image::draw_image(int x,int y,const image& img,lfgui::rect area)
             __m128i input2_a=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count3));
             __m128i input2_b;
 
-            // bugged
-            //if(!_mm_movemask_epi8(input2_a))    // all alpha 0?
-            //    continue;
-            /*if(!_mm_movemask_epi8(_mm_andnot_si128(input2_a,vmax)))    // all alpha 1?
+            if(_mm_test_all_zeros(input2_a,vmax))    // all alpha 0?
+            {
+                continue;
+            }
+            if(_mm_test_all_ones(input2_a))    // all alpha 1?
             {
                 input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index           ));
                 _mm_storeu_si128((__m128i*)(d+index       ),input2_b);
@@ -955,7 +985,7 @@ void image::draw_image(int x,int y,const image& img,lfgui::rect area)
                 _mm_storeu_si128((__m128i*)(d+index+count2),input2_b);
                 _mm_storeu_si128((__m128i*)(d+index+count3),input2_a);
                 continue;
-            }*/
+            }
 
             __m128i input2_a_1=_mm_unpacklo_epi8(input2_a,v0);
             __m128i input2_a_2=_mm_unpackhi_epi8(input2_a,v0);
@@ -1151,6 +1181,259 @@ return;
     }
 }
 
+void image::draw_image_multiplied(int x,int y,const image& img,lfgui::rect area)
+{
+    if(x>=width()||y>=height())
+        return;
+    if(area.width==0)
+        area.width=img.width()-area.left();
+    if(area.height==0)
+        area.height=img.height()-area.top();
+    int img_offset_x=area.x;
+    int img_offset_y=area.y;
+    area.x=x;
+    area.y=y;
+    int start_x=x;
+    int start_y=y;
+    int end_x=area.right();
+    int end_y=area.bottom();
+
+    if(end_x>=width())
+        end_x=width();
+    if(end_y>=height())
+        end_y=height();
+
+    if(start_x<0)
+    {
+        img_offset_x-=start_x;
+        start_x=0;
+    }
+    if(start_y<0)
+    {
+        img_offset_y-=start_y;
+        start_y=0;
+    }
+    if(end_x<0||end_y<0)
+        return;
+#ifdef LFGUI_SEPARATE_COLOR_CHANNELS
+    uint8_t* d=data();
+    uint8_t* img_d=img.data();
+    int count1=width()*height();
+    int count2=width()*height()*2;
+    int count3=width()*height()*3;
+    int img_count1=img.width()*img.height();
+    int img_count2=img.width()*img.height()*2;
+    int img_count3=img.width()*img.height()*3;
+    int target_y=start_y;
+    int img_y=img_offset_y;
+
+    for(;target_y<end_y;target_y++,img_y++)
+    {
+        int target_x=start_x;
+        int img_x=img_offset_x;
+
+        uint8_t* d=data()+target_x+target_y*width();
+        int index=0;
+        int index_end=end_x-start_x;
+        int img_index=img_x+img_y*img.width();
+
+#ifdef __SSE2__f
+        __m128i v0=_mm_set1_epi32(0);
+        __m128i vmax=_mm_set1_epi8(255);
+        __m128i v255=_mm_set1_epi16(255);
+        __m128i v32897=_mm_set1_epi16(32897);
+        for(;index<index_end/16*16;index+=16,img_index+=16)
+        {
+            __m128i input2_a=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count3));
+            __m128i input2_b;
+
+            // bugged
+            //if(!_mm_movemask_epi8(input2_a))    // all alpha 0?
+            //    continue;
+            /*if(!_mm_movemask_epi8(_mm_andnot_si128(input2_a,vmax)))    // all alpha 1?
+            {
+                input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index           ));
+                _mm_storeu_si128((__m128i*)(d+index       ),input2_b);
+                input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count1));
+                _mm_storeu_si128((__m128i*)(d+index+count1),input2_b);
+                input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count2));
+                _mm_storeu_si128((__m128i*)(d+index+count2),input2_b);
+                _mm_storeu_si128((__m128i*)(d+index+count3),input2_a);
+                continue;
+            }*/
+
+            __m128i input2_a_1=_mm_unpacklo_epi8(input2_a,v0);
+            __m128i input2_a_2=_mm_unpackhi_epi8(input2_a,v0);
+            __m128i input2_a_1_neg=_mm_sub_epi8(v255,input2_a_1);
+            __m128i input2_a_2_neg=_mm_sub_epi8(v255,input2_a_2);
+
+            __m128i input1_b;
+            __m128i input1_1;
+            __m128i input1_2;
+            __m128i input2_1;
+            __m128i input2_2;
+
+            input1_b=_mm_loadu_si128((const __m128i*)(d+index));
+            input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index));
+
+            input1_1=_mm_unpacklo_epi8(input1_b,v0);
+            input1_2=_mm_unpackhi_epi8(input1_b,v0);
+
+            input2_1=_mm_unpacklo_epi8(input2_b,v0);
+            input2_2=_mm_unpackhi_epi8(input2_b,v0);
+
+            input1_1=_mm_mullo_epi16(input1_1,input2_a_1_neg);
+            input1_2=_mm_mullo_epi16(input1_2,input2_a_2_neg);
+
+            input2_1=_mm_mullo_epi16(input2_1,input2_a_1);
+            input2_2=_mm_mullo_epi16(input2_2,input2_a_2);
+
+            input1_1=_mm_adds_epu16(input1_1,input2_1);
+            input1_2=_mm_adds_epu16(input1_2,input2_2);
+
+            //input1_1=_mm_mulhi_epu16(input1_1,v257);
+            //input1_2=_mm_mulhi_epu16(input1_2,v257);
+            input1_1=_mm_mulhi_epu16(input1_1,v32897);
+            input1_2=_mm_mulhi_epu16(input1_2,v32897);
+            input1_1=_mm_srli_epi16(input1_1,7);
+            input1_2=_mm_srli_epi16(input1_2,7);
+
+            input1_b=_mm_packus_epi16(input1_1,input1_2);
+
+            _mm_storeu_si128((__m128i*)(d+index),input1_b);
+
+            input1_b=_mm_loadu_si128((const __m128i*)(d+index+count1));
+            input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count1));
+
+            input1_1=_mm_unpacklo_epi8(input1_b,v0);
+            input1_2=_mm_unpackhi_epi8(input1_b,v0);
+
+            input2_1=_mm_unpacklo_epi8(input2_b,v0);
+            input2_2=_mm_unpackhi_epi8(input2_b,v0);
+
+            input1_1=_mm_mullo_epi16(input1_1,input2_a_1_neg);
+            input1_2=_mm_mullo_epi16(input1_2,input2_a_2_neg);
+
+            input2_1=_mm_mullo_epi16(input2_1,input2_a_1);
+            input2_2=_mm_mullo_epi16(input2_2,input2_a_2);
+
+            input1_1=_mm_adds_epu16(input1_1,input2_1);
+            input1_2=_mm_adds_epu16(input1_2,input2_2);
+
+            //input1_1=_mm_mulhi_epu16(input1_1,v257);
+            //input1_2=_mm_mulhi_epu16(input1_2,v257);
+            input1_1=_mm_mulhi_epu16(input1_1,v32897);
+            input1_2=_mm_mulhi_epu16(input1_2,v32897);
+            input1_1=_mm_srli_epi16(input1_1,7);
+            input1_2=_mm_srli_epi16(input1_2,7);
+
+            input1_b=_mm_packus_epi16(input1_1,input1_2);
+            _mm_storeu_si128((__m128i*)(d+index+count1),input1_b);
+
+            input1_b=_mm_loadu_si128((const __m128i*)(d+index+count2));
+            input2_b=_mm_loadu_si128((const __m128i*)(img_d+img_index+img_count2));
+
+            input1_1=_mm_unpacklo_epi8(input1_b,v0);
+            input1_2=_mm_unpackhi_epi8(input1_b,v0);
+
+            input2_1=_mm_unpacklo_epi8(input2_b,v0);
+            input2_2=_mm_unpackhi_epi8(input2_b,v0);
+
+            input1_1=_mm_mullo_epi16(input1_1,input2_a_1_neg);
+            input1_2=_mm_mullo_epi16(input1_2,input2_a_2_neg);
+
+            input2_1=_mm_mullo_epi16(input2_1,input2_a_1);
+            input2_2=_mm_mullo_epi16(input2_2,input2_a_2);
+
+            input1_1=_mm_adds_epu16(input1_1,input2_1);
+            input1_2=_mm_adds_epu16(input1_2,input2_2);
+
+            //input1_1=_mm_mulhi_epu16(input1_1,v257);
+            //input1_2=_mm_mulhi_epu16(input1_2,v257);
+            input1_1=_mm_mulhi_epu16(input1_1,v32897);
+            input1_2=_mm_mulhi_epu16(input1_2,v32897);
+            input1_1=_mm_srli_epi16(input1_1,7);
+            input1_2=_mm_srli_epi16(input1_2,7);
+
+            input1_b=_mm_packus_epi16(input1_1,input1_2);
+            _mm_storeu_si128((__m128i*)(d+index+count2),input1_b);
+
+            __m128i input1_a=_mm_loadu_si128((const __m128i*)(d+index+count3));
+            __m128i input1_a_1=_mm_unpacklo_epi8(input1_a,v0);
+            __m128i input1_a_2=_mm_unpackhi_epi8(input1_a,v0);
+
+            input1_a_1=_mm_adds_epi16(input1_a_1,input2_a_1);
+            input1_a_2=_mm_adds_epi16(input1_a_2,input2_a_2);
+
+            input1_a=_mm_packus_epi16(input1_a_1,input1_a_2);
+            _mm_storeu_si128((__m128i*)(d+index+count3),input1_a);
+        }
+#endif
+        for(;index<index_end;index++,img_index++)
+        {
+            float a=img_d[img_index+img_count3];
+            if(a==0)
+                continue;
+            a/=255;
+
+            int b=int(d[index       ]*img_d[img_index]*a);
+            int g=int(d[index+count1]*img_d[img_index+img_count1]*a);
+            int r=int(d[index+count2]*img_d[img_index+img_count2]*a);
+            b/=256;
+            g/=256;
+            r/=256;
+            /*b/=10;
+            g/=10;
+            r/=10;*/
+            /*int b=img_d[img_index]*a;
+            int g=img_d[img_index+img_count1]*a;
+            int r=img_d[img_index+img_count2]*a;*/
+            d[index       ]=b>255?255:b;
+            d[index+count1]=g>255?255:g;
+            d[index+count2]=r>255?255:r;
+/*d[index       ]=img_d[img_index];
+d[index+count1]=img_d[img_index+img_count1];
+d[index+count2]=img_d[img_index+img_count2];*/
+        }
+    }
+#else
+    color* img_d=(color*)img.data();
+    int target_y=start_y;
+    int img_y=img_offset_y;
+
+    for(;target_y<end_y;target_y++,img_y++)
+    {
+        int target_x=start_x;
+        int img_x=img_offset_x;
+
+        color* d=((color*)data())+target_x+target_y*width();
+        int index=0;
+        int index_end=end_x-start_x;
+        int img_index=img_x+img_y*img.width();
+
+        for(;index<index_end;index++,img_index++)
+        {
+            color& c_source=img_d[img_index];
+            float a=c_source.a;
+            if(a==0)
+                continue;
+            a/=255;
+
+            color& c_target=d[index];
+            int r=int(c_source.b*c_target.b*a);
+            int g=int(c_source.g*c_target.g*a);
+            int b=int(c_source.r*c_target.r*a);
+            b/=256;
+            g/=256;
+            r/=256;
+            c_target.b=b>255?255:b;
+            c_target.g=b>255?255:g;
+            c_target.r=b>255?255:r;
+        }
+    }
+#endif
+}
+
 void image::draw_image_solid(int start_x,int start_y,const image& img)
 {
     int end_x=start_x+img.width();
@@ -1284,6 +1567,7 @@ image& image::multiply(color c)
         d->b=d->b*c.b/255;
     }
 #endif
+    return *this;
 }
 
 image& image::add(color c)
@@ -1317,6 +1601,7 @@ image& image::add(color c)
         d->b=std::min(255,d->b+c.b);
     }
 #endif
+    return *this;
 }
 
 void image::draw_text(int x,int y,const std::string& text,const color& color,int font_size,alignment a,font& f)

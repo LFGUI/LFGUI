@@ -1,15 +1,14 @@
 #define STB_TRUETYPE_IMPLEMENTATION
-#include "../external/stb_truetype.h"
+#include "../stb_truetype.h"
 #undef STB_TRUETYPE_IMPLEMENTATION
 
 #include "font.h"
+#include "geometry.h"
 
 #include <iostream>
 
 namespace lfgui
 {
-
-std::string ressource_path;
 
 uint32_t utf8_to_unicode(char*& data,size_t len)
 {
@@ -54,6 +53,7 @@ uint32_t utf8_to_unicode(char*& data,size_t len)
 
 font::font(const std::string& filename)
 {
+    STK_STACKTRACE
     std::streampos size;
 
     std::ifstream file(filename,std::ios::in|std::ios::binary|std::ios::ate);
@@ -68,6 +68,15 @@ font::font(const std::string& filename)
 
     stbtt_font.reset(new stbtt_fontinfo);
     stbtt_InitFont(stbtt_font.get(),ttf_buffer.get()->get(),stbtt_GetFontOffsetForIndex(ttf_buffer.get()->get(),0));
+
+    stbtt_GetFontVMetrics(stbtt_font.get(),&ascend_,&descend_,&line_gap_);
+}
+
+font::font(const char* data,size_t)
+{
+    STK_STACKTRACE
+    stbtt_font.reset(new stbtt_fontinfo);
+    stbtt_InitFont(stbtt_font.get(),(const unsigned char*)data,stbtt_GetFontOffsetForIndex((const unsigned char*)data,0));
 
     stbtt_GetFontVMetrics(stbtt_font.get(),&ascend_,&descend_,&line_gap_);
 }

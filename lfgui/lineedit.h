@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "lfgui.h"
-#include "../external/stk_timer.h"
+#include "../stk_timer.h"
 
 namespace lfgui
 {

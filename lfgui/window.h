@@ -26,6 +26,7 @@ public:
 private:
     bool _closable;
     bool _resizeable;
+    bool _transparent_center=false;
 public:
     widget* widget_content;
     widget* widget_this;
@@ -33,10 +34,10 @@ public:
     signal<> on_reject; ///< Called when this widget is closed with the X or if the close() function is called otherwise.
     signal<> on_close;  ///< Called when this widget is closed.
 
-    window(int x,int y,int width,int height,const std::string& title="",bool closable=false,bool resizeable=false);
+    window(int x,int y,int width,int height,const std::string& title="",bool closable=false,bool resizeable=false,bool transparent_center=false);
 
-    window(int width=100,int height=20,const std::string& text="")
-        : window(0,0,width,height,text){}
+    window(int width=100,int height=20,const std::string& text="",bool transparent_center=false)
+        : window(0,0,width,height,text,transparent_center){}
 
     /// \brief Closes this window. Removes this window from the parent and destroys it. Calls on_accept and on_close.
     /// This should be called by an "Ok" or "Yes" button to provide a standardized dialog interface (like Qt).
@@ -76,7 +77,7 @@ public:
     }
 
 private:
-    // called by the constructor to create the button images that are draw when drawing the widget
+    // called by the constructor to create the button images that are drawn when drawing the widget
     void prepare_images();
 };
 

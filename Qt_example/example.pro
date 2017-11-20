@@ -7,7 +7,7 @@ TEMPLATE = app
 
 CONFIG += C++11
 
-QMAKE_CXXFLAGS += -O2# -mavx
+QMAKE_CXXFLAGS += #-O2# -mavx
 
 INCLUDEPATH +=  ../external/
 
@@ -39,7 +39,9 @@ HEADERS  += \
         ../lfgui/label.h \
         ../lfgui/lineedit.h \
         ../lfgui/window.h \
-        ../external/stk_timer.h \
-        ../external/stb_truetype.h \
         ../common_sample_code.h \
-        example.h
+        example.h \
+        ../stb_truetype.h \
+        ../stk_debugging.h \
+        ../stk_misc.h \
+        ../stk_timer.h

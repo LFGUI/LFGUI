@@ -3,9 +3,10 @@
 namespace lfgui
 {
 
-window::window(int x,int y,int width,int height,const std::string& title,bool closable,bool resizeable)
-    : widget(x,y,width,height),title(title),_closable(closable),_resizeable(resizeable),widget_this(this)
+window::window(int x,int y,int width,int height,const std::string& title,bool closable,bool resizeable,bool transparent_center)
+    : widget(x,y,width,height),title(title),_closable(closable),_resizeable(resizeable),_transparent_center(transparent_center),widget_this(this)
 {
+    STK_STACKTRACE
     prepare_images();
     set_size_min(100,100);
 
@@ -23,6 +24,7 @@ window::window(int x,int y,int width,int height,const std::string& title,bool cl
     });
 
     on_focus_out([]{}); // widgets get redrawn when they have signals connected and that's all that should be done here (to remove the highlight effect
+    on_focus_in([this]{raise();});
 
     on_mouse_drag([this](lfgui::event_mouse e){translate(e.movement);});
 
@@ -84,40 +86,59 @@ window::window(int x,int y,int width,int height,const std::string& title,bool cl
 
 void window::prepare_images()
 {
+    STK_STACKTRACE
     {
-        static image img(ressource_path+"gui_window.png");
+        static image img(ressource_path::get()+"gui_window.png");
         static image img_upper=img.cropped(0,0,img.width(),42);
         static image img_lower=img.cropped(0,42,img.width(),90-42);
+        static image img_transp(ressource_path::get()+"gui_window_transparent.png");
+        static image img_transp_upper=img_transp.cropped(0,0,img_transp.width(),42);
+        static image img_transp_lower=img_transp.cropped(0,42,img_transp.width(),90-42);
 
         image img_titlebar(width(),25);
         img_titlebar.clear();
-        img_titlebar.draw_image_corners_stretched(border_width,img_upper);
-
         image img_content(width(),height()-25);
         img_content.clear();
-        img_content.draw_image_corners_stretched(border_width,img_lower);
-
+        if(!_transparent_center)
+        {
+            img_titlebar.draw_image_corners_stretched(border_width,img_upper);
+            img_content .draw_image_corners_stretched(border_width,img_lower);
+        }
+        else
+        {
+            img_titlebar.draw_image_corners_stretched(border_width,img_transp_upper);
+            img_content .draw_image_corners_stretched(border_width,img_transp_lower);
+        }
         img_normal=image(width(),height());
         img_normal.clear();
-        img_normal.draw_image(0,0,img_titlebar);
+        img_normal.draw_image(0, 0,img_titlebar);
         img_normal.draw_image(0,25,img_content);
     }
     {
-        static image img(ressource_path+"gui_window_highlighted.png");
-        static image img_upper=img.cropped(0,0,img.width(),42);
+        static image img(ressource_path::get()+"gui_window_highlighted.png");
+        static image img_upper=img.cropped(0, 0,img.width(),42);
         static image img_lower=img.cropped(0,42,img.width(),90-42);
+        static image img_transp(ressource_path::get()+"gui_window_highlighted_transparent.png");
+        static image img_transp_upper=img_transp.cropped(0,0,img_transp.width(),42);
+        static image img_transp_lower=img_transp.cropped(0,42,img_transp.width(),90-42);
 
         image img_titlebar(width(),25);
         img_titlebar.clear();
-        img_titlebar.draw_image_corners_stretched(border_width,img_upper);
-
         image img_content(width(),height()-25);
         img_content.clear();
-        img_content.draw_image_corners_stretched(border_width,img_lower);
-
         img_highlighted=image(width(),height());
         img_highlighted.clear();
-        img_highlighted.draw_image(0,0,img_titlebar);
+        if(!_transparent_center)
+        {
+            img_titlebar.draw_image_corners_stretched(border_width,img_upper);
+            img_content .draw_image_corners_stretched(border_width,img_lower);
+        }
+        else
+        {
+            img_titlebar.draw_image_corners_stretched(border_width,img_transp_upper);
+            img_content .draw_image_corners_stretched(border_width,img_transp_lower);
+        }
+        img_highlighted.draw_image(0, 0,img_titlebar);
         img_highlighted.draw_image(0,25,img_content);
     }
 }

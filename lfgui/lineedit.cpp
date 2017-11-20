@@ -6,19 +6,20 @@ namespace lfgui
 lineedit::lineedit(int x,int y,int _width,int _height,const std::string& text,color text_color,int text_size)
         : widget(x,y,_width,_height),_text(text),_text_color(text_color),_text_size(text_size)
 {
+    STK_STACKTRACE
     cursor_position=_text.size();
     redraw_every_n_seconds=0.5;
 
     int border_width=8;
 
     {
-        image img(ressource_path+"gui_torus_filled.png");
+        image img(ressource_path::get()+"gui_torus_filled.png");
         img_background=image(width(),height());
         img_background.clear();
         img_background.draw_image_corners_stretched(border_width,img);
     }
     {
-        image img(ressource_path+"gui_torus_filled_highlighted.png");
+        image img(ressource_path::get().append("gui_torus_filled_highlighted.png"));
         img_background_focused=image(width(),height());
         img_background_focused.clear();
         img_background_focused.draw_image_corners_stretched(border_width,img);

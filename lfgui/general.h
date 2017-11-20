@@ -2,6 +2,11 @@
 #define LFGUI_GENERAL_H
 
 #include <algorithm>
+#include <thread>
+#include <vector>
+#include <functional>
+#include <atomic>
+#include <immintrin.h>
 
 #include "geometry.h"
 

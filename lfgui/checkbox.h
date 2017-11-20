@@ -57,8 +57,8 @@ public:
 private:
     void prepare_images()
     {
-        img_unchecked=image(ressource_path+"gui_checkbox_unchecked.png").scaled(height(),height()).multiplied(text_color());
-        img_checked=image(ressource_path+"gui_checkbox_checked.png").scaled(height(),height()).multiplied(text_color());
+        img_unchecked=image(ressource_path::get()+"gui_checkbox_unchecked.png").scaled(height(),height()).multiplied(text_color());
+        img_checked  =image(ressource_path::get()+"gui_checkbox_checked.png").scaled(height(),height()).multiplied(text_color());
     }
 };
 
